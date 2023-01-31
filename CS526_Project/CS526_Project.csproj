@@ -12,10 +12,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>CS526_Project</ApplicationTitle>
+		<ApplicationTitle>To Do</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.cs526_project</ApplicationId>
+		<ApplicationId>com.cs526_project.todo</ApplicationId>
 		<ApplicationIdGuid>38bb1cc5-56db-4d1f-a5af-a23b4dedf508</ApplicationIdGuid>
 
 		<!-- Versions -->
@@ -32,7 +32,7 @@
 
 	<ItemGroup>
 		<!-- App Icon -->
-		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+		<MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg"/>
 
 		<!-- Splash Screen -->
 		<MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
