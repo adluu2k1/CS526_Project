@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CS526_Project.TestPage"
+             Title="TestPage">
+
+    <Grid Padding="5" RowSpacing="1" ColumnSpacing="1" VerticalOptions="Fill">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="10*" />
+        </Grid.RowDefinitions>
+
+        <Button Text="Add"
+            Grid.Row="0"
+            Clicked="OnNewButtonClicked" />
+
+        <Label x:Name="statusMessage"
+           Grid.Row="1" />
+
+        <Button Text="DeleteAll"
+            Grid.Row="2"
+            Clicked="Button_Clicked" />
+
+        <Button Text="Get All People"
+            Grid.Row="3"
+            Clicked="OnGetButtonClicked" />
+
+        <Grid x:Name="peopleList" Grid.Row="4">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            
+        </Grid>
+        
+
+    </Grid>
+
+</ContentPage>

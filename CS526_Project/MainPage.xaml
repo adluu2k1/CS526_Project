@@ -5,21 +5,8 @@
 
     <Grid>
 
-        <ScrollView>
-            <VerticalStackLayout
-                Spacing="25"
-                Padding="30,0"
-                VerticalOptions="Center">
-
-            </VerticalStackLayout>
-        </ScrollView>
-
-        <Button x:Name="btnAdd"
-                Text="Add"
-                FontSize="Large" FontAttributes="Bold"
-                BorderWidth="30"
-                VerticalOptions="End" HorizontalOptions="End" Margin="0,0,50,50"/>
         
+
     </Grid>
 
 </ContentPage>

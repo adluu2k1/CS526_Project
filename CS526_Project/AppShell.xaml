@@ -6,11 +6,6 @@
     xmlns:local="clr-namespace:CS526_Project"
     Shell.FlyoutBehavior="Disabled">
 
-    <!--<ShellContent
-        Title="Home"
-        ContentTemplate="{DataTemplate local:MainPage}"
-        Route="MainPage" />-->
-
     <TabBar>
         <TabBar.Style>
             <Style TargetType="TabBar">
@@ -24,8 +19,8 @@
             <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
         </Tab>
 
-        <Tab Title="OtherPage">
-            <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
+        <Tab Title="TestPage">
+            <ShellContent ContentTemplate="{DataTemplate local:TestPage}"/>
         </Tab>
         
     </TabBar>

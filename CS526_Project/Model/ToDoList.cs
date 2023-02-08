@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
 
 namespace CS526_Project.Model
 {
@@ -10,28 +11,25 @@ namespace CS526_Project.Model
     {
         public int id { get; set; }
         public string Description { get; set; } = string.Empty;
-        public List<int> CategoryId { get; set; } = new List<int>();
         public DateTime AddTime { get; set; } = DateTime.Now;
-        public List<DateTime> NotificationTime { get; set; } = new List<DateTime>();
         public DateTime DeadlineTime { get; set; } = DateTime.Today.AddDays(1); // Deadline 1 day by default
         public DateTime EndTime { get; set; }
         public bool IsDone { get; set; } = false;
 
-        public void AddTask()
+        private string str_CategoryId { get; set; } = "[]";
+        [SQLite.Ignore]
+        public List<int> CategoryId
         {
-            
+            get { return JsonSerializer.Deserialize(str_CategoryId, typeof(List<int>)) as List<int>; }
+            set { str_CategoryId = JsonSerializer.Serialize(value, typeof(List<int>)); }
         }
-        public void EditTask()
-        {
 
-        }
-        public void DeleteTask()
+        private string str_NotificationTime { get; set; } = "[]";
+        [SQLite.Ignore]
+        public List<DateTime> NotificationTime
         {
-
-        }
-        public void AddColumn()
-        {
-
+            get { return JsonSerializer.Deserialize(str_NotificationTime, typeof(List<DateTime>)) as List<DateTime>; }
+            set { str_NotificationTime = JsonSerializer.Serialize(value, typeof(List<DateTime>)); }
         }
     }
 }
