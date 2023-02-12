@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CS526_Project.UserControls.DayOfWeekButtonView">
+
+    <Grid Margin="5,0" WidthRequest="30" HeightRequest="80">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button x:Name="btn" Grid.Row="0" Grid.RowSpan="3"
+                BackgroundColor="{DynamicResource Secondary}"
+                CornerRadius="5"
+                Clicked="Button_Clicked"/>
+
+        <Label x:Name="labelDayOfWeek" x:FieldModifier="public"
+               Grid.Row="0" HorizontalOptions="Center"/>
+        <Label x:Name="labelDate" x:FieldModifier="public"
+               Grid.Row="1" FontSize="20" FontAttributes="Bold"
+               HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
+
+    </Grid>
+    
+</ContentView>

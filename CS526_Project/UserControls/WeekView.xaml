@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:UserControls="clr-namespace:CS526_Project.UserControls"
+            x:Class="CS526_Project.UserControls.WeekView">
+
+    <HorizontalStackLayout>
+
+        <Grid WidthRequest="15" HeightRequest="30" VerticalOptions="Center">
+            <Polygon Points="15,0 0,15 15,30"
+                     Fill="{DynamicResource Primary}"/>
+            <Button x:Name="btnPrevious"
+                    BackgroundColor="Transparent"
+                    Clicked="btnPrevious_Clicked"/>
+        </Grid>
+
+        <HorizontalStackLayout x:Name="WeekViewWrapper" Margin="5,0"/>
+
+        <Grid WidthRequest="15" HeightRequest="30" VerticalOptions="Center">
+            <Polygon Points="0,0 0,30 15,15"
+                     Fill="{DynamicResource Primary}"/>
+            <Button x:Name="btnNext"
+                    BackgroundColor="Transparent"
+                    Clicked="btnNext_Clicked"/>
+        </Grid>
+
+    </HorizontalStackLayout>
+
+</ContentView>

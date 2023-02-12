@@ -3,9 +3,56 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CS526_Project.MainPage">
 
-    <Grid>
-
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
         
+        <VerticalStackLayout Margin="30,60,30,20" VerticalOptions="Start" HorizontalOptions="Fill">
+
+            <Label x:Name="labelToday"
+                   FontSize="Body"/>
+            <Label BindingContext="{x:Reference labelToday}"
+                   Text="HÔM NAY"
+                   FontSize="{Binding Path=FontSize}"
+                   FontFamily="{Binding Path=FontFamily}"
+                   TextColor="{DynamicResource Primary}"
+                   Margin="0,0,0,30"/>
+
+            <ContentView x:Name="WeekViewWrapper"
+                         HorizontalOptions="CenterAndExpand"/>
+
+            <VerticalStackLayout x:Name="TaskViewWrapper"/>
+
+        </VerticalStackLayout>
+
+        <Grid VerticalOptions="End" HorizontalOptions="Center" Margin="0,0,0,30">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <ImageButton x:Name="btnSearch" Grid.Column="0"
+                         Source="Resources/Images/search.svg"
+                         WidthRequest="40" HeightRequest="40" CornerRadius="20"
+                         Margin="10,0" VerticalOptions="Center"
+                         BackgroundColor="{DynamicResource Primary}"
+                         Clicked="btnSearch_Clicked"/>
+
+            <ImageButton x:Name="btnAdd" Grid.Column="1"
+                         Source="Resources/Images/add.svg"
+                         WidthRequest="60" HeightRequest="60" CornerRadius="30"
+                         Margin="10,0" VerticalOptions="Center"
+                         BackgroundColor="{DynamicResource Primary}"
+                         Clicked="btnAdd_Clicked"/>
+
+            <ImageButton x:Name="btnSettings" Grid.Column="2"
+                         Source="Resources/Images/settings.svg"
+                         WidthRequest="40" HeightRequest="40" CornerRadius="20"
+                         Margin="10,0" VerticalOptions="Center"
+                         BackgroundColor="{DynamicResource Primary}"
+                         Clicked="btnSettings_Clicked"/>
+
+        </Grid>
 
     </Grid>
 

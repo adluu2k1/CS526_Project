@@ -6,23 +6,6 @@
     xmlns:local="clr-namespace:CS526_Project"
     Shell.FlyoutBehavior="Disabled">
 
-    <TabBar>
-        <TabBar.Style>
-            <Style TargetType="TabBar">
-                <Setter Property="Shell.TabBarBackgroundColor" Value="{StaticResource Key=Primary}"/>
-                <Setter Property="Shell.TabBarTitleColor" Value="White"/>
-                <Setter Property="Shell.TabBarUnselectedColor" Value="LightGray"/>
-            </Style>
-        </TabBar.Style>
-        
-        <Tab Title="MainPage">
-            <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
-        </Tab>
-
-        <Tab Title="TestPage">
-            <ShellContent ContentTemplate="{DataTemplate local:TestPage}"/>
-        </Tab>
-        
-    </TabBar>
+    <ShellContent ContentTemplate="{DataTemplate local:MainPage}"/>
 
 </Shell>

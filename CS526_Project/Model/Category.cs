@@ -20,19 +20,5 @@ namespace CS526_Project.Model
             Tasks = new List<ToDo_Task>();
         }
 
-        public void AddTask(ToDo_Task task)
-        {
-            Tasks.Add(task);
-        }
-
-        public void RemoveTask(ToDo_Task task)
-        {
-            Tasks.Remove(task);
-        }
-
-
-
-
-
     }
 }
