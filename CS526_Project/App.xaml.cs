@@ -63,6 +63,7 @@ public partial class App : Application
         ToDo_List.Add(task2);
         ToDo_List.Add(task3);
 
-        MainPage = new AppShell();
+        MainPage = new NavigationPage(new MainPage());
+        
 	}
 }

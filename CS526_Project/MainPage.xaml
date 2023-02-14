@@ -5,7 +5,7 @@
 
     <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
         
-        <VerticalStackLayout Margin="30,60,30,20" VerticalOptions="Start" HorizontalOptions="Fill">
+        <VerticalStackLayout Margin="30,0,30,20" VerticalOptions="Start" HorizontalOptions="Fill">
 
             <Label x:Name="labelToday"
                    FontSize="Body"/>

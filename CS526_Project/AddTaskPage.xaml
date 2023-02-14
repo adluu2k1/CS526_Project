@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CS526_Project.AddTaskPage">
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="10*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0"
+               Text="NHIỆM VỤ MỚI"
+               FontSize="Body" FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+
+        <VerticalStackLayout Grid.Row="1" Margin="30,0" HorizontalOptions="Fill">
+
+            <Label Text="TÊN NHIỆM VỤ"
+                   FontSize="Caption" FontAttributes="Bold"
+                   TextColor="{DynamicResource Primary}"/>
+            <Entry x:Name="txtName"
+                   Placeholder="Tên nhiệm vụ"
+                   FontSize="Caption"
+                   ClearButtonVisibility="WhileEditing"
+                   HorizontalOptions="Fill"/>
+
+        </VerticalStackLayout>
+
+    </Grid>
+    
+</ContentPage>

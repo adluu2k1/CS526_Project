@@ -26,9 +26,9 @@ public partial class MainPage : ContentPage
 
     }
 
-    private void btnAdd_Clicked(object sender, EventArgs e)
+    private async void btnAdd_Clicked(object sender, EventArgs e)
     {
-		
+		await Navigation.PushAsync(new AddTaskPage());
     }
 
     private void btnSettings_Clicked(object sender, EventArgs e)
