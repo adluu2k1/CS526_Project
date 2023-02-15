@@ -13,7 +13,7 @@ namespace CS526_Project.Model
         public string Name { get; set; }
         public string Description { get; set; } = string.Empty;
         public DateTime AddTime { get; set; } = DateTime.Now;
-        public DateTime DeadlineTime { get; set; } = DateTime.Today.AddDays(1); // Deadline 1 day by default
+        public DateTime DeadlineTime { get; set; } = DateTime.MaxValue;     // Equal to no deadline
         public DateTime EndTime { get; set; }
         public bool IsDone { get; set; } = false;
 

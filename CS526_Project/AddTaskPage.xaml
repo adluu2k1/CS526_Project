@@ -3,6 +3,34 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CS526_Project.AddTaskPage">
 
+    <ContentPage.Resources>
+
+        <Style x:Key="DateTimeLabelStyle" TargetType="Label">
+            <Setter Property="FontSize" Value="Caption"/>
+            <Setter Property="FontAttributes" Value="Bold"/>
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,10,0"/>
+        </Style>
+
+        <Style x:Key="RemoveNotiButtonStyle" TargetType="ImageButton">
+            <Setter Property="Source" Value="Resources/Images/subtract.svg"/>
+            <Setter Property="WidthRequest" Value="20"/>
+            <Setter Property="HeightRequest" Value="20"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        </Style>
+
+        <Style x:Key="AddNotiButtonStyle" TargetType="ImageButton">
+            <Setter Property="Source" Value="Resources/Images/add.svg"/>
+            <Setter Property="WidthRequest" Value="20"/>
+            <Setter Property="HeightRequest" Value="20"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        </Style>
+        
+    </ContentPage.Resources>
+
     <Grid>
 
         <Grid.RowDefinitions>
@@ -25,7 +53,30 @@
                    Placeholder="Tên nhiệm vụ"
                    FontSize="Caption"
                    ClearButtonVisibility="WhileEditing"
-                   HorizontalOptions="Fill"/>
+                   HorizontalOptions="Fill"
+                   Margin="0,0,0,30"/>
+
+            <HorizontalStackLayout>
+                <Label Text="HẠN CHÓT"
+                       FontSize="Caption" FontAttributes="Bold"
+                       TextColor="{DynamicResource Primary}"
+                       VerticalOptions="Center"
+                       Margin="0,0,30,0"/>
+                <CheckBox x:Name="checkNoDeadline" VerticalOptions="Center" CheckedChanged="checkNoDeadline_CheckedChanged"/>
+                <Label Text="Không có hạn" FontSize="Caption" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout x:Name="DeadlineSettingWrapper" Margin="0,0,0,30">
+                <Label Text="NGÀY" FontSize="Caption" FontAttributes="Bold" VerticalOptions="Center" Margin="0,0,10,0"/>
+                <DatePicker x:Name="dateDeadline" Format="d" Margin="0,0,30,0"/>
+                <Label Text="GIỜ" FontSize="Caption" FontAttributes="Bold" VerticalOptions="Center" Margin="0,0,10,0"/>
+                <TimePicker x:Name="timeDeadline" Format="t"/>
+            </HorizontalStackLayout>
+
+            <Label Text="NHẮC NHỞ"
+                   FontSize="Caption" FontAttributes="Bold"
+                   TextColor="{DynamicResource Primary}"
+                   Margin="0,0,0,10"/>
+            <VerticalStackLayout x:Name="NotiTimeWrapper"/>
 
         </VerticalStackLayout>
 
