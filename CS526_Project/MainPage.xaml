@@ -19,7 +19,7 @@
             <ContentView x:Name="WeekViewWrapper"
                          HorizontalOptions="CenterAndExpand"/>
 
-            <VerticalStackLayout x:Name="TaskViewWrapper"/>
+            <VerticalStackLayout x:Name="TaskViewWrapper" x:FieldModifier="public"/>
 
         </VerticalStackLayout>
 

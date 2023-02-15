@@ -62,6 +62,7 @@ public partial class DayOfWeekButtonView : ContentView
     private void Button_Clicked(object sender, EventArgs e)
     {
         UnselectAllButton();
+        App.mainPage.TaskViewWrapper.Children.Clear();
 
 		btn.BackgroundColor = App.PrimaryColor;
 		labelDate.TextColor = Colors.White;

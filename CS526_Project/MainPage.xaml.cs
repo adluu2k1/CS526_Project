@@ -18,7 +18,14 @@ public partial class MainPage : ContentPage
 
 	public void ShowTask(DateTime date)
 	{
-		
+		var ListAllTask = App.Database.GetAllTask();
+
+		// TODO: filter
+
+		foreach (var task in ListAllTask)
+		{
+			TaskViewWrapper.Add(new TaskView(task, TaskViewWrapper));
+		}
 	}
 
     private void btnSearch_Clicked(object sender, EventArgs e)
