@@ -16,15 +16,15 @@ public partial class TaskView : ContentView
 
 		if (parent.Count % 3 == 0)
 		{
-			ViewBackground.BackgroundColor = App.PrimaryColor;
+            TaskDetailView.BackgroundColor = App.PrimaryColor;
 		}
 		else if (parent.Count % 3 == 1)
 		{
-			ViewBackground.BackgroundColor = App.SecondaryColor;
+            TaskDetailView.BackgroundColor = App.SecondaryColor;
 		}
 		else
 		{
-			ViewBackground.BackgroundColor = App.TertiaryColor;
+            TaskDetailView.BackgroundColor = App.TertiaryColor;
 		}
 
 		if (task.IsDone)

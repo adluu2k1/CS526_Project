@@ -20,19 +20,13 @@ public partial class MainPage : ContentPage
 	{
 		var ListAllTask = App.Database.GetAllTask();
 
-		// TODO: filter by Due Date (Deadlinetime)
 		foreach (var task in ListAllTask) 
 		{
-
             if (DateTime.Compare(date, task.DeadlineTime) <= 0)
 			{
                 TaskViewWrapper.Add(new TaskView(task, TaskViewWrapper));
             }
         }
-		//foreach (var task in ListAllTask)
-		//{
-		//	TaskViewWrapper.Add(new TaskView(task, TaskViewWrapper));
-		//}
 	}
 
     private void btnSearch_Clicked(object sender, EventArgs e)
