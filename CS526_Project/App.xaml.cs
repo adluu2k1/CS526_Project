@@ -7,6 +7,8 @@ public partial class App : Application
 {
     public static DatabaseHelper Database { get; } = new DatabaseHelper();
 
+    public static MainPage mainPage;
+
     public static Color PrimaryColor { get; private set; }
     public static Color SecondaryColor { get; private set; }
     public static Color TertiaryColor { get; private set; }
@@ -27,7 +29,7 @@ public partial class App : Application
             task1.Name = "FakeTask1";
 			task1.Description = "Test1";
             task1.AddTime = new DateTime(2023, 1, 17, 14, 0, 0);
-            task1.DeadlineTime = new DateTime(2023, 2, 21, 9, 0, 0);
+            task1.DeadlineTime = new DateTime(2023, 2, 15, 9, 0, 0);
             task1.IsDone = true;
 
             var CategoryId = new List<int> { 1, 2 };
@@ -42,7 +44,7 @@ public partial class App : Application
             task2.Description = "Test2";
             var CategoryId = new List<int> { 3 };
             task2.AddTime = new DateTime(2023, 1, 1, 0, 0, 0);
-            task2.DeadlineTime = new DateTime(2023, 1, 22, 0, 0, 0);
+            task2.DeadlineTime = new DateTime(2023, 2, 17, 0, 0, 0);
             var NotificationTime = new List<DateTime> { new DateTime(2023, 1, 21, 0, 0, 0),
                                                         new DateTime(2023, 1, 21, 20, 0, 0) };
             task2.str_CategoryId = JsonSerializer.Serialize(CategoryId, typeof(List<int>));
@@ -54,7 +56,7 @@ public partial class App : Application
             task3.Name = "FakeTask3";
             var CategoryId = new List<int> { 1, 2, 3 };
             task3.AddTime = new DateTime(2023, 1, 1, 0, 0, 0);
-            task3.DeadlineTime = new DateTime(2023, 12, 31, 23, 59, 59);
+            task3.DeadlineTime = new DateTime(2023, 2, 13, 23, 59, 59);
             var NotificationTime = new List<DateTime> { new DateTime(2023, 1, 17, 0, 0, 0) };
             task3.str_CategoryId = JsonSerializer.Serialize(CategoryId, typeof(List<int>));
             task3.str_NotificationTime = JsonSerializer.Serialize(NotificationTime, typeof(List<DateTime>));
@@ -62,8 +64,11 @@ public partial class App : Application
         ToDo_List.Add(task1);
         ToDo_List.Add(task2);
         ToDo_List.Add(task3);
+        App.Database.DeleteAllTask();
+        App.Database.AddTask(App.ToDo_List[0]); App.Database.AddTask(App.ToDo_List[1]); App.Database.AddTask(App.ToDo_List[2]);
 
-        MainPage = new NavigationPage(new MainPage());
+        mainPage = new();
+        MainPage = new NavigationPage(mainPage);
         
 	}
 }

@@ -66,5 +66,7 @@ public partial class DayOfWeekButtonView : ContentView
 		btn.BackgroundColor = App.PrimaryColor;
 		labelDate.TextColor = Colors.White;
 		labelDayOfWeek.TextColor = Colors.White;
+
+        App.mainPage.ShowTask(Date);
     }
 }
