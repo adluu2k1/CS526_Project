@@ -20,7 +20,7 @@ public partial class MainPage : ContentPage
 	{
 		var ListAllTask = App.Database.GetAllTask();
 
-		// TODO: filter
+		// TODO: filter by Due Date (Deadlinetime)
 
 		foreach (var task in ListAllTask)
 		{
