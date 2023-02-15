@@ -10,15 +10,7 @@ namespace CS526_Project.Model
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public List<ToDo_Task> Tasks { get; set; }
-
-        // Constructor
-        public Category(int id, string name)
-        {
-            Id = id;
-            Name = name;
-            Tasks = new List<ToDo_Task>();
-        }
+        public List<int> TaskIDs { get; set; }
 
     }
 }

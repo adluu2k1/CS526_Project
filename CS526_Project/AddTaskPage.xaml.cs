@@ -1,6 +1,4 @@
-﻿using Microsoft.Maui.Controls;
-
-namespace CS526_Project;
+﻿namespace CS526_Project;
 
 public partial class AddTaskPage : ContentPage
 {
@@ -113,5 +111,10 @@ public partial class AddTaskPage : ContentPage
                 element.IsEnabled = true;
             }
         }
+    }
+
+    private void btnAddTask_Clicked(object sender, EventArgs e)
+    {
+
     }
 }
