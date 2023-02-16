@@ -16,6 +16,7 @@ namespace CS526_Project.Model
         {
             db_connection = new SQLiteConnection(db_filepath);
             db_connection.CreateTable<ToDo_Task>();
+            db_connection.CreateTable<Category>();
         }
 
         public void AddTask(ToDo_Task task)
@@ -23,12 +24,21 @@ namespace CS526_Project.Model
             if (db_connection == null)
                 Init();
 
-            if (task == null)
-                throw new Exception("task is null");
+            if (task == null) throw new Exception("task is null");
 
             db_connection.Insert(task, typeof(ToDo_Task));
 
             
+        }
+
+        public void AddCategory(Category category)
+        {
+            if (db_connection == null)
+                Init();
+
+            if (category == null) throw new Exception("category is null");
+
+            db_connection.Insert(category, typeof(Category));
         }
 
         public List<ToDo_Task> GetAllTask()
@@ -38,12 +48,34 @@ namespace CS526_Project.Model
             return db_connection.Table<ToDo_Task>().ToList();
         }
 
-        public void DeleteAllTask()
+        public List<Category> GetAllCategories()
+        {
+            if (db_connection == null)
+                Init();
+            return db_connection.Table<Category>().ToList();
+        }
+
+        public Category FindCategory(int id)
+        {
+            if (db_connection == null)
+                Init();
+            return db_connection.Find<Category>(id);
+        }
+
+        public void DeleteAllTasks()
+        {
+            if (db_connection == null)
+                Init();
+            
+            db_connection.DeleteAll<ToDo_Task>();
+        }
+
+        public void DeleteAllCategories()
         {
             if (db_connection == null)
                 Init();
 
-            db_connection.DeleteAll<ToDo_Task>();
+            db_connection.DeleteAll<Category>();
         }
     }
 }

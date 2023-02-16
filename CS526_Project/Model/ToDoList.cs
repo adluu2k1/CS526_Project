@@ -9,12 +9,13 @@ namespace CS526_Project.Model
 {
     public class ToDo_Task
     {
+        [SQLite.PrimaryKey]
         public int id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; } = string.Empty;
         public DateTime AddTime { get; set; } = DateTime.Now;
         public DateTime DeadlineTime { get; set; } = DateTime.MaxValue;     // Equal to no deadline
-        public DateTime EndTime { get; set; }
+        public DateTime EndTime { get; set; } = DateTime.MaxValue;
         public bool IsDone { get; set; } = false;
 
         public string str_CategoryId { get; set; } = "[]";

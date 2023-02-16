@@ -24,9 +24,11 @@
                     <Label x:Name="labelDeadline" Grid.Column="1" FontAttributes="Bold" HorizontalOptions="End"/>
                 </Grid>
 
-                <Label x:Name="labelDescription" LineBreakMode="NoWrap"/>
+                <Label x:Name="labelDescription" LineBreakMode="NoWrap" Margin="0,0,0,5"/>
 
-                <HorizontalStackLayout x:Name="CategoriesWrapper"/>
+                <ScrollView>
+                    <HorizontalStackLayout x:Name="CategoriesWrapper" Margin="0,0,0,5"/>
+                </ScrollView>
 
             </VerticalStackLayout>
         </Border>

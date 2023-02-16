@@ -5,9 +5,11 @@ namespace CS526_Project.UserControls;
 public partial class TaskView : ContentView
 {
 	private Layout parent;
+	private ToDo_Task task;
 	public TaskView(ToDo_Task task, Layout parent)
 	{
 		InitializeComponent();
+		this.task = task;
 		this.parent = parent;
 
 		labelName.Text = task.Name;
@@ -31,6 +33,13 @@ public partial class TaskView : ContentView
 		{
 			checkTaskDone.IsChecked = true;
 		}
+
+		if (labelDescription.Text == String.Empty)
+		{
+			labelDescription.IsVisible = false;
+		}
+
+		AddCategoriesToView();
 	}
 
     private void checkTaskDone_CheckedChanged(object sender, CheckedChangedEventArgs e)
@@ -44,4 +53,28 @@ public partial class TaskView : ContentView
 			TaskDetailView.Opacity = 1;
 		}
     }
+
+	private void AddCategoriesToView()
+	{
+		foreach (var categoryId in task.CategoryId)
+		{
+			var category = App.Database.FindCategory(categoryId);
+            if (category != null)
+			{
+				var labelCategory = new Label() { Text = category.Name, TextColor = Color.FromArgb(category.Color_Hex) };
+				var labelSeparator = new Label() { Text = "|", Margin = new Thickness(10, 0) };
+				
+				CategoriesWrapper.Add(labelCategory);
+				CategoriesWrapper.Add(labelSeparator);
+			}
+		}
+		if (CategoriesWrapper.Children.Count > 0)
+		{
+			CategoriesWrapper.RemoveAt(CategoriesWrapper.Children.Count - 1);
+		}
+		if (CategoriesWrapper.Children.Count == 0)
+		{
+			CategoriesWrapper.IsVisible = false;
+		}
+	}
 }

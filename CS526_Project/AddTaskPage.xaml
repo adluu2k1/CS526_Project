@@ -18,7 +18,7 @@
             <Setter Property="Margin" Value="0,0,10,0"/>
         </Style>
 
-        <Style x:Key="RemoveNotiButtonStyle" TargetType="ImageButton">
+        <Style x:Key="RemoveButtonStyle" TargetType="ImageButton">
             <Setter Property="Source" Value="Resources/Images/subtract.svg"/>
             <Setter Property="WidthRequest" Value="20"/>
             <Setter Property="HeightRequest" Value="20"/>
@@ -26,7 +26,7 @@
             <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
         </Style>
 
-        <Style x:Key="AddNotiButtonStyle" TargetType="ImageButton">
+        <Style x:Key="AddButtonStyle" TargetType="ImageButton">
             <Setter Property="Source" Value="Resources/Images/add.svg"/>
             <Setter Property="WidthRequest" Value="20"/>
             <Setter Property="HeightRequest" Value="20"/>
@@ -34,7 +34,7 @@
             <Setter Property="HorizontalOptions" Value="Start"/>
             <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
         </Style>
-        
+
     </ContentPage.Resources>
 
     <Grid>
@@ -82,6 +82,11 @@
                    Margin="0,0,0,10"/>
                 <VerticalStackLayout x:Name="NotiTimeWrapper" Margin="0,0,0,30"/>
 
+                <Label Text="NHÃN"
+                   Style="{DynamicResource EntryLabelStyle}"
+                   Margin="0,0,0,10"/>
+                <VerticalStackLayout x:Name="CategoriesWrapper" Margin="0,0,0,30"/>
+
                 <Label Text="MÔ TẢ"
                    Style="{DynamicResource EntryLabelStyle}"/>
                 <Editor x:Name="txtDescription"
@@ -94,7 +99,7 @@
         </ScrollView>
 
         <Button x:Name="btnAddTask" Grid.Row="2"
-                Text="THÊM NHIỆM VỤ"
+                Text="HOÀN TẤT"
                 FontSize="Body" FontAttributes="Bold"
                 TextColor="White" BackgroundColor="{DynamicResource Primary}"
                 WidthRequest="180" HeightRequest="40" CornerRadius="20"
