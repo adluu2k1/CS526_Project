@@ -102,7 +102,7 @@
                 Text="HOÀN TẤT"
                 FontSize="Body" FontAttributes="Bold"
                 TextColor="White" BackgroundColor="{DynamicResource Primary}"
-                WidthRequest="180" HeightRequest="40" CornerRadius="20"
+                WidthRequest="130" HeightRequest="40" CornerRadius="20"
                 Clicked="btnAddTask_Clicked"/>
 
     </Grid>

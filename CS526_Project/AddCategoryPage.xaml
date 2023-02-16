@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CS526_Project.AddCategoryPage">
+
+    <ContentPage.Resources>
+
+        <Style x:Key="ColorButtonStyle" TargetType="ImageButton">
+            <Setter Property="Source" Value="Resources/Images/circle.svg"/>
+            <Setter Property="WidthRequest" Value="40"/>
+            <Setter Property="HeightRequest" Value="40"/>
+            <Setter Property="CornerRadius" Value="20"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+        </Style>
+
+        <Style x:Key="SelectedColorButtonStyle" TargetType="ImageButton">
+            <Setter Property="Source" Value="Resources/Images/checkmark_withcircle.svg"/>
+            <Setter Property="WidthRequest" Value="50"/>
+            <Setter Property="HeightRequest" Value="50"/>
+            <Setter Property="CornerRadius" Value="25"/>
+            <Setter Property="Margin" Value="0,0,5,0"/>
+        </Style>
+
+    </ContentPage.Resources>
+    
+    <VerticalStackLayout Margin="30,0">
+        
+        <Label 
+            Text="NHÃN MỚI"
+            FontSize="Body" FontAttributes="Bold"
+            HorizontalOptions="Center"
+            Margin="0,0,0,30"/>
+
+        <Label Text="TÊN NHÃN"
+               FontSize="Caption" FontAttributes="Bold" TextColor="{DynamicResource Primary}"/>
+        <Entry x:Name="txtName"
+                Placeholder="Tên nhãn"
+                FontSize="Caption"
+                ClearButtonVisibility="WhileEditing"
+                HorizontalOptions="Fill"
+                Margin="0,0,0,30"/>
+
+        <Label Text="MÀU NHÃN"
+               FontSize="Caption" FontAttributes="Bold" TextColor="{DynamicResource Primary}"/>
+        <HorizontalStackLayout x:Name="ColorBtnWrapper" Margin="0,20,0,50">
+            <ImageButton Style="{DynamicResource ColorButtonStyle}" BackgroundColor="Red"
+                         Clicked="btnColor_Clicked"/>
+            <ImageButton Style="{DynamicResource ColorButtonStyle}" BackgroundColor="Orange"
+                         Clicked="btnColor_Clicked"/>
+            <ImageButton Style="{DynamicResource ColorButtonStyle}" BackgroundColor="Blue"
+                         Clicked="btnColor_Clicked"/>
+            <ImageButton Style="{DynamicResource ColorButtonStyle}" BackgroundColor="Purple"
+                         Clicked="btnColor_Clicked"/>
+            <ImageButton Style="{DynamicResource ColorButtonStyle}" BackgroundColor="Green"
+                         Clicked="btnColor_Clicked"/>
+            <ImageButton Style="{DynamicResource ColorButtonStyle}" BackgroundColor="Brown"
+                         Clicked="btnColor_Clicked"/>
+            <ImageButton Style="{DynamicResource SelectedColorButtonStyle}" BackgroundColor="Black"
+                         Clicked="btnColor_Clicked"/>
+        </HorizontalStackLayout>
+
+        <Button x:Name="btnAddCategory"
+                Text="HOÀN TẤT"
+                FontSize="Body" FontAttributes="Bold"
+                TextColor="White" BackgroundColor="{DynamicResource Primary}"
+                WidthRequest="130" HeightRequest="40" CornerRadius="20"
+                Clicked="btnAddCategory_Clicked"/>
+
+    </VerticalStackLayout>
+    
+</ContentPage>

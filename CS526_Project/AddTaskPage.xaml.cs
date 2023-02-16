@@ -1,4 +1,5 @@
 ﻿using CS526_Project.Model;
+using Microsoft.Maui.Graphics.Text;
 using System.Text.Json;
 
 namespace CS526_Project;
@@ -9,6 +10,7 @@ public partial class AddTaskPage : ContentPage
     List<TimePicker> listNotiTimePickers = new List<TimePicker>();
     List<object> listBtnRemoveNoti = new List<object>();
 
+    List<HorizontalStackLayout> listCategoryEntryWrapper = new List<HorizontalStackLayout>();
     List<string> listCategoriesNameInDb = new List<string>();
     List<object> listBtnRemoveCategory = new List<object>();
 
@@ -97,6 +99,7 @@ public partial class AddTaskPage : ContentPage
             Title = "Select a category",
             Margin = new Thickness(0, 0, 30, 0)
         };
+        CategoryPicker.SelectedIndexChanged += OnSelectedIndexChanged;
         var btnRemoveCategory = new ImageButton() { Style = (Style)this.Resources["RemoveButtonStyle"] };
         btnRemoveCategory.Clicked += btnRemoveCategory_Clicked;
 
@@ -106,6 +109,7 @@ public partial class AddTaskPage : ContentPage
 
         CategoriesWrapper.Children.Add(CategoryEntryWrapper);
 
+        listCategoryEntryWrapper.Add(CategoryEntryWrapper);
         listBtnRemoveCategory.Add(btnRemoveCategory);
     }
     private void create_btnAddCategory()
@@ -116,9 +120,24 @@ public partial class AddTaskPage : ContentPage
     }
     private void remove_CategoryEntry(int i)
     {
+        listCategoryEntryWrapper.RemoveAt(i);
         listBtnRemoveCategory.RemoveAt(i);
 
         CategoriesWrapper.Children.RemoveAt(i);
+    }
+
+    public void OnAddCategoryPageReturn(string category_name, Color category_color, int caller_IndexInWraper)
+    {
+        listCategoriesNameInDb[listCategoriesNameInDb.Count - 1] = category_name;
+        listCategoriesNameInDb.Add("Thêm nhãn");
+        listCategoryEntryWrapper[caller_IndexInWraper].Children[0] = new Picker()
+        {
+            ItemsSource = listCategoriesNameInDb,
+            Title = "Select a category",
+            Margin = new Thickness(0, 0, 30, 0),
+            SelectedIndex = listCategoriesNameInDb.Count - 2,
+            TextColor = category_color
+        };
     }
 
     private void btnAddNotiTime_Clicked(object sender, EventArgs e)
@@ -159,6 +178,31 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
+    private async void OnSelectedIndexChanged(object sender, EventArgs e)
+    {
+        var picker = sender as Picker;
+
+        if (picker.SelectedIndex == -1) return;
+        if (picker.SelectedIndex == listCategoriesNameInDb.Count - 1)
+        {
+            var picker_index = -1;
+            for (int i = 0; i < listCategoryEntryWrapper.Count; i++)
+            {
+                if (listCategoryEntryWrapper[i].Children[0] == picker)
+                {
+                    picker_index = i;
+                    break;
+                }
+            }
+
+            picker.SelectedIndex = -1;
+            await Navigation.PushAsync(new AddCategoryPage(this, picker_index));
+            return;
+        }
+        var picker_txtcolor = App.Database.GetAllCategories()[picker.SelectedIndex].Color_Hex;
+        picker.TextColor = Color.FromArgb(picker_txtcolor);
+    }
+
     private void checkNoDeadline_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
         if (e.Value == true)
@@ -189,6 +233,7 @@ public partial class AddTaskPage : ContentPage
 
         var task = new ToDo_Task()
         {
+            id = App.Database.GenerateRandomTaskId(),
             Name = txtName.Text,
             Description = txtDescription.Text,
             AddTime = DateTime.Now

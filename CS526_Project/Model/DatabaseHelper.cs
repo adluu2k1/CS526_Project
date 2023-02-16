@@ -55,6 +55,25 @@ namespace CS526_Project.Model
             return db_connection.Table<Category>().ToList();
         }
 
+        public bool IsTaskIdTaken(int id)
+        {
+            if (db_connection == null)
+                Init();
+
+            foreach (var task in GetAllTask())
+            {
+                if (task.id == id) return true;
+            }
+            return false;
+        }
+
+        public int GenerateRandomTaskId()
+        {
+            int id = new Random().Next(1, short.MaxValue);
+            if (IsTaskIdTaken(id)) id = GenerateRandomTaskId();
+            return id;
+        }
+
         public Category FindCategory(int id)
         {
             if (db_connection == null)
