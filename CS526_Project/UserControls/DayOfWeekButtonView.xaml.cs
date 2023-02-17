@@ -18,7 +18,7 @@ public partial class DayOfWeekButtonView : ContentView
         {
             labelDayOfWeek.Text = "T" + ((int)date.DayOfWeek + 1).ToString();
         }
-
+        
         if (date.Day == 1)
         {
             if (date.Month == 1)
@@ -36,11 +36,17 @@ public partial class DayOfWeekButtonView : ContentView
             labelDate.Text = date.Day.ToString();
         }
 
-        if (date == DateTime.Now.Date)
+        if (date == App.mainPage_SelectedDate)
         {
             btn.BackgroundColor = App.PrimaryColor;
             labelDate.TextColor = Colors.White;
             labelDayOfWeek.TextColor = Colors.White;
+        }
+
+        if (date == DateTime.Now.Date)
+        {
+            btn.BorderColor = App.PrimaryColor;
+            btn.BorderWidth = 2;
         }
     }
 
@@ -68,6 +74,7 @@ public partial class DayOfWeekButtonView : ContentView
 		labelDate.TextColor = Colors.White;
 		labelDayOfWeek.TextColor = Colors.White;
 
+        App.mainPage_SelectedDate = this.Date;
         App.mainPage.ShowTask(Date);
     }
 }

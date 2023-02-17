@@ -26,6 +26,11 @@ public partial class TaskView : ContentView
 			labelDescription.IsVisible = false;
 		}
 
+		if (task.DeadlineTime.Date == DateTime.Now.Date)
+		{
+			labelDeadline.TextColor = Colors.Red;
+		}
+
 		AddCategoriesToView();
 	}
 

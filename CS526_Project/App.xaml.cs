@@ -8,6 +8,7 @@ public partial class App : Application
     public static DatabaseHelper Database { get; } = new DatabaseHelper();
 
     public static MainPage mainPage;
+    public static DateTime mainPage_SelectedDate = DateTime.Now.Date;
 
     public static Color PrimaryColor { get; private set; }
     public static Color SecondaryColor { get; private set; }
