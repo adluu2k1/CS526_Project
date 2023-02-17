@@ -1,18 +1,26 @@
 ﻿using CS526_Project.Model;
+using CS526_Project.UserControls;
 
 namespace CS526_Project;
 
 public partial class AddCategoryPage : ContentPage
 {
 	private Color selected_color = Colors.Black;
-	private AddTaskPage parentPage;
+	private AddTaskPage parentPage_Add;
+    private EditTaskPage parentPage_Edit;
 	private int caller_IndexInWraper;
 	public AddCategoryPage(AddTaskPage parentPage, int caller_IndexInWraper)
 	{
 		InitializeComponent();
-		this.parentPage = parentPage;
+		this.parentPage_Add = parentPage;
 		this.caller_IndexInWraper = caller_IndexInWraper;
 	}
+    public AddCategoryPage(EditTaskPage parentPage, int caller_IndexInWraper)
+    {
+        InitializeComponent();
+        this.parentPage_Edit = parentPage;
+        this.caller_IndexInWraper = caller_IndexInWraper;
+    }
 
     private void btnColor_Clicked(object sender, EventArgs e)
     {
@@ -42,8 +50,14 @@ public partial class AddCategoryPage : ContentPage
             labelError.IsVisible = true;
             return;
         }
-
-        parentPage.OnAddCategoryPageReturn(txtName.Text, selected_color, caller_IndexInWraper);
+        if (parentPage_Add != null)
+        {
+            parentPage_Add.OnAddCategoryPageReturn(txtName.Text, selected_color, caller_IndexInWraper);
+        }
+        else if (parentPage_Edit != null)
+        {
+            parentPage_Edit.OnAddCategoryPageReturn(txtName.Text, selected_color, caller_IndexInWraper);
+        }
 		await Navigation.PopAsync();
     }
 

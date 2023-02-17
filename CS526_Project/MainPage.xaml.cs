@@ -44,3 +44,6 @@ public partial class MainPage : ContentPage
     }
 }
 
+// Problem:
+//	TaskViewWrapper need scroll
+//	Deadline MaxValue need to be hidden

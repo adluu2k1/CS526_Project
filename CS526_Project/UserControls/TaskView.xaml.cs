@@ -77,4 +77,9 @@ public partial class TaskView : ContentView
 			CategoriesWrapper.IsVisible = false;
 		}
 	}
+
+    private async void btnTaskView_Clicked(object sender, EventArgs e)
+    {
+		await Navigation.PushAsync(new EditTaskPage(task));
+    }
 }

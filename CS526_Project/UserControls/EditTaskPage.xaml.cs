@@ -1,12 +1,12 @@
 ﻿using CS526_Project.Model;
-using Microsoft.Maui.Graphics.Text;
-using System.Collections.Generic;
 using System.Text.Json;
 
-namespace CS526_Project;
+namespace CS526_Project.UserControls;
 
-public partial class AddTaskPage : ContentPage
+public partial class EditTaskPage : ContentPage
 {
+    int taskId;
+
     List<DatePicker> listNotiDatePickers = new List<DatePicker>();
     List<TimePicker> listNotiTimePickers = new List<TimePicker>();
     List<object> listBtnRemoveNoti = new List<object>();
@@ -15,18 +15,59 @@ public partial class AddTaskPage : ContentPage
     List<string> listCategoriesName = new List<string>();
     List<object> listBtnRemoveCategory = new List<object>();
 
-    public AddTaskPage()
-    {
+    public EditTaskPage(ToDo_Task task)
+	{
+		InitializeComponent();
+        taskId = task.id;
+
         foreach (var category in App.Database.GetAllCategories())
         {
             listCategoriesName.Add(category.Name);
         }
         listCategoriesName.Add("Thêm nhãn");
 
-        InitializeComponent();
-
+        ImportTaskData(task);
         create_btnAddNotiEntry();
         create_btnAddCategory();
+    }
+
+    private void ImportTaskData(ToDo_Task task)
+    {
+        txtName.Text = task.Name;
+        txtDescription.Text = task.Description;
+
+        if (task.DeadlineTime == DateTime.MaxValue)
+        {
+            checkNoDeadline.IsChecked = true;
+        }
+        else
+        {
+            dateDeadline.Date = task.DeadlineTime.Date;
+            timeDeadline.Time = new TimeSpan(task.DeadlineTime.Hour, task.DeadlineTime.Minute, task.DeadlineTime.Second);
+        }
+
+        for (int i = 0; i < task.CategoryId.Count; i++)
+        {
+            create_Category_entry();
+
+            var picker = listCategoryEntryWrapper[i].Children[0] as Picker;
+            Category category = App.Database.FindCategory(task.CategoryId[i]);
+            picker.SelectedItem = category.Name;
+            picker.TextColor = Color.FromArgb(category.Color_Hex);
+        }
+
+        for (int i = 0; i < task.NotificationTime.Count; i++)
+        {
+            create_NotiTime_entry();
+
+            listNotiDatePickers[i].Date = task.NotificationTime[i].Date;
+            listNotiTimePickers[i].Time = new TimeSpan
+                (
+                    task.NotificationTime[i].Hour,
+                    task.NotificationTime[i].Minute,
+                    task.NotificationTime[i].Second
+                );
+        }
     }
 
     private void create_NotiControls()
@@ -244,7 +285,17 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
-    private async void btnAddTask_Clicked(object sender, EventArgs e)
+    private bool IsNameValid()
+    {
+        if (txtName.Text == null || txtName.Text.Replace(" ", "") == "")
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    private async void btnSaveTask_Clicked(object sender, EventArgs e)
     {
         // Check if task name is invalid
         if (!IsNameValid())
@@ -257,7 +308,7 @@ public partial class AddTaskPage : ContentPage
 
         var task = new ToDo_Task()
         {
-            id = App.Database.GenerateRandomTaskId(),
+            id = taskId,
             Name = txtName.Text,
             Description = txtDescription.Text,
             AddTime = DateTime.Now
@@ -310,17 +361,12 @@ public partial class AddTaskPage : ContentPage
             task.str_CategoryId = JsonSerializer.Serialize(categoryId, typeof(List<int>));
         }
 
-        App.Database.AddTask(task);
+        App.Database.UpdateTask(task);
         await Navigation.PopAsync();
     }
 
-    private bool IsNameValid()
+    private void btnDeleteTask_Clicked(object sender, EventArgs e)
     {
-        if (txtName.Text == null || txtName.Text.Replace(" ", "") == "")
-        {
-            return false;
-        }
 
-        return true;
     }
 }

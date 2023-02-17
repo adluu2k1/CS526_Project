@@ -66,6 +66,9 @@
 	  <MauiXaml Update="UserControls\DayOfWeekButtonView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="UserControls\EditTaskPage.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="UserControls\TaskView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

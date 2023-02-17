@@ -17,20 +17,26 @@
                 <RoundRectangle CornerRadius="10"/>
             </Border.StrokeShape>
 
-            <VerticalStackLayout Margin="10,10,10,10">
+            <Grid Margin="10,10,10,10">
 
-                <Grid Margin="0,0,0,5">
-                    <Label x:Name="labelName" Grid.Column="0" FontAttributes="Bold" HorizontalOptions="Start"/>
-                    <Label x:Name="labelDeadline" Grid.Column="1" FontAttributes="Bold" HorizontalOptions="End"/>
-                </Grid>
+                <Button x:Name="btnTaskView" BackgroundColor="Transparent" Clicked="btnTaskView_Clicked"/>
 
-                <Label x:Name="labelDescription" LineBreakMode="NoWrap" Margin="0,0,0,5"/>
+                <VerticalStackLayout>
 
-                <ScrollView>
-                    <HorizontalStackLayout x:Name="CategoriesWrapper" Margin="0,0,0,5"/>
-                </ScrollView>
+                    <Grid Margin="0,0,0,5">
+                        <Label x:Name="labelName" Grid.Column="0" FontAttributes="Bold" HorizontalOptions="Start"/>
+                        <Label x:Name="labelDeadline" Grid.Column="1" FontAttributes="Bold" HorizontalOptions="End"/>
+                    </Grid>
 
-            </VerticalStackLayout>
+                    <Label x:Name="labelDescription" LineBreakMode="NoWrap" Margin="0,0,0,5"/>
+
+                    <ScrollView>
+                        <HorizontalStackLayout x:Name="CategoriesWrapper" Margin="0,0,0,5"/>
+                    </ScrollView>
+
+                </VerticalStackLayout>
+
+            </Grid>
         </Border>
 
     </Grid>
