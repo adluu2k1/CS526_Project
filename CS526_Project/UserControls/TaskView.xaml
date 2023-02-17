@@ -19,7 +19,7 @@
 
             <Grid Margin="10,10,10,10">
 
-                <Button x:Name="btnTaskView" BackgroundColor="Transparent" Clicked="btnTaskView_Clicked"/>
+                <Button x:Name="btnTaskView" BackgroundColor="Transparent" ZIndex="100" Clicked="btnTaskView_Clicked"/>
 
                 <VerticalStackLayout>
 

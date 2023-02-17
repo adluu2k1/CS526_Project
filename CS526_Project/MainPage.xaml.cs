@@ -21,6 +21,8 @@ public partial class MainPage : ContentPage
 		var ListAllTask = App.Database.GetAllTask().OrderBy(p => p.DeadlineTime).ToList();
 		foreach (var task in ListAllTask) 
 		{
+			if (task.DeadlineTime == DateTime.MaxValue && task.IsDone)
+				break;
 			if (DateTime.Compare(date, task.DeadlineTime) <= 0)
 			{
                 TaskViewWrapper.Add(new TaskView(task, TaskViewWrapper));
@@ -49,7 +51,3 @@ public partial class MainPage : ContentPage
 
     }
 }
-
-// Problem:
-//	TaskViewWrapper need scroll
-//	Deadline MaxValue need to be hidden

@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CS526_Project.UserControls.DayOfWeekButtonView">
 
-    <Grid Margin="5,0" WidthRequest="30" HeightRequest="80">
+    <Grid Margin="5,0" WidthRequest="30" HeightRequest="60">
 
         <Grid.RowDefinitions>
             <RowDefinition Height="2*"/>
