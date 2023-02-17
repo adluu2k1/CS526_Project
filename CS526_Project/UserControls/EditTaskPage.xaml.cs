@@ -362,6 +362,7 @@ public partial class EditTaskPage : ContentPage
         }
 
         App.Database.UpdateTask(task);
+        App.mainPage.RefreshTaskViewWrapper();
         await Navigation.PopAsync();
     }
 

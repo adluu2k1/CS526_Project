@@ -311,6 +311,7 @@ public partial class AddTaskPage : ContentPage
         }
 
         App.Database.AddTask(task);
+        App.mainPage.RefreshTaskViewWrapper();
         await Navigation.PopAsync();
     }
 

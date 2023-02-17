@@ -28,9 +28,15 @@ public partial class MainPage : ContentPage
         }
 	}
 
+	public void RefreshTaskViewWrapper()
+	{
+		TaskViewWrapper.Children.Clear();
+		ShowTask(App.mainPage_SelectedDate);
+	}
+
     private void btnSearch_Clicked(object sender, EventArgs e)
     {
-
+		
     }
 
     private async void btnAdd_Clicked(object sender, EventArgs e)
