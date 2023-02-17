@@ -75,6 +75,11 @@ public partial class TestPage : ContentPage
 
     private void Button_Clicked(object sender, EventArgs e)
     {
-        App.Database.DeleteAllTask();
+        App.Database.DeleteAllTasks();
+    }
+
+    private void btnQuery_Clicked(object sender, EventArgs e)
+    {
+
     }
 }

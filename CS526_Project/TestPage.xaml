@@ -11,6 +11,8 @@
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
             <RowDefinition Height="10*" />
         </Grid.RowDefinitions>
 
@@ -25,11 +27,14 @@
             Grid.Row="2"
             Clicked="Button_Clicked" />
 
+        <Button x:Name="btnQuery" Text="Query" Grid.Row="3" Clicked="btnQuery_Clicked"/>
+        <Label x:Name="txtResult" Grid.Row="4"/>
+
         <Button Text="Get All People"
-            Grid.Row="3"
+            Grid.Row="5"
             Clicked="OnGetButtonClicked" />
 
-        <Grid x:Name="peopleList" Grid.Row="4">
+        <Grid x:Name="peopleList" Grid.Row="6">
 
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
