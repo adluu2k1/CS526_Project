@@ -1,5 +1,6 @@
 ﻿using CS526_Project.Model;
 using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace CS526_Project.UserControls;
 
@@ -362,12 +363,20 @@ public partial class EditTaskPage : ContentPage
         }
 
         App.Database.UpdateTask(task);
+        App.Database.DeleteObsoleteCategory();
         App.mainPage.RefreshTaskViewWrapper();
         await Navigation.PopAsync();
     }
 
-    private void btnDeleteTask_Clicked(object sender, EventArgs e)
+    private async void btnDeleteTask_Clicked(object sender, EventArgs e)
     {
-
+        bool confirm = await DisplayAlert("Xóa nhiệm vụ?", "Bạn có muốn xóa nhiệm vụ này không?", "Yes", "No");
+        if (confirm)
+        {
+            App.Database.DeleteTask(App.Database.FindTask(taskId));
+            App.Database.DeleteObsoleteCategory();
+            App.mainPage.RefreshTaskViewWrapper();
+            await Navigation.PopAsync();
+        }
     }
 }

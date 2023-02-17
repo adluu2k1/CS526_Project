@@ -27,8 +27,6 @@ namespace CS526_Project.Model
             if (task == null) throw new Exception("task is null");
 
             db_connection.Insert(task, typeof(ToDo_Task));
-
-            
         }
 
         public void AddCategory(Category category)
@@ -115,6 +113,13 @@ namespace CS526_Project.Model
             return id;
         }
 
+        public ToDo_Task FindTask(int id)
+        {
+            if (db_connection == null)
+                Init();
+            return db_connection.Find<ToDo_Task>(id);
+        }
+
         public Category FindCategory(int id)
         {
             if (db_connection == null)
@@ -134,6 +139,44 @@ namespace CS526_Project.Model
                 }
             }
             return null;
+        }
+
+        public void DeleteTask(ToDo_Task task)
+        {
+            if (db_connection == null)
+                Init();
+
+            db_connection.Delete(task);
+        }
+
+        public void DeleteCategory(Category category)
+        {
+            if (db_connection == null)
+                Init();
+
+            db_connection.Delete(category);
+        }
+
+        public void DeleteObsoleteCategory()
+        {
+            if (db_connection == null)
+                Init();
+
+            foreach (var category in GetAllCategories())
+            {
+                bool IsCategoryInAnyTask = false;
+                foreach (var task in GetAllTask())
+                {
+                    if (task.CategoryId.Contains(category.Id))
+                    {
+                        IsCategoryInAnyTask = true; break;
+                    }
+                }
+                if (!IsCategoryInAnyTask)
+                {
+                    DeleteCategory(category);
+                }
+            }
         }
 
         public void DeleteAllTasks()
