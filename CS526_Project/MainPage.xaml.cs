@@ -19,7 +19,6 @@ public partial class MainPage : ContentPage
 	public void ShowTask(DateTime date)
 	{
 		var SortedTask = App.Database.GetAllTask().OrderBy(p => p.DeadlineTime).ToList();
-		// TODO: filter by Due Date (Deadlinetime)
 		foreach (var task in SortedTask) 
 		{
             if (DateTime.Compare(date, task.DeadlineTime) <=0)
