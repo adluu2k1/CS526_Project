@@ -18,12 +18,10 @@ public partial class MainPage : ContentPage
 
 	public void ShowTask(DateTime date)
 	{
-		var ListAllTask = App.Database.GetAllTask();
-
-		// TODO: filter by Due Date (Deadlinetime)
+		var ListAllTask = App.Database.GetAllTask().OrderBy(p => p.DeadlineTime).ToList();
 		foreach (var task in ListAllTask) 
 		{
-			if (DateTime.Compare(DateTime.Now, task.DeadlineTime) <=0);
+			if (DateTime.Compare(DateTime.Now, task.DeadlineTime) <= 0)
 			{
                 TaskViewWrapper.Add(new TaskView(task, TaskViewWrapper));
             }
