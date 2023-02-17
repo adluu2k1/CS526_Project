@@ -33,6 +33,10 @@
 
         <Label Text="TÊN NHÃN"
                FontSize="Caption" FontAttributes="Bold" TextColor="{DynamicResource Primary}"/>
+        <Label x:Name="labelError"
+               FontSize="Caption"
+               TextColor="Red"
+               IsVisible="False"/>
         <Entry x:Name="txtName"
                 Placeholder="Tên nhãn"
                 FontSize="Caption"

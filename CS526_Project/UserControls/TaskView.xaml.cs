@@ -16,19 +16,6 @@ public partial class TaskView : ContentView
 		labelDeadline.Text = task.DeadlineTime.ToString();
 		labelDescription.Text = task.Description;
 
-		if (parent.Count % 3 == 0)
-		{
-            TaskDetailView.BackgroundColor = App.PrimaryColor;
-		}
-		else if (parent.Count % 3 == 1)
-		{
-            TaskDetailView.BackgroundColor = App.SecondaryColor;
-		}
-		else
-		{
-            TaskDetailView.BackgroundColor = App.TertiaryColor;
-		}
-
 		if (task.IsDone)
 		{
 			checkTaskDone.IsChecked = true;
@@ -46,11 +33,19 @@ public partial class TaskView : ContentView
     {
 		if (e.Value == true)
 		{
+			task.IsDone = true;
+			task.EndTime = DateTime.Now;
+			App.Database.UpdateTask(task);
+
 			TaskDetailView.Opacity = 0.3;
 		}
 		else
 		{
-			TaskDetailView.Opacity = 1;
+			task.IsDone = false;
+			task.EndTime = DateTime.MaxValue;
+            App.Database.UpdateTask(task);
+
+            TaskDetailView.Opacity = 1;
 		}
     }
 
@@ -59,11 +54,11 @@ public partial class TaskView : ContentView
 		foreach (var categoryId in task.CategoryId)
 		{
 			var category = App.Database.FindCategory(categoryId);
-            if (category != null)
+			if (category != null)
 			{
 				var labelCategory = new Label() { Text = category.Name, TextColor = Color.FromArgb(category.Color_Hex) };
 				var labelSeparator = new Label() { Text = "|", Margin = new Thickness(10, 0) };
-				
+
 				CategoriesWrapper.Add(labelCategory);
 				CategoriesWrapper.Add(labelSeparator);
 			}

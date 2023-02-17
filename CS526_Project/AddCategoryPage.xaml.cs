@@ -1,4 +1,6 @@
-﻿namespace CS526_Project;
+﻿using CS526_Project.Model;
+
+namespace CS526_Project;
 
 public partial class AddCategoryPage : ContentPage
 {
@@ -31,6 +33,13 @@ public partial class AddCategoryPage : ContentPage
             txtName.Text = string.Empty;
             txtName.Placeholder = "* Ô này không thể để trống";
             txtName.PlaceholderColor = Colors.Red;
+            return;
+        }
+
+        if (App.Database.IsCategoryNameTaken(txtName.Text))
+        {
+            labelError.Text = "* Tên nhãn đã tồn tại. Vui lòng đặt tên khác.";
+            labelError.IsVisible = true;
             return;
         }
 

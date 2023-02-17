@@ -41,6 +41,16 @@ namespace CS526_Project.Model
             db_connection.Insert(category, typeof(Category));
         }
 
+        public void UpdateTask(ToDo_Task task)
+        {
+            if (db_connection == null)
+                Init();
+
+            if (task == null) return;
+
+            db_connection.Update(task, typeof(ToDo_Task));
+        }
+
         public List<ToDo_Task> GetAllTask()
         {
             if (db_connection == null)
@@ -67,10 +77,41 @@ namespace CS526_Project.Model
             return false;
         }
 
+        public bool IsCategoryIdTaken(int id)
+        {
+            if (db_connection == null)
+                Init();
+
+            foreach (var category in GetAllCategories())
+            {
+                if (category.Id == id) return true;
+            }
+            return false;
+        }
+
+        public bool IsCategoryNameTaken(string name)
+        {
+            foreach (Category category in GetAllCategories())
+            {
+                if (category.Name == name)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public int GenerateRandomTaskId()
         {
             int id = new Random().Next(1, short.MaxValue);
             if (IsTaskIdTaken(id)) id = GenerateRandomTaskId();
+            return id;
+        }
+
+        public int GenerateRandomCategoryId()
+        {
+            int id = new Random().Next(1, short.MaxValue);
+            if (IsCategoryIdTaken(id)) id = GenerateRandomCategoryId();
             return id;
         }
 
@@ -79,6 +120,20 @@ namespace CS526_Project.Model
             if (db_connection == null)
                 Init();
             return db_connection.Find<Category>(id);
+        }
+
+        public Category FindCategory(string name)
+        {
+            if (db_connection == null)
+                Init();
+            foreach (var category in GetAllCategories())
+            {
+                if (category.Name == name)
+                {
+                    return category;
+                }
+            }
+            return null;
         }
 
         public void DeleteAllTasks()

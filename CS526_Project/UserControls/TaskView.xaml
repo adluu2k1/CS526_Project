@@ -12,7 +12,7 @@
 
         <CheckBox x:Name="checkTaskDone" Grid.Column="0" CheckedChanged="checkTaskDone_CheckedChanged"/>
 
-        <Border x:Name="TaskDetailView" Grid.Column="1" StrokeThickness="0">
+        <Border x:Name="TaskDetailView" Grid.Column="1" StrokeThickness="0" BackgroundColor="{DynamicResource Secondary}">
             <Border.StrokeShape>
                 <RoundRectangle CornerRadius="10"/>
             </Border.StrokeShape>

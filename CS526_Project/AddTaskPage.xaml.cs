@@ -1,5 +1,7 @@
 ﻿using CS526_Project.Model;
+using Java.Sql;
 using Microsoft.Maui.Graphics.Text;
+using System.Collections.Generic;
 using System.Text.Json;
 
 namespace CS526_Project;
@@ -11,16 +13,16 @@ public partial class AddTaskPage : ContentPage
     List<object> listBtnRemoveNoti = new List<object>();
 
     List<HorizontalStackLayout> listCategoryEntryWrapper = new List<HorizontalStackLayout>();
-    List<string> listCategoriesNameInDb = new List<string>();
+    List<string> listCategoriesName = new List<string>();
     List<object> listBtnRemoveCategory = new List<object>();
 
     public AddTaskPage()
     {
         foreach (var category in App.Database.GetAllCategories())
         {
-            listCategoriesNameInDb.Add(category.Name);
+            listCategoriesName.Add(category.Name);
         }
-        listCategoriesNameInDb.Add("Thêm nhãn");
+        listCategoriesName.Add("Thêm nhãn");
 
         InitializeComponent();
 
@@ -95,7 +97,7 @@ public partial class AddTaskPage : ContentPage
     {
         var CategoryPicker = new Picker
         {
-            ItemsSource = listCategoriesNameInDb,
+            ItemsSource = listCategoriesName,
             Title = "Select a category",
             Margin = new Thickness(0, 0, 30, 0)
         };
@@ -128,16 +130,38 @@ public partial class AddTaskPage : ContentPage
 
     public void OnAddCategoryPageReturn(string category_name, Color category_color, int caller_IndexInWraper)
     {
-        listCategoriesNameInDb[listCategoriesNameInDb.Count - 1] = category_name;
-        listCategoriesNameInDb.Add("Thêm nhãn");
-        listCategoryEntryWrapper[caller_IndexInWraper].Children[0] = new Picker()
+        listCategoriesName[listCategoriesName.Count - 1] = category_name;
+        listCategoriesName.Add("Thêm nhãn");
+
+        for (int i = 0; i < listCategoryEntryWrapper.Count; i++)
         {
-            ItemsSource = listCategoriesNameInDb,
-            Title = "Select a category",
-            Margin = new Thickness(0, 0, 30, 0),
-            SelectedIndex = listCategoriesNameInDb.Count - 2,
-            TextColor = category_color
-        };
+            if (i == caller_IndexInWraper)
+            {
+                listCategoryEntryWrapper[i].Children[0] = new Picker()
+                {
+                    ItemsSource = listCategoriesName,
+                    Title = "Select a category",
+                    Margin = new Thickness(0, 0, 30, 0),
+                    SelectedIndex = listCategoriesName.Count - 2,
+                    TextColor = category_color
+                };
+            }
+            else
+            {
+                var picker = listCategoryEntryWrapper[i].Children[0] as Picker;
+                int picker_selectedIndex = picker.SelectedIndex;
+                Color picker_txtcolor = picker.TextColor;
+
+                listCategoryEntryWrapper[i].Children[0] = new Picker()
+                {
+                    ItemsSource = listCategoriesName,
+                    Title = "Select a category",
+                    Margin = new Thickness(0, 0, 30, 0),
+                    SelectedIndex = picker_selectedIndex,
+                    TextColor = picker_txtcolor
+                };
+            }
+        }
     }
 
     private void btnAddNotiTime_Clicked(object sender, EventArgs e)
@@ -183,7 +207,7 @@ public partial class AddTaskPage : ContentPage
         var picker = sender as Picker;
 
         if (picker.SelectedIndex == -1) return;
-        if (picker.SelectedIndex == listCategoriesNameInDb.Count - 1)
+        if (picker.SelectedIndex == listCategoriesName.Count - 1)
         {
             var picker_index = -1;
             for (int i = 0; i < listCategoryEntryWrapper.Count; i++)
@@ -221,8 +245,9 @@ public partial class AddTaskPage : ContentPage
         }
     }
 
-    private void btnAddTask_Clicked(object sender, EventArgs e)
+    private async void btnAddTask_Clicked(object sender, EventArgs e)
     {
+        // Check if task name is invalid
         if (!IsNameValid())
         {
             txtName.Text = string.Empty;
@@ -246,17 +271,48 @@ public partial class AddTaskPage : ContentPage
             task.DeadlineTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
         }
 
-        List<DateTime> list_NotiTime = new List<DateTime>();
-        for (int i = 0; i < listNotiDatePickers.Count; i++)
+        if (listNotiDatePickers.Count != 0)
         {
-            var date = listNotiDatePickers[i].Date;
-            var time = listNotiTimePickers[i].Time;
-            list_NotiTime.Add(new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds));
+            List<DateTime> list_NotiTime = new List<DateTime>();
+            for (int i = 0; i < listNotiDatePickers.Count; i++)
+            {
+                var date = listNotiDatePickers[i].Date;
+                var time = listNotiTimePickers[i].Time;
+                list_NotiTime.Add(new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds));
+            }
+            if (list_NotiTime.Count != 0)
+            {
+                task.str_NotificationTime = JsonSerializer.Serialize(list_NotiTime, typeof(List<DateTime>));
+            }
         }
-        if (list_NotiTime.Count != 0)
+
+        if (listCategoryEntryWrapper.Count != 0)
         {
-            task.str_NotificationTime = JsonSerializer.Serialize(list_NotiTime, typeof(List<DateTime>));
+            List<int> categoryId = new List<int>();
+            foreach (var wrapper in listCategoryEntryWrapper)
+            {
+                var picker = wrapper.Children[0] as Picker;
+                if (!App.Database.IsCategoryNameTaken(picker.SelectedItem as string))
+                {
+                    App.Database.AddCategory(new Category()
+                    {
+                        Id = App.Database.GenerateRandomCategoryId(),
+                        Name = picker.SelectedItem as string,
+                        Color_Hex = picker.TextColor.ToHex()
+                    });
+                }
+                var category = App.Database.FindCategory(picker.SelectedItem as string);
+                if (category != null)
+                {
+                    categoryId.Add(category.Id);
+                }
+            }
+
+            task.str_CategoryId = JsonSerializer.Serialize(categoryId, typeof(List<int>));
         }
+
+        App.Database.AddTask(task);
+        await Navigation.PopAsync();
     }
 
     private bool IsNameValid()
