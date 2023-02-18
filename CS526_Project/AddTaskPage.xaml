@@ -45,7 +45,8 @@
             <RowDefinition Height="2*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Row="0"
+        <Label x:Name="labelNewTask"
+               Grid.Row="0"
                Text="NHIỆM VỤ MỚI"
                FontSize="Body" FontAttributes="Bold"
                HorizontalOptions="Center"/>
@@ -53,7 +54,8 @@
         <ScrollView Grid.Row="1" HorizontalOptions="Fill" VerticalScrollBarVisibility="Never">
             <VerticalStackLayout x:Name="ContentWrapper" Margin="30,0">
 
-                <Label Text="TÊN NHIỆM VỤ"
+                <Label x:Name="labelTaskName" 
+                   Text="TÊN NHIỆM VỤ"
                    Style="{DynamicResource EntryLabelStyle}"/>
                 <Entry x:Name="txtName"
                    Placeholder="Tên nhiệm vụ"
@@ -63,31 +65,38 @@
                    Margin="0,0,0,30"/>
 
                 <HorizontalStackLayout>
-                    <Label Text="HẠN CHÓT"
+                    <Label x:Name="labelDeadline" 
+                       Text="HẠN CHÓT"
                        Style="{DynamicResource EntryLabelStyle}"
                        VerticalOptions="Center"
                        Margin="0,0,30,0"/>
                     <CheckBox x:Name="checkNoDeadline" VerticalOptions="Center" CheckedChanged="checkNoDeadline_CheckedChanged"/>
-                    <Label Text="Không có hạn" FontSize="Caption" VerticalOptions="Center"/>
+                    <Label x:Name="labelNoDeadLine"
+                       Text="Không có hạn" FontSize="Caption" VerticalOptions="Center"/>
                 </HorizontalStackLayout>
                 <HorizontalStackLayout x:Name="DeadlineSettingWrapper" Margin="0,0,0,30">
-                    <Label Text="NGÀY" FontSize="Caption" FontAttributes="Bold" VerticalOptions="Center" Margin="0,0,10,0"/>
+                    <Label x:Name = "labelDay" 
+                       Text="NGÀY" FontSize="Caption" FontAttributes="Bold" VerticalOptions="Center" Margin="0,0,10,0"/>
                     <DatePicker x:Name="dateDeadline" Format="d" Margin="0,0,30,0"/>
-                    <Label Text="GIỜ" FontSize="Caption" FontAttributes="Bold" VerticalOptions="Center" Margin="0,0,10,0"/>
+                    <Label x:Name ="labelHour" 
+                       Text="GIỜ" FontSize="Caption" FontAttributes="Bold" VerticalOptions="Center" Margin="0,0,10,0"/>
                     <TimePicker x:Name="timeDeadline" Format="t"/>
                 </HorizontalStackLayout>
 
-                <Label Text="NHẮC NHỞ"
+                <Label x:Name="labelRemind" 
+                   Text="NHẮC NHỞ"
                    Style="{DynamicResource EntryLabelStyle}"
                    Margin="0,0,0,10"/>
                 <VerticalStackLayout x:Name="NotiTimeWrapper" Margin="0,0,0,30"/>
 
-                <Label Text="NHÃN"
+                <Label x:Name="labelLabel" 
+                   Text="NHÃN"
                    Style="{DynamicResource EntryLabelStyle}"
                    Margin="0,0,0,10"/>
                 <VerticalStackLayout x:Name="CategoriesWrapper" Margin="0,0,0,30"/>
 
-                <Label Text="MÔ TẢ"
+                <Label x:Name="labelDescription"
+                   Text="MÔ TẢ"
                    Style="{DynamicResource EntryLabelStyle}"/>
                 <Editor x:Name="txtDescription"
                     Placeholder="Mô tả"

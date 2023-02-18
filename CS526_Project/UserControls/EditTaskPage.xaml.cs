@@ -26,11 +26,28 @@ public partial class EditTaskPage : ContentPage
         {
             listCategoriesName.Add(category.Name);
         }
-        listCategoriesName.Add("Thêm nhãn");
+        listCategoriesName.Add(App.Setting.IsVietnamese ? "Thêm nhãn" : "Add tag");
 
         ImportTaskData(task);
         create_btnAddNotiEntry();
         create_btnAddCategory();
+
+        if (!App.Setting.IsVietnamese)
+        {
+            labelTaskDetail.Text = "TASK DETAIL";
+            labelTaskName.Text = "TASK NAME";
+            txtName.Placeholder = "Task Name";
+            labelDeadline.Text = "DEADLINE";
+            labelNoDeadline.Text = "NO DEADLINE";
+            labelDay.Text = "DAY";
+            labelHour.Text = "HOUR";
+            labelRemind.Text = "REMIND";
+            labelLabel.Text = "LABEL";
+            labelDescription.Text = "DESCRIPTON";
+            txtDescription.Placeholder = "Description";
+            btnSaveTask.Text = "SAVE CHANGES";
+            btnDeleteTask.Text = "DELETE";
+        }
     }
 
     private void ImportTaskData(ToDo_Task task)
@@ -83,7 +100,7 @@ public partial class EditTaskPage : ContentPage
         var labelDate = new Label()
         {
             Style = (Style)this.Resources["DateTimeLabelStyle"],
-            Text = "NGÀY"
+            Text = App.Setting.IsVietnamese ? "NGÀY" : "DAY"
         };
         var dateNoti = new DatePicker()
         {
@@ -93,7 +110,7 @@ public partial class EditTaskPage : ContentPage
         var labelTime = new Label()
         {
             Style = (Style)this.Resources["DateTimeLabelStyle"],
-            Text = "GIỜ"
+            Text = App.Setting.IsVietnamese ? "GIỜ" : "HOUR"
         };
         var timeNoti = new TimePicker()
         {
@@ -174,7 +191,7 @@ public partial class EditTaskPage : ContentPage
     public void OnAddCategoryPageReturn(string category_name, Color category_color, int caller_IndexInWraper)
     {
         listCategoriesName[listCategoriesName.Count - 1] = category_name;
-        listCategoriesName.Add("Thêm nhãn");
+        listCategoriesName.Add(App.Setting.IsVietnamese ? "Thêm nhãn": "Add tag");
 
         for (int i = 0; i < listCategoryEntryWrapper.Count; i++)
         {
@@ -304,7 +321,7 @@ public partial class EditTaskPage : ContentPage
         if (!IsNameValid())
         {
             txtName.Text = string.Empty;
-            txtName.Placeholder = "* Ô này không thể để trống";
+            txtName.Placeholder = App.Setting.IsVietnamese ? "* Ô này không thể để trống" : "* This box can't be blank";
             txtName.PlaceholderColor = Colors.Red;
             return;
         }
@@ -428,7 +445,7 @@ public partial class EditTaskPage : ContentPage
 
     private async void btnDeleteTask_Clicked(object sender, EventArgs e)
     {
-        bool confirm = await DisplayAlert("Xóa nhiệm vụ?", "Bạn có muốn xóa nhiệm vụ này không?", "Yes", "No");
+        bool confirm = await DisplayAlert(App.Setting.IsVietnamese ? "Xóa nhiệm vụ?" : "Remove this task?", App.Setting.IsVietnamese ? "Bạn có muốn xóa nhiệm vụ này không?" : "Do you want to remove this task?", "Yes", "No");
         if (confirm)
         {
             App.Database.DeleteTask(App.Database.FindTask(taskId));
