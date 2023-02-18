@@ -433,7 +433,19 @@ public partial class EditTaskPage : ContentPage
         {
             App.Database.DeleteTask(App.Database.FindTask(taskId));
             App.Database.DeleteObsoleteCategory();
-            App.mainPage.RefreshTaskViewWrapper();
+            for (int i = 0; i < Navigation.NavigationStack.Count - 1; i++)
+            {
+                var previous_page = Navigation.NavigationStack[i];
+                if (previous_page.GetType() == typeof(MainPage))
+                {
+                    App.mainPage.RefreshTaskViewWrapper();
+                }
+                else
+                {
+                    SearchPage page = previous_page as SearchPage;
+                    page.txtSearch_TextChanged(null, null);
+                }
+            }
             await Navigation.PopAsync();
         }
     }
