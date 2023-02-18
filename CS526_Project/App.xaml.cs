@@ -1,7 +1,5 @@
 ﻿using CS526_Project.Model;
-using System.Text.Json;
 using Plugin.LocalNotification;
-using static Android.Provider.ContactsContract.CommonDataKinds;
 
 namespace CS526_Project;
 
@@ -29,9 +27,14 @@ public partial class App : Application
 
         mainPage = new();
         MainPage = new NavigationPage(mainPage);
-        
-	}
+    }
 
-
+    public async Task RequestNotificationPermission()
+    {
+        if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
+        {
+            await LocalNotificationCenter.Current.RequestNotificationPermission();
+        }
+    }
 
 }

@@ -1,5 +1,6 @@
 ﻿using CS526_Project.Model;
 using Microsoft.Maui.Graphics.Text;
+using Plugin.LocalNotification;
 using System.Collections.Generic;
 using System.Text.Json;
 
@@ -272,16 +273,22 @@ public partial class AddTaskPage : ContentPage
 
         if (listNotiDatePickers.Count != 0)
         {
-            List<DateTime> list_NotiTime = new List<DateTime>();
+            List<int> notificationId = new List<int>();
             for (int i = 0; i < listNotiDatePickers.Count; i++)
             {
                 var date = listNotiDatePickers[i].Date;
                 var time = listNotiTimePickers[i].Time;
-                list_NotiTime.Add(new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds));
+                var notification = new Notification()
+                {
+                    Id = App.Database.GenerateRandomNotificationId(),
+                    time = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds)
+                };
+                App.Database.AddNotification(notification);
+                notificationId.Add(notification.Id);
             }
-            if (list_NotiTime.Count != 0)
+            if (notificationId.Count != 0)
             {
-                task.str_NotificationTime = JsonSerializer.Serialize(list_NotiTime, typeof(List<DateTime>));
+                task.str_NotificationId = JsonSerializer.Serialize(notificationId, typeof(List<int>));
             }
         }
 
@@ -312,6 +319,9 @@ public partial class AddTaskPage : ContentPage
 
         App.Database.AddTask(task);
         App.Database.DeleteObsoleteCategory();
+        App.Database.DeleteObsoleteNotification();
+
+        await RegisterAllNotification(task);
         App.mainPage.RefreshTaskViewWrapper();
         await Navigation.PopAsync();
     }
@@ -324,5 +334,39 @@ public partial class AddTaskPage : ContentPage
         }
 
         return true;
+    }
+
+    private async Task RegisterAllNotification(ToDo_Task task)
+    {
+        if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
+        {
+            await LocalNotificationCenter.Current.RequestNotificationPermission();
+        }
+
+        foreach (var notification in App.Database.GetAllNotifications(task))
+        {
+            var notireq = new NotificationRequest()
+            {
+                NotificationId = notification.Id,
+                Title = task.Name,
+                Schedule =
+                {
+                    NotifyTime = notification.time
+                }
+            };
+            var time_remaining = task.DeadlineTime - notification.time;
+            if (App.Setting.IsVietnamese)
+            {
+                if (time_remaining.TotalDays > 1) notireq.Description = $"Thời gian còn lại: {time_remaining.Days.ToString()} ngày";
+                else notireq.Description = $"Thời gian còn lại: {time_remaining.ToString()}";
+            }
+            else
+            {
+                if (time_remaining.TotalDays > 1) notireq.Description = $"Time remaining: {time_remaining.Days.ToString()} days";
+                else notireq.Description = $"Time remaining: {time_remaining.ToString()}";
+            }
+
+            await LocalNotificationCenter.Current.Show(notireq);
+        }
     }
 }

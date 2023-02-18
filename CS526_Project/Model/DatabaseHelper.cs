@@ -17,6 +17,7 @@ namespace CS526_Project.Model
             db_connection = new SQLiteConnection(db_filepath);
             db_connection.CreateTable<ToDo_Task>();
             db_connection.CreateTable<Category>();
+            db_connection.CreateTable<Notification>();
         }
 
         public void AddTask(ToDo_Task task)
@@ -37,6 +38,16 @@ namespace CS526_Project.Model
             if (category == null) throw new Exception("category is null");
 
             db_connection.Insert(category, typeof(Category));
+        }
+
+        public void AddNotification(Notification notification)
+        {
+            if (db_connection == null)
+                Init();
+
+            if (notification == null) throw new Exception("notification is null");
+
+            db_connection.Insert(notification, typeof(Notification));
         }
 
         public void UpdateTask(ToDo_Task task)
@@ -63,6 +74,24 @@ namespace CS526_Project.Model
             return db_connection.Table<Category>().ToList();
         }
 
+        public List<Notification> GetAllNotifications()
+        {
+            if (db_connection == null)
+                Init();
+            return db_connection.Table<Notification>().ToList();
+        }
+
+        public List<Notification> GetAllNotifications(ToDo_Task task)
+        {
+            var listNoti = new List<Notification>();
+            foreach (var id in task.NotificationId)
+            {
+                listNoti.Add(FindNotification(id));
+            }
+
+            return listNoti;
+        }
+
         public bool IsTaskIdTaken(int id)
         {
             if (db_connection == null)
@@ -83,6 +112,18 @@ namespace CS526_Project.Model
             foreach (var category in GetAllCategories())
             {
                 if (category.Id == id) return true;
+            }
+            return false;
+        }
+
+        public bool IsNotificationIdTaken(int id)
+        {
+            if (db_connection == null)
+                Init();
+
+            foreach (var notification in GetAllNotifications())
+            {
+                if (notification.Id == id) return true;
             }
             return false;
         }
@@ -122,6 +163,13 @@ namespace CS526_Project.Model
             return id;
         }
 
+        public int GenerateRandomNotificationId()
+        {
+            int id = new Random().Next(1, short.MaxValue);
+            if (IsNotificationIdTaken(id)) id = GenerateRandomNotificationId();
+            return id;
+        }
+
         public ToDo_Task FindTask(int id)
         {
             if (db_connection == null)
@@ -150,6 +198,14 @@ namespace CS526_Project.Model
             return null;
         }
 
+        public Notification FindNotification(int id)
+        {
+            if (db_connection == null)
+                Init();
+            var res = db_connection.Find<Notification>(id);
+            return res;
+        }
+
         public void DeleteTask(ToDo_Task task)
         {
             if (db_connection == null)
@@ -164,6 +220,14 @@ namespace CS526_Project.Model
                 Init();
 
             db_connection.Delete(category);
+        }
+
+        public void DeleteNotification(Notification notification)
+        {
+            if (db_connection == null)
+                Init();
+
+            db_connection.Delete(notification);
         }
 
         public void DeleteObsoleteCategory()
@@ -184,6 +248,28 @@ namespace CS526_Project.Model
                 if (!IsCategoryInAnyTask)
                 {
                     DeleteCategory(category);
+                }
+            }
+        }
+
+        public void DeleteObsoleteNotification()
+        {
+            if (db_connection == null)
+                Init();
+
+            foreach (var notification in GetAllNotifications())
+            {
+                bool IsNotificationInAnyTask = false;
+                foreach (var task in GetAllTask())
+                {
+                    if (task.NotificationId.Contains(notification.Id))
+                    {
+                        IsNotificationInAnyTask = true; break;
+                    }
+                }
+                if (!IsNotificationInAnyTask)
+                {
+                    DeleteNotification(notification);
                 }
             }
         }

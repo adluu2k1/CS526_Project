@@ -15,7 +15,6 @@ namespace CS526_Project.Model
         public string Description { get; set; } = string.Empty;
         public DateTime AddTime { get; set; } = DateTime.Now;
         public DateTime DeadlineTime { get; set; } = DateTime.MaxValue;     // Equal to no deadline
-        public DateTime EndTime { get; set; } = DateTime.MaxValue;
         public bool IsDone { get; set; } = false;
 
         public string str_CategoryId { get; set; } = "[]";
@@ -23,15 +22,13 @@ namespace CS526_Project.Model
         public List<int> CategoryId
         {
             get { return JsonSerializer.Deserialize(str_CategoryId, typeof(List<int>)) as List<int>; }
-            //set { str_CategoryId = JsonSerializer.Serialize(value, typeof(List<int>)); }
         }
 
-        public string str_NotificationTime { get; set; } = "[]";
+        public string str_NotificationId { get; set; } = "[]";
         [SQLite.Ignore]
-        public List<DateTime> NotificationTime
+        public List<int> NotificationId
         {
-            get { return JsonSerializer.Deserialize(str_NotificationTime, typeof(List<DateTime>)) as List<DateTime>; }
-            //set { str_NotificationTime = JsonSerializer.Serialize(value, typeof(List<DateTime>)); }
+            get { return JsonSerializer.Deserialize(str_NotificationId, typeof(List<int>)) as List<int>; }
         }
     }
 }

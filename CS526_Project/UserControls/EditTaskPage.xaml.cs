@@ -1,4 +1,5 @@
 ﻿using CS526_Project.Model;
+using Plugin.LocalNotification;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -57,16 +58,17 @@ public partial class EditTaskPage : ContentPage
             picker.TextColor = Color.FromArgb(category.Color_Hex);
         }
 
-        for (int i = 0; i < task.NotificationTime.Count; i++)
+        for (int i = 0; i < task.NotificationId.Count; i++)
         {
             create_NotiTime_entry();
 
-            listNotiDatePickers[i].Date = task.NotificationTime[i].Date;
+            var dateTimeNoti = App.Database.FindNotification(task.NotificationId[i]).time;
+            listNotiDatePickers[i].Date = dateTimeNoti.Date;
             listNotiTimePickers[i].Time = new TimeSpan
                 (
-                    task.NotificationTime[i].Hour,
-                    task.NotificationTime[i].Minute,
-                    task.NotificationTime[i].Second
+                    dateTimeNoti.Hour,
+                    dateTimeNoti.Minute,
+                    dateTimeNoti.Second
                 );
         }
     }
@@ -324,16 +326,22 @@ public partial class EditTaskPage : ContentPage
 
         if (listNotiDatePickers.Count != 0)
         {
-            List<DateTime> list_NotiTime = new List<DateTime>();
+            List<int> notificationId = new List<int>();
             for (int i = 0; i < listNotiDatePickers.Count; i++)
             {
                 var date = listNotiDatePickers[i].Date;
                 var time = listNotiTimePickers[i].Time;
-                list_NotiTime.Add(new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds));
+                var notification = new Notification()
+                {
+                    Id = App.Database.GenerateRandomNotificationId(),
+                    time = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds)
+                };
+                App.Database.AddNotification(notification);
+                notificationId.Add(notification.Id);
             }
-            if (list_NotiTime.Count != 0)
+            if (notificationId.Count != 0)
             {
-                task.str_NotificationTime = JsonSerializer.Serialize(list_NotiTime, typeof(List<DateTime>));
+                task.str_NotificationId = JsonSerializer.Serialize(notificationId, typeof(List<int>));
             }
         }
 
@@ -364,6 +372,8 @@ public partial class EditTaskPage : ContentPage
 
         App.Database.UpdateTask(task);
         App.Database.DeleteObsoleteCategory();
+        App.Database.DeleteObsoleteNotification();
+        await RegisterAllNotification(task);
 
         for (int i = 0; i < Navigation.NavigationStack.Count - 1; i++)
         {
@@ -380,6 +390,40 @@ public partial class EditTaskPage : ContentPage
         }
 
         await Navigation.PopAsync();
+    }
+
+    private async Task RegisterAllNotification(ToDo_Task task)
+    {
+        if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
+        {
+            await LocalNotificationCenter.Current.RequestNotificationPermission();
+        }
+
+        foreach (var notification in App.Database.GetAllNotifications(task))
+        {
+            var notireq = new NotificationRequest()
+            {
+                NotificationId = notification.Id,
+                Title = task.Name,
+                Schedule =
+                {
+                    NotifyTime = notification.time
+                }
+            };
+            var time_remaining = task.DeadlineTime - notification.time;
+            if (App.Setting.IsVietnamese)
+            {
+                if (time_remaining.TotalDays > 1) notireq.Description = $"Thời gian còn lại: {time_remaining.Days.ToString()} ngày";
+                else notireq.Description = $"Thời gian còn lại: {time_remaining.ToString()}";
+            }
+            else
+            {
+                if (time_remaining.TotalDays > 1) notireq.Description = $"Time remaining: {time_remaining.Days.ToString()} days";
+                else notireq.Description = $"Time remaining: {time_remaining.ToString()}";
+            }
+
+            await LocalNotificationCenter.Current.Show(notireq);
+        }
     }
 
     private async void btnDeleteTask_Clicked(object sender, EventArgs e)

@@ -12,7 +12,7 @@ public partial class TestPage : ContentPage
 
     public void OnNewButtonClicked(object sender, EventArgs args)
     {
-        App.Database.AddTask(App.ToDo_List[0]); App.Database.AddTask(App.ToDo_List[1]); App.Database.AddTask(App.ToDo_List[2]);
+        //App.Database.AddTask(App.ToDo_List[0]); App.Database.AddTask(App.ToDo_List[1]); App.Database.AddTask(App.ToDo_List[2]);
     }
     public void OnGetButtonClicked(object sender, EventArgs args)
     {
@@ -43,13 +43,6 @@ public partial class TestPage : ContentPage
             DeadlineTimelb.Text = tasks[i].DeadlineTime.ToString();
             peopleList.Add(DeadlineTimelb, 3, i);
 
-            if (tasks[i].EndTime != DateTime.MinValue)
-            {
-                Label EndTimelb = new Label();
-                EndTimelb.Text = tasks[i].EndTime.ToString();
-                peopleList.Add(EndTimelb, 4, i);
-            }
-
             Label IsDonelb = new Label();
             IsDonelb.Text = tasks[i].IsDone.ToString();
             peopleList.Add(IsDonelb, 5, i);
@@ -61,14 +54,6 @@ public partial class TestPage : ContentPage
                 CategoryIdlb.Text += str.ToString() + " ";
             }
             peopleList.Add(CategoryIdlb, 6, i);
-
-            Label NotificationTimelb = new Label();
-            NotificationTimelb.Text = "";
-            foreach (var str in tasks[i].NotificationTime)
-            {
-                NotificationTimelb.Text += str.ToString() + " ";
-            }
-            peopleList.Add(NotificationTimelb, 7, i);
 
         }
     }

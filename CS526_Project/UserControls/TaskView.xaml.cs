@@ -44,7 +44,6 @@ public partial class TaskView : ContentView
 		if (e.Value == true)
 		{
 			task.IsDone = true;
-			task.EndTime = DateTime.Now;
 			App.Database.UpdateTask(task);
 
 			TaskDetailView.Opacity = 0.3;
@@ -52,7 +51,6 @@ public partial class TaskView : ContentView
 		else
 		{
 			task.IsDone = false;
-			task.EndTime = DateTime.MaxValue;
             App.Database.UpdateTask(task);
 
             TaskDetailView.Opacity = 1;
