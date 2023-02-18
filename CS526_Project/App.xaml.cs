@@ -8,6 +8,7 @@ namespace CS526_Project;
 public partial class App : Application
 {
     public static DatabaseHelper Database { get; } = new DatabaseHelper();
+    public static Settings Setting { get; } = new Settings();
 
     public static MainPage mainPage;
     public static DateTime mainPage_SelectedDate = DateTime.Now.Date;
@@ -16,9 +17,7 @@ public partial class App : Application
     public static Color SecondaryColor { get; private set; }
     public static Color TertiaryColor { get; private set; }
 
-	public static List<ToDo_Task> ToDo_List = new List<ToDo_Task>();
-	public List<ToDo_Task> ToDo_List = new List<ToDo_Task>();
-    public List<NotificationRequest> Notifications= new List<NotificationRequest>();
+    //public List<NotificationRequest> Notifications= new List<NotificationRequest>();
 	public App()
 	{
 		InitializeComponent();
