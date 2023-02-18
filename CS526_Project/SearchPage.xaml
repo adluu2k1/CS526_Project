@@ -19,33 +19,20 @@
                    TextChanged="txtSearch_TextChanged"/>
 
         </Border>
-        
-        <HorizontalStackLayout Margin="0,0,0,30">
 
-            <VerticalStackLayout Margin="10,0,30,0">
-                <CheckBox x:Name="checkAll" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
-                          IsChecked="True"
-                          CheckedChanged="checkAll_CheckedChanged"/>
-                <Label Text="Tất cả" HorizontalOptions="Center"/>
-            </VerticalStackLayout>
+        <HorizontalStackLayout Margin="0,0,0,30" HorizontalOptions="Center">
 
             <VerticalStackLayout Margin="10,0,30,0">
 
                 <CheckBox x:Name="checkDone" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
                           CheckedChanged="checkDone_CheckedChanged">
-                    <CheckBox.Style>
-                        <Style TargetType="CheckBox">
-                            <Style.Triggers>
-                                <DataTrigger TargetType="CheckBox"
-                                         Binding="{Binding Source={x:Reference checkAll}, Path=IsChecked}" Value="True">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                    <Setter Property="Opacity" Value="0.5"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </CheckBox.Style>
                 </CheckBox>
-                <Label Text="Hoàn thành" HorizontalOptions="Center"/>
+                <Label Text="Đã hoàn thành" HorizontalOptions="Center"/>
+
+                <CheckBox x:Name="checkNotDone" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
+                          CheckedChanged="checkNotDone_CheckedChanged">
+                </CheckBox>
+                <Label Text="Chưa hoàn thành" HorizontalOptions="Center"/>
 
             </VerticalStackLayout>
 
@@ -53,19 +40,13 @@
 
                 <CheckBox x:Name="checkImportant" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
                           CheckedChanged="checkImportant_CheckedChanged">
-                    <CheckBox.Style>
-                        <Style TargetType="CheckBox">
-                            <Style.Triggers>
-                                <DataTrigger TargetType="CheckBox"
-                                         Binding="{Binding Source={x:Reference checkAll}, Path=IsChecked}" Value="True">
-                                    <Setter Property="IsEnabled" Value="False"/>
-                                    <Setter Property="Opacity" Value="0.5"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </CheckBox.Style>
                 </CheckBox>
                 <Label Text="Quan trọng" HorizontalOptions="Center"/>
+
+                <CheckBox x:Name="checkNotImportant" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
+                          CheckedChanged="checkNotImportant_CheckedChanged">
+                </CheckBox>
+                <Label Text="Không quan trọng" HorizontalOptions="Center"/>
 
             </VerticalStackLayout>
 

@@ -5,13 +5,15 @@ namespace CS526_Project;
 
 public partial class SearchPage : ContentPage
 {
-    private bool IsImportant { get; set; } = false;
-    private bool IsDone { get; set; } = false;
+    private bool Tag_IsImportant = false;
+    private bool Tag_IsNotImportant = false;
+    private bool Tag_IsDone = false;
+    private bool Tag_IsNotDone = false;
 
     public SearchPage()
     {
         InitializeComponent();
-
+        
         ShowTask("");
     }
 
@@ -19,31 +21,43 @@ public partial class SearchPage : ContentPage
     {
         TaskViewWrapper.Children.Clear();
 
-        foreach (var task in App.Database.GetAllTask().OrderBy(p => p.DeadlineTime).ToList())
+        foreach (var task in GetSearchResult(keyword))
         {
-            if (IsTaskQualified(task, keyword))
-            {
-                TaskViewWrapper.Add(new TaskView(task, TaskViewWrapper));
-            }
+            TaskViewWrapper.Add(new TaskView(task, TaskViewWrapper));
         }
     }
 
-    private bool IsTaskQualified(ToDo_Task task, string keyword)
+    private List<ToDo_Task> GetSearchResult(string keyword)
     {
-        if (task.Name.Contains(keyword) ||
-            task.Description.Contains(keyword) ||
-            task.DeadlineTime.ToString().Contains(keyword))
+        var result = App.Database.GetAllTask().OrderBy(p => p.DeadlineTime).ToList();
+
+        int i = 0;
+        while (i < result.Count)
         {
-            if (checkAll.IsChecked == true) return true;
-            else
+            var task = result[i];
+            if (!task.Name.Contains(keyword) &&
+                !task.Description.Contains(keyword) &&
+                !task.DeadlineTime.ToString().Contains(keyword))
             {
-                if ((IsImportant && App.Database.IsTaskContainingCategory(task, "Important")) ||
-                    (IsDone && task.IsDone) ||
-                    (IsImportant && IsDone && App.Database.IsTaskContainingCategory(task, "Important") && task.IsDone))
-                    return true;
+                result.RemoveAt(i); continue;
             }
+                
+            if ((Tag_IsDone && !task.IsDone) || (Tag_IsNotDone && task.IsDone))
+            {
+                result.RemoveAt(i); continue;
+            }
+
+            bool task_IsImportant = App.Database.IsTaskContainingCategory(task, "Important");
+            if ((Tag_IsImportant && !task_IsImportant) || (Tag_IsNotImportant && task_IsImportant))
+            {
+                result.RemoveAt(i); continue;
+            }
+
+            i++;
         }
-        return false;
+
+        return result;
+
     }
 
     public void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
@@ -56,28 +70,25 @@ public partial class SearchPage : ContentPage
 
     private void checkDone_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        IsDone = e.Value;
+        Tag_IsDone = e.Value;
         txtSearch_TextChanged(null, null);
     }
 
     private void checkImportant_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        IsImportant = e.Value;
+        Tag_IsImportant = e.Value;
         txtSearch_TextChanged(null, null);
     }
 
-    private void checkAll_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    private void checkNotDone_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        if (e.Value == true)
-        {
-            IsImportant = false; IsDone = false;
-        }
-        else
-        {
-            if (checkDone.IsChecked == true) IsDone = true;
-            if (checkImportant.IsChecked == true) IsImportant = true;
-        }
+        Tag_IsNotDone = e.Value;
+        txtSearch_TextChanged(null, null);
+    }
 
+    private void checkNotImportant_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        Tag_IsNotImportant = e.Value;
         txtSearch_TextChanged(null, null);
     }
 }
