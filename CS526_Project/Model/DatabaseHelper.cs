@@ -99,6 +99,15 @@ namespace CS526_Project.Model
             return false;
         }
 
+        public bool IsTaskContainingCategory(ToDo_Task task, string categoryName)
+        {
+            foreach (var id in task.CategoryId)
+            {
+                if (id == FindCategory(categoryName).Id) return true;
+            }
+            return false;
+        }
+
         public int GenerateRandomTaskId()
         {
             int id = new Random().Next(1, short.MaxValue);

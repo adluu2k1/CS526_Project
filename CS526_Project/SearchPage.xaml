@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CS526_Project.SearchPage">
+
+    <VerticalStackLayout Margin="30,0">
+
+        <Border HeightRequest="40" StrokeThickness="0" BackgroundColor="{DynamicResource Primary}" Margin="0,0,0,10">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="20"/>
+            </Border.StrokeShape>
+
+            <Entry x:Name="txtSearch"
+                   Placeholder="Tìm kiếm" PlaceholderColor="LightGray"
+                   TextColor="White"
+                   FontSize="Caption"
+                   VerticalOptions="Center"
+                   Margin="10,0"
+                   TextChanged="txtSearch_TextChanged"/>
+
+        </Border>
+        
+        <HorizontalStackLayout Margin="0,0,0,30">
+
+            <VerticalStackLayout Margin="10,0,30,0">
+                <CheckBox x:Name="checkAll" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
+                          IsChecked="True"
+                          CheckedChanged="checkAll_CheckedChanged"/>
+                <Label Text="Tất cả" HorizontalOptions="Center"/>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Margin="10,0,30,0">
+
+                <CheckBox x:Name="checkDone" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
+                          CheckedChanged="checkDone_CheckedChanged">
+                    <CheckBox.Style>
+                        <Style TargetType="CheckBox">
+                            <Style.Triggers>
+                                <DataTrigger TargetType="CheckBox"
+                                         Binding="{Binding Source={x:Reference checkAll}, Path=IsChecked}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </CheckBox.Style>
+                </CheckBox>
+                <Label Text="Hoàn thành" HorizontalOptions="Center"/>
+
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Margin="10,0,0,0">
+
+                <CheckBox x:Name="checkImportant" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
+                          CheckedChanged="checkImportant_CheckedChanged">
+                    <CheckBox.Style>
+                        <Style TargetType="CheckBox">
+                            <Style.Triggers>
+                                <DataTrigger TargetType="CheckBox"
+                                         Binding="{Binding Source={x:Reference checkAll}, Path=IsChecked}" Value="True">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </CheckBox.Style>
+                </CheckBox>
+                <Label Text="Quan trọng" HorizontalOptions="Center"/>
+
+            </VerticalStackLayout>
+
+        </HorizontalStackLayout>
+
+        <ScrollView HeightRequest="500">
+            <VerticalStackLayout x:Name="TaskViewWrapper"/>
+        </ScrollView>
+        
+    </VerticalStackLayout>
+    
+</ContentPage>

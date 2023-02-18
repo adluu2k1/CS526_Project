@@ -36,9 +36,9 @@ public partial class MainPage : ContentPage
 		ShowTask(App.mainPage_SelectedDate);
 	}
 
-    private void btnSearch_Clicked(object sender, EventArgs e)
+    private async void btnSearch_Clicked(object sender, EventArgs e)
     {
-		
+		await Navigation.PushAsync(new SearchPage());
     }
 
     private async void btnAdd_Clicked(object sender, EventArgs e)
@@ -50,4 +50,6 @@ public partial class MainPage : ContentPage
     {
 
     }
+
+
 }
