@@ -1,5 +1,7 @@
 ﻿using CS526_Project.Model;
 using System.Text.Json;
+using Plugin.LocalNotification;
+using static Android.Provider.ContactsContract.CommonDataKinds;
 
 namespace CS526_Project;
 
@@ -15,6 +17,8 @@ public partial class App : Application
     public static Color TertiaryColor { get; private set; }
 
 	public static List<ToDo_Task> ToDo_List = new List<ToDo_Task>();
+	public List<ToDo_Task> ToDo_List = new List<ToDo_Task>();
+    public List<NotificationRequest> Notifications= new List<NotificationRequest>();
 	public App()
 	{
 		InitializeComponent();
@@ -28,4 +32,7 @@ public partial class App : Application
         MainPage = new NavigationPage(mainPage);
         
 	}
+
+
+
 }
