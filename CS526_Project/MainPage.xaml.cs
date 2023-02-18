@@ -9,12 +9,17 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 
 		var today = DateTime.Now.Date;
-		labelToday.Text = $"NGÀY {today.Day} THÁNG {today.Month} NĂM {today.Year}";
+		labelToday.Text = App.Setting.IsVietnamese ? $"NGÀY {today.Day} THÁNG {today.Month} NĂM {today.Year}" : $"DAY {today.Day} MONTH {today.Month} YEAR {today.Year}";
 
 		WeekViewWrapper.Content = new WeekView(today);
 
 		ShowTask(today);
-	}
+        if (!App.Setting.IsVietnamese)
+		{
+			labelToday.Text = "TODAY";
+		}
+
+    }
 
 	public void ShowTask(DateTime date)
 	{

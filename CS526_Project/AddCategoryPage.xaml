@@ -25,14 +25,17 @@
     
     <VerticalStackLayout Margin="30,0">
         
-        <Label 
+        <Label x:Name="labelNewLabel"
             Text="NHÃN MỚI"
             FontSize="Body" FontAttributes="Bold"
             HorizontalOptions="Center"
             Margin="0,0,0,30"/>
 
-        <Label Text="TÊN NHÃN"
-               FontSize="Caption" FontAttributes="Bold" TextColor="{DynamicResource Primary}"/>
+        <Label x:Name="labelLabelName"
+            Text="TÊN NHÃN"
+            FontSize="Caption" 
+            FontAttributes="Bold" 
+            TextColor="{DynamicResource Primary}"/>
         <Label x:Name="labelError"
                FontSize="Caption"
                TextColor="Red"
@@ -44,8 +47,11 @@
                 HorizontalOptions="Fill"
                 Margin="0,0,0,30"/>
 
-        <Label Text="MÀU NHÃN"
-               FontSize="Caption" FontAttributes="Bold" TextColor="{DynamicResource Primary}"/>
+        <Label x:Name="labelLabelColor"
+            Text="MÀU NHÃN"
+            FontSize="Caption" 
+            FontAttributes="Bold" 
+            TextColor="{DynamicResource Primary}"/>
         <HorizontalStackLayout x:Name="ColorBtnWrapper" Margin="0,20,0,50">
             <ImageButton Style="{DynamicResource ColorButtonStyle}" BackgroundColor="Red"
                          Clicked="btnColor_Clicked"/>

@@ -13,6 +13,13 @@ public partial class SearchPage : ContentPage
         InitializeComponent();
 
         ShowTask("");
+        if (!App.Setting.IsVietnamese)
+        {
+            txtSearch.Placeholder = "Search";
+            labelAll.Text = "ALL";
+            labelCompleted.Text = "COMPLETED";
+            labelImportant.Text = "IMPORTANT";
+        }
     }
 
     public void ShowTask(string keyword)

@@ -26,7 +26,8 @@
                 <CheckBox x:Name="checkAll" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
                           IsChecked="True"
                           CheckedChanged="checkAll_CheckedChanged"/>
-                <Label Text="Tất cả" HorizontalOptions="Center"/>
+                <Label x:Name = "labelAll" 
+                   Text="Tất cả" HorizontalOptions="Center"/>
             </VerticalStackLayout>
 
             <VerticalStackLayout Margin="10,0,30,0">
@@ -45,7 +46,8 @@
                         </Style>
                     </CheckBox.Style>
                 </CheckBox>
-                <Label Text="Hoàn thành" HorizontalOptions="Center"/>
+                <Label x:Name = "labelCompleted" 
+                   Text="Hoàn thành" HorizontalOptions="Center"/>
 
             </VerticalStackLayout>
 
@@ -65,7 +67,8 @@
                         </Style>
                     </CheckBox.Style>
                 </CheckBox>
-                <Label Text="Quan trọng" HorizontalOptions="Center"/>
+                <Label x:Name="labelImportant" 
+                   Text="Quan trọng" HorizontalOptions="Center"/>
 
             </VerticalStackLayout>
 

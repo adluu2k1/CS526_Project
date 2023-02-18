@@ -21,12 +21,27 @@ public partial class AddTaskPage : ContentPage
         {
             listCategoriesName.Add(category.Name);
         }
-        listCategoriesName.Add("Thêm nhãn");
+        listCategoriesName.Add(App.Setting.IsVietnamese ? "Thêm nhãn" : "Add tag");
 
         InitializeComponent();
 
         create_btnAddNotiEntry();
         create_btnAddCategory();
+        if (!App.Setting.IsVietnamese)
+        {
+            labelNewTask.Text = "NEW TASK";
+            labelTaskName.Text = "TASK NAME";
+            txtName.Placeholder = "Task Name";
+            labelDeadline.Text = "DEADLINE";
+            labelNoDeadLine.Text = "NO DEADLINE";
+            labelDay.Text = "DAY";
+            labelHour.Text = "HOUR";
+            labelRemind.Text = "REMIND";
+            labelLabel.Text = "LABEL";
+            labelDescription.Text = "DESCRIPTION";
+            txtDescription.Placeholder = "Description";
+            btnAddTask.Text = "COMPLETED";
+        }
     }
 
     private void create_NotiControls()
@@ -39,7 +54,7 @@ public partial class AddTaskPage : ContentPage
         var labelDate = new Label()
         {
             Style = (Style)this.Resources["DateTimeLabelStyle"],
-            Text = "NGÀY"
+            Text = App.Setting.IsVietnamese ? "NGÀY" : "DAY"
         };
         var dateNoti = new DatePicker()
         {
@@ -49,7 +64,7 @@ public partial class AddTaskPage : ContentPage
         var labelTime = new Label()
         {
             Style = (Style)this.Resources["DateTimeLabelStyle"],
-            Text = "GIỜ"
+            Text = App.Setting.IsVietnamese ? "GIỜ" : "HOUR"
         };
         var timeNoti = new TimePicker()
         {
@@ -130,7 +145,7 @@ public partial class AddTaskPage : ContentPage
     public void OnAddCategoryPageReturn(string category_name, Color category_color, int caller_IndexInWraper)
     {
         listCategoriesName[listCategoriesName.Count - 1] = category_name;
-        listCategoriesName.Add("Thêm nhãn");
+        listCategoriesName.Add(App.Setting.IsVietnamese ? "Thêm nhãn" : "Add Tag");
 
         for (int i = 0; i < listCategoryEntryWrapper.Count; i++)
         {
@@ -250,7 +265,7 @@ public partial class AddTaskPage : ContentPage
         if (!IsNameValid())
         {
             txtName.Text = string.Empty;
-            txtName.Placeholder = "* Ô này không thể để trống";
+            txtName.Placeholder = App.Setting.IsVietnamese ? "* Ô này không thể để trống" : "* This box can't be blank"; 
             txtName.PlaceholderColor = Colors.Red;
             return;
         }

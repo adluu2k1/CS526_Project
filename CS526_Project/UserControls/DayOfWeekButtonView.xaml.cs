@@ -12,11 +12,11 @@ public partial class DayOfWeekButtonView : ContentView
 
         if (date.DayOfWeek == DayOfWeek.Sunday)
         {
-            labelDayOfWeek.Text = "CN";
+            labelDayOfWeek.Text = App.Setting.IsVietnamese ? "CN" : "Sun";
         }
         else
         {
-            labelDayOfWeek.Text = "T" + ((int)date.DayOfWeek + 1).ToString();
+            labelDayOfWeek.Text = App.Setting.IsVietnamese ? "T" : "Day" + ((int)date.DayOfWeek + 1).ToString();
         }
         
         if (date.Day == 1)
