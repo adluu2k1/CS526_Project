@@ -24,7 +24,8 @@ public partial class EditTaskPage : ContentPage
 
         foreach (var category in App.Database.GetAllCategories())
         {
-            listCategoriesName.Add(category.Name);
+            if (category.Id != 0)
+                listCategoriesName.Add(category.Name);
         }
         listCategoriesName.Add(App.Setting.IsVietnamese ? "Thêm nhãn" : "Add tag");
 
@@ -87,6 +88,11 @@ public partial class EditTaskPage : ContentPage
                     dateTimeNoti.Minute,
                     dateTimeNoti.Second
                 );
+        }
+
+        if (task.CategoryId.Contains(0))
+        {
+            checkImportant.IsChecked = true;
         }
     }
 
@@ -362,7 +368,7 @@ public partial class EditTaskPage : ContentPage
             }
         }
 
-        if (listCategoryEntryWrapper.Count != 0)
+        if (listCategoryEntryWrapper.Count != 0 || checkImportant.IsChecked)
         {
             List<int> categoryId = new List<int>();
             foreach (var wrapper in listCategoryEntryWrapper)
@@ -382,6 +388,10 @@ public partial class EditTaskPage : ContentPage
                 {
                     categoryId.Add(category.Id);
                 }
+            }
+            if (checkImportant.IsChecked)
+            {
+                categoryId.Insert(0, 0);
             }
 
             task.str_CategoryId = JsonSerializer.Serialize(categoryId, typeof(List<int>));

@@ -14,8 +14,6 @@ public partial class App : Application
     public static Color PrimaryColor { get; private set; }
     public static Color SecondaryColor { get; private set; }
     public static Color TertiaryColor { get; private set; }
-
-    //public List<NotificationRequest> Notifications= new List<NotificationRequest>();
 	public App()
 	{
 		InitializeComponent();
@@ -25,16 +23,17 @@ public partial class App : Application
         SecondaryColor = rd_colors["Secondary"] as Color;
         TertiaryColor = rd_colors["Tertiary"] as Color;
 
+        if (Database.FindCategory(0) == null)
+        {
+            var cat_important = new Category() { Id = 0, Name = "Quan trọng", Color_Hex = Colors.Red.ToHex() };
+            if (!Setting.IsVietnamese) cat_important.Name = "Important";
+
+            Database.AddCategory(cat_important);
+        }
+
         mainPage = new();
         MainPage = new NavigationPage(mainPage);
     }
 
-    public async Task RequestNotificationPermission()
-    {
-        if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
-        {
-            await LocalNotificationCenter.Current.RequestNotificationPermission();
-        }
-    }
 
 }

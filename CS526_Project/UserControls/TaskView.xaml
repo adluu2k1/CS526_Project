@@ -24,6 +24,12 @@
                 <VerticalStackLayout>
 
                     <Grid Margin="0,0,0,5">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="1.5*"/>
+                        </Grid.ColumnDefinitions>
+                        
                         <Label x:Name="labelName" Grid.Column="0" FontAttributes="Bold" HorizontalOptions="Start"/>
                         <Label x:Name="labelDeadline" Grid.Column="1" FontAttributes="Bold" HorizontalOptions="End"/>
                     </Grid>

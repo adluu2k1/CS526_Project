@@ -74,6 +74,19 @@ namespace CS526_Project.Model
             return db_connection.Table<Category>().ToList();
         }
 
+        public List<Category> GetAllCategories(ToDo_Task task)
+        {
+            var listCat = new List<Category>();
+            foreach (var id in task.CategoryId)
+            {
+                var category = FindCategory(id);
+                if (category != null)
+                    listCat.Add(category);
+            }
+
+            return listCat;
+        }
+
         public List<Notification> GetAllNotifications()
         {
             if (db_connection == null)
@@ -140,11 +153,11 @@ namespace CS526_Project.Model
             return false;
         }
 
-        public bool IsTaskContainingCategory(ToDo_Task task, string categoryName)
+        public bool IsTaskImportant(ToDo_Task task)
         {
             foreach (var id in task.CategoryId)
             {
-                if (id == FindCategory(categoryName).Id) return true;
+                if (id == 0) return true;
             }
             return false;
         }

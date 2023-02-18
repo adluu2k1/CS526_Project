@@ -20,7 +20,8 @@ public partial class AddTaskPage : ContentPage
     {
         foreach (var category in App.Database.GetAllCategories())
         {
-            listCategoriesName.Add(category.Name);
+            if (category.Id != 0)
+                listCategoriesName.Add(category.Name);
         }
         listCategoriesName.Add(App.Setting.IsVietnamese ? "Thêm nhãn" : "Add tag");
 
@@ -301,13 +302,14 @@ public partial class AddTaskPage : ContentPage
                 App.Database.AddNotification(notification);
                 notificationId.Add(notification.Id);
             }
+
             if (notificationId.Count != 0)
             {
                 task.str_NotificationId = JsonSerializer.Serialize(notificationId, typeof(List<int>));
             }
         }
 
-        if (listCategoryEntryWrapper.Count != 0)
+        if (listCategoryEntryWrapper.Count != 0 || checkImportant.IsChecked)
         {
             List<int> categoryId = new List<int>();
             foreach (var wrapper in listCategoryEntryWrapper)
@@ -327,6 +329,10 @@ public partial class AddTaskPage : ContentPage
                 {
                     categoryId.Add(category.Id);
                 }
+            }
+            if (checkImportant.IsChecked)
+            {
+                categoryId.Insert(0, 0);
             }
 
             task.str_CategoryId = JsonSerializer.Serialize(categoryId, typeof(List<int>));

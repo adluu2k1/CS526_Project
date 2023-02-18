@@ -62,7 +62,12 @@
                    FontSize="Caption"
                    ClearButtonVisibility="WhileEditing"
                    HorizontalOptions="Fill"
-                   Margin="0,0,0,30"/>
+                   Margin="0,0,0,20"/>
+
+                <HorizontalStackLayout Margin="0,0,0,30">
+                    <CheckBox x:Name="checkImportant"/>
+                    <Label x:Name="labelImportant" Text="Nhiệm vụ quan trọng" TextColor="Red" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
 
                 <HorizontalStackLayout>
                     <Label x:Name="labelDeadline"

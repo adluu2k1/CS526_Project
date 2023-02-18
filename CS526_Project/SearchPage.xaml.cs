@@ -18,8 +18,10 @@ public partial class SearchPage : ContentPage
         if (!App.Setting.IsVietnamese)
         {
             txtSearch.Placeholder = "Search";
-            labelCompleted.Text = "COMPLETED";
-            labelImportant.Text = "IMPORTANT";
+            labelCompleted.Text = "Completed";
+            labelImportant.Text = "Important";
+            labelNotCompleted.Text = "Pending";
+            labelNotImportant.Text = "Not Important";
         }
     }
 
@@ -45,7 +47,18 @@ public partial class SearchPage : ContentPage
                 !task.Description.Contains(keyword) &&
                 !task.DeadlineTime.ToString().Contains(keyword))
             {
-                result.RemoveAt(i); continue;
+                bool TaskCategoriesHaveKeyword = false;
+                foreach (var category in App.Database.GetAllCategories(task))
+                {
+                    if (category.Name.Contains(keyword))
+                    {
+                        TaskCategoriesHaveKeyword = true; break;
+                    }
+                }
+                if (!TaskCategoriesHaveKeyword)
+                {
+                    result.RemoveAt(i); continue;
+                }
             }
                 
             if ((Tag_IsDone && !task.IsDone) || (Tag_IsNotDone && task.IsDone))
@@ -53,7 +66,7 @@ public partial class SearchPage : ContentPage
                 result.RemoveAt(i); continue;
             }
 
-            bool task_IsImportant = App.Database.IsTaskContainingCategory(task, "Important");
+            bool task_IsImportant = App.Database.IsTaskImportant(task);
             if ((Tag_IsImportant && !task_IsImportant) || (Tag_IsNotImportant && task_IsImportant))
             {
                 result.RemoveAt(i); continue;

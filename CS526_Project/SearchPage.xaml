@@ -32,7 +32,7 @@
                 <CheckBox x:Name="checkNotDone" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
                           CheckedChanged="checkNotDone_CheckedChanged">
                 </CheckBox>
-                <Label Text="Chưa hoàn thành" HorizontalOptions="Center"/>
+                <Label x:Name="labelNotCompleted" Text="Chưa hoàn thành" HorizontalOptions="Center"/>
 
             </VerticalStackLayout>
 
@@ -47,7 +47,7 @@
                 <CheckBox x:Name="checkNotImportant" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
                           CheckedChanged="checkNotImportant_CheckedChanged">
                 </CheckBox>
-                <Label Text="Không quan trọng" HorizontalOptions="Center"/>
+                <Label x:Name="labelNotImportant" Text="Không quan trọng" HorizontalOptions="Center"/>
 
             </VerticalStackLayout>
 

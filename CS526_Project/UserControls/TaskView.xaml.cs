@@ -75,7 +75,7 @@ public partial class TaskView : ContentView
 		{
 			CategoriesWrapper.RemoveAt(CategoriesWrapper.Children.Count - 1);
 		}
-		if (CategoriesWrapper.Children.Count == 0)
+		else
 		{
 			CategoriesWrapper.IsVisible = false;
 		}
