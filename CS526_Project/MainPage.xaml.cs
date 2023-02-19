@@ -18,7 +18,7 @@ public partial class MainPage : ContentPage
 		{
 			labelToday.Text = "TODAY";
 		}
-
+		
     }
 
 	public void ShowTask(DateTime date)
@@ -51,9 +51,9 @@ public partial class MainPage : ContentPage
 		await Navigation.PushAsync(new AddTaskPage());
     }
 
-    private void btnSettings_Clicked(object sender, EventArgs e)
+    private async void btnSettings_Clicked(object sender, EventArgs e)
     {
-
+		await Navigation.PushAsync(new SettingsPage());
     }
 
 

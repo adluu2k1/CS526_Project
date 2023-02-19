@@ -4,14 +4,24 @@
              x:Class="CS526_Project.MainPage">
 
     <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
-        
+
+        <Ellipse Fill="{DynamicResource Tertiary}"
+                 WidthRequest="200" HeightRequest="200"
+                 VerticalOptions="Start" HorizontalOptions="End"
+                 Margin="0,0,-120,0"/>
+
+        <Ellipse Stroke="{DynamicResource Tertiary}" StrokeThickness="3" Opacity="0.5"
+                 WidthRequest="300" HeightRequest="300"
+                 VerticalOptions="End" HorizontalOptions="Start"
+                 Margin="-150,0,0,-150"/>
+
         <VerticalStackLayout Margin="30,0,30,20" VerticalOptions="Start" HorizontalOptions="Fill">
 
             <Label x:Name="labelToday"
-                   FontSize="Body"/>
+                   FontSize="Body" FontAttributes="Bold"/>
             <Label BindingContext="{x:Reference labelToday}"
                    Text="HÔM NAY"
-                   FontSize="{Binding Path=FontSize}"
+                   FontSize="{Binding Path=FontSize}" FontAttributes="Bold"
                    FontFamily="{Binding Path=FontFamily}"
                    TextColor="{DynamicResource Primary}"
                    Margin="0,0,0,30"/>

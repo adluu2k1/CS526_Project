@@ -37,86 +37,98 @@
 
     </ContentPage.Resources>
 
-    <Grid>
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="2*"/>
-        </Grid.RowDefinitions>
+        <Ellipse Fill="{DynamicResource Tertiary}"
+                 WidthRequest="400" HeightRequest="400"
+                 VerticalOptions="Center" HorizontalOptions="End"
+                 Margin="0,0,-300,0"/>
 
-        <Label x:Name="labelTaskDetail"
+        <Ellipse Stroke="{DynamicResource Tertiary}" StrokeThickness="3" Opacity="0.5"
+                 WidthRequest="400" HeightRequest="400"
+                 VerticalOptions="End" HorizontalOptions="Start"
+                 Margin="-200,0,0,-200"/>
+
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="10*"/>
+                <RowDefinition Height="2*"/>
+            </Grid.RowDefinitions>
+
+            <Label x:Name="labelTaskDetail"
             Grid.Row="0"
                Text="CHI TIẾT NHIỆM VỤ"
                FontSize="Body" FontAttributes="Bold"
                HorizontalOptions="Center"/>
 
-        <ScrollView Grid.Row="1" HorizontalOptions="Fill" VerticalScrollBarVisibility="Never">
-            <VerticalStackLayout x:Name="ContentWrapper" Margin="30,0">
+            <ScrollView Grid.Row="1" HorizontalOptions="Fill" VerticalScrollBarVisibility="Never">
+                <VerticalStackLayout x:Name="ContentWrapper" Margin="30,0">
 
-                <Label x:Name="labelTaskName"
+                    <Label x:Name="labelTaskName"
                     Text="TÊN NHIỆM VỤ"
                    Style="{DynamicResource EntryLabelStyle}"/>
-                <Entry x:Name="txtName"
+                    <Entry x:Name="txtName"
                    Placeholder="Tên nhiệm vụ"
                    FontSize="Caption"
                    ClearButtonVisibility="WhileEditing"
                    HorizontalOptions="Fill"
                    Margin="0,0,0,20"/>
 
-                <HorizontalStackLayout Margin="0,0,0,30">
-                    <CheckBox x:Name="checkImportant"/>
-                    <Label x:Name="labelImportant" Text="Nhiệm vụ quan trọng" TextColor="Red" VerticalOptions="Center"/>
-                </HorizontalStackLayout>
+                    <HorizontalStackLayout Margin="0,0,0,30">
+                        <CheckBox x:Name="checkImportant"/>
+                        <Label x:Name="labelImportant" Text="Nhiệm vụ quan trọng" TextColor="Red" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
 
-                <HorizontalStackLayout>
-                    <Label x:Name="labelDeadline"
+                    <HorizontalStackLayout>
+                        <Label x:Name="labelDeadline"
                        Text="HẠN CHÓT"
                        Style="{DynamicResource EntryLabelStyle}"
                        VerticalOptions="Center"
                        Margin="0,0,30,0"/>
-                    <CheckBox x:Name="checkNoDeadline" VerticalOptions="Center" CheckedChanged="checkNoDeadline_CheckedChanged"/>
-                    <Label x:Name="labelNoDeadline"
+                        <CheckBox x:Name="checkNoDeadline" VerticalOptions="Center" CheckedChanged="checkNoDeadline_CheckedChanged"/>
+                        <Label x:Name="labelNoDeadline"
                        Text="Không có hạn" 
                        FontSize="Caption" 
                        VerticalOptions="Center"/>
-                </HorizontalStackLayout>
-                <HorizontalStackLayout x:Name="DeadlineSettingWrapper" Margin="0,0,0,30">
-                    <Label x:Name="labelDay"
+                    </HorizontalStackLayout>
+                    <HorizontalStackLayout x:Name="DeadlineSettingWrapper" Margin="0,0,0,30">
+                        <Label x:Name="labelDay"
                         Text="NGÀY" FontSize="Caption" FontAttributes="Bold" VerticalOptions="Center" Margin="0,0,10,0"/>
-                    <DatePicker x:Name="dateDeadline" Format="d" Margin="0,0,30,0"/>
-                    <Label x:Name="labelHour" 
+                        <DatePicker x:Name="dateDeadline" Format="d" Margin="0,0,30,0"/>
+                        <Label x:Name="labelHour" 
                         Text="GIỜ" FontSize="Caption" FontAttributes="Bold" VerticalOptions="Center" Margin="0,0,10,0"/>
-                    <TimePicker x:Name="timeDeadline" Format="t"/>
-                </HorizontalStackLayout>
+                        <TimePicker x:Name="timeDeadline" Format="t"/>
+                    </HorizontalStackLayout>
 
-                <Label x:Name="labelRemind"
+                    <Label x:Name="labelRemind"
                    Text="NHẮC NHỞ"
                    Style="{DynamicResource EntryLabelStyle}"
                    Margin="0,0,0,10"/>
-                <VerticalStackLayout x:Name="NotiTimeWrapper" Margin="0,0,0,30"/>
+                    <VerticalStackLayout x:Name="NotiTimeWrapper" Margin="0,0,0,30"/>
 
-                <Label x:Name="labelLabel" 
+                    <Label x:Name="labelLabel" 
                    Text="NHÃN"
                    Style="{DynamicResource EntryLabelStyle}"
                    Margin="0,0,0,10"/>
-                <VerticalStackLayout x:Name="CategoriesWrapper" Margin="0,0,0,30"/>
+                    <VerticalStackLayout x:Name="CategoriesWrapper" Margin="0,0,0,30"/>
 
-                <Label x:Name="labelDescription" 
+                    <Label x:Name="labelDescription" 
                    Text="MÔ TẢ"
                    Style="{DynamicResource EntryLabelStyle}"/>
-                <Editor x:Name="txtDescription"
+                    <Editor x:Name="txtDescription"
                     Placeholder="Mô tả"
                     FontSize="Caption"
                     AutoSize="TextChanges"
                     HorizontalOptions="Fill"/>
 
-            </VerticalStackLayout>
-        </ScrollView>
+                </VerticalStackLayout>
+            </ScrollView>
 
-        <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center">
+            <HorizontalStackLayout Grid.Row="2" HorizontalOptions="Center">
 
-            <Button x:Name="btnSaveTask"
+                <Button x:Name="btnSaveTask"
                 Text="LƯU THAY ĐỔI"
                 FontSize="Body" FontAttributes="Bold"
                 TextColor="White" BackgroundColor="{DynamicResource Primary}"
@@ -124,14 +136,17 @@
                 Margin="0,0,20,0"
                 Clicked="btnSaveTask_Clicked"/>
 
-            <Button x:Name="btnDeleteTask"
+                <Button x:Name="btnDeleteTask"
                 Text="XÓA"
                 FontSize="Body" FontAttributes="Bold"
                 TextColor="White" BackgroundColor="{DynamicResource Primary}"
                 WidthRequest="80" HeightRequest="40" CornerRadius="20"
                 Clicked="btnDeleteTask_Clicked"/>
 
-        </HorizontalStackLayout>
+            </HorizontalStackLayout>
+
+        </Grid>
 
     </Grid>
+
 </ContentPage>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CS526_Project.SettingsPage">
+
+    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
+
+        <Ellipse Fill="{DynamicResource Tertiary}"
+                 WidthRequest="500" HeightRequest="500"
+                 VerticalOptions="End" HorizontalOptions="Start"
+                 Margin="-250,0,0,-250"/>
+        
+        <Ellipse Stroke="{DynamicResource Tertiary}" StrokeThickness="3" Opacity="0.5"
+                 WidthRequest="300" HeightRequest="300"
+                 VerticalOptions="Center" HorizontalOptions="End"
+                 Margin="0,0,-200,0"/>
+        
+        <VerticalStackLayout Margin="30,0">
+            <Label x:Name="labelSettings"
+               Text="CÀI ĐẶT"
+               FontSize="Body" FontAttributes="Bold"
+               HorizontalOptions="Center"/>
+
+            <Grid Margin="0,20,0,30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="labelLanguage" Grid.Column="0"
+                Text="Ngôn ngữ"
+                FontSize="Body"
+                HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Picker x:Name="pickerLanguage" Grid.Column="1"
+                    FontSize="Body"
+                    SelectedIndexChanged="pickerLanguage_SelectedIndexChanged"/>
+            </Grid>
+
+            <Grid Margin="0,0,0,30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="labelTheme" Grid.Column="0"
+                Text="Chủ đề"
+                FontSize="Body"
+                HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Picker x:Name="pickerTheme" Grid.Column="1"
+                    FontSize="Body"
+                    HorizontalOptions="End"
+                    SelectedIndexChanged="pickerTheme_SelectedIndexChanged"/>
+            </Grid>
+
+            <Grid Margin="0,0,0,30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="labelRemind" Grid.Column="0"
+                Text="Nhắc nhở tôi lập kế hoạch cho ngày hôm sau"
+                FontSize="Body"
+                HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Switch x:Name="switchRemind" Grid.Column="1"
+                    HorizontalOptions="End" VerticalOptions="Center"
+                    Toggled="switchRemind_Toggled"/>
+            </Grid>
+
+        </VerticalStackLayout>
+
+    </Grid>
+    
+</ContentPage>

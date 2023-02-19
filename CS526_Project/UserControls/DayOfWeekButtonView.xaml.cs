@@ -10,13 +10,16 @@ public partial class DayOfWeekButtonView : ContentView
         Date = date;
         this.parent = parent;
 
-        if (date.DayOfWeek == DayOfWeek.Sunday)
+        switch (date.DayOfWeek)
         {
-            labelDayOfWeek.Text = App.Setting.IsVietnamese ? "CN" : "Sun";
-        }
-        else
-        {
-            labelDayOfWeek.Text = App.Setting.IsVietnamese ? "T" : "Day" + ((int)date.DayOfWeek + 1).ToString();
+            case DayOfWeek.Sunday: labelDayOfWeek.Text = App.Setting.IsVietnamese ? "CN" : "Su"; break;
+            case DayOfWeek.Monday: labelDayOfWeek.Text = App.Setting.IsVietnamese ? "T2" : "Mo"; break;
+            case DayOfWeek.Tuesday: labelDayOfWeek.Text = App.Setting.IsVietnamese ? "T3" : "Tu"; break;
+            case DayOfWeek.Wednesday: labelDayOfWeek.Text = App.Setting.IsVietnamese ? "T4" : "We"; break;
+            case DayOfWeek.Thursday: labelDayOfWeek.Text = App.Setting.IsVietnamese ? "T5" : "Th"; break;
+            case DayOfWeek.Friday: labelDayOfWeek.Text = App.Setting.IsVietnamese ? "T6" : "Fr"; break;
+            case DayOfWeek.Saturday: labelDayOfWeek.Text = App.Setting.IsVietnamese ? "T7" : "Sa"; break;
+
         }
         
         if (date.Day == 1)
