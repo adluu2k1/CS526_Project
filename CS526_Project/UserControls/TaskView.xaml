@@ -27,14 +27,14 @@
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="1.5*"/>
+                            <ColumnDefinition Width="*"/>
                         </Grid.ColumnDefinitions>
                         
-                        <Label x:Name="labelName" Grid.Column="0" FontAttributes="Bold" HorizontalOptions="Start"/>
+                        <Label x:Name="labelName" Grid.Column="0" FontAttributes="Bold" HorizontalOptions="Start" LineBreakMode="TailTruncation"/>
                         <Label x:Name="labelDeadline" Grid.Column="1" FontAttributes="Bold" HorizontalOptions="End"/>
                     </Grid>
 
-                    <Label x:Name="labelDescription" LineBreakMode="NoWrap" Margin="0,0,0,5"/>
+                    <Label x:Name="labelDescription" Margin="0,0,0,5" LineBreakMode="TailTruncation"/>
 
                     <ScrollView>
                         <HorizontalStackLayout x:Name="CategoriesWrapper" Margin="0,0,0,5"/>

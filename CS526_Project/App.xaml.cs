@@ -1,5 +1,6 @@
 ﻿using CS526_Project.Model;
 using Plugin.LocalNotification;
+using System.Globalization;
 using System.Text.Json;
 
 namespace CS526_Project;
@@ -24,6 +25,9 @@ public partial class App : Application
         SecondaryColor = rd_colors["Secondary"] as Color;
         TertiaryColor = rd_colors["Tertiary"] as Color;
 
+        CultureInfo.CurrentCulture = new CultureInfo("vi-vn");
+        CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("vi-vn");
+
         if (!File.Exists(FileSystem.AppDataDirectory + "/settings.json"))
         {
             Setting = new Settings();
@@ -33,7 +37,7 @@ public partial class App : Application
         {
             ImportSettings();
         }
-
+        
         if (Database.FindCategory(0) == null)
         {
             var cat_important = new Category() { Id = 0, Name = "Quan trọng", Color_Hex = Colors.Red.ToHex() };
@@ -41,7 +45,7 @@ public partial class App : Application
 
             Database.AddCategory(cat_important);
         }
-
+        
         mainPage = new();
         MainPage = new NavigationPage(mainPage);
     }

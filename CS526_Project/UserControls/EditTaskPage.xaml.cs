@@ -38,12 +38,13 @@ public partial class EditTaskPage : ContentPage
             labelTaskDetail.Text = "TASK DETAIL";
             labelTaskName.Text = "TASK NAME";
             txtName.Placeholder = "Task Name";
+            labelImportant.Text = "Important task";
             labelDeadline.Text = "DEADLINE";
-            labelNoDeadline.Text = "NO DEADLINE";
-            labelDay.Text = "DAY";
-            labelHour.Text = "HOUR";
+            labelNoDeadline.Text = "No Deadline";
+            labelDay.Text = "DATE";
+            labelHour.Text = "TIME";
             labelRemind.Text = "REMIND";
-            labelLabel.Text = "LABEL";
+            labelLabel.Text = "TAG";
             labelDescription.Text = "DESCRIPTON";
             txtDescription.Placeholder = "Description";
             btnSaveTask.Text = "SAVE CHANGES";
@@ -106,7 +107,7 @@ public partial class EditTaskPage : ContentPage
         var labelDate = new Label()
         {
             Style = (Style)this.Resources["DateTimeLabelStyle"],
-            Text = App.Setting.IsVietnamese ? "NGÀY" : "DAY"
+            Text = App.Setting.IsVietnamese ? "NGÀY" : "DATE"
         };
         var dateNoti = new DatePicker()
         {
@@ -116,7 +117,7 @@ public partial class EditTaskPage : ContentPage
         var labelTime = new Label()
         {
             Style = (Style)this.Resources["DateTimeLabelStyle"],
-            Text = App.Setting.IsVietnamese ? "GIỜ" : "HOUR"
+            Text = App.Setting.IsVietnamese ? "GIỜ" : "TIME"
         };
         var timeNoti = new TimePicker()
         {
@@ -164,7 +165,7 @@ public partial class EditTaskPage : ContentPage
         var CategoryPicker = new Picker
         {
             ItemsSource = listCategoriesName,
-            Title = "Select a category",
+            Title = App.Setting.IsVietnamese ? "Chọn nhãn" : "Select a tag",
             Margin = new Thickness(0, 0, 30, 0)
         };
         CategoryPicker.SelectedIndexChanged += OnSelectedIndexChanged;
@@ -206,7 +207,7 @@ public partial class EditTaskPage : ContentPage
                 listCategoryEntryWrapper[i].Children[0] = new Picker()
                 {
                     ItemsSource = listCategoriesName,
-                    Title = "Select a category",
+                    Title = App.Setting.IsVietnamese ? "Chọn nhãn" : "Select a tag",
                     Margin = new Thickness(0, 0, 30, 0),
                     SelectedIndex = listCategoriesName.Count - 2,
                     TextColor = category_color
@@ -221,7 +222,7 @@ public partial class EditTaskPage : ContentPage
                 listCategoryEntryWrapper[i].Children[0] = new Picker()
                 {
                     ItemsSource = listCategoriesName,
-                    Title = "Select a category",
+                    Title = App.Setting.IsVietnamese ? "Chọn nhãn" : "Select a tag",
                     Margin = new Thickness(0, 0, 30, 0),
                     SelectedIndex = picker_selectedIndex,
                     TextColor = picker_txtcolor
@@ -391,7 +392,14 @@ public partial class EditTaskPage : ContentPage
             }
             if (checkImportant.IsChecked)
             {
-                categoryId.Insert(0, 0);
+                var old_task = App.Database.FindTask(taskId);
+                if (old_task != null)
+                {
+                    if (!old_task.CategoryId.Contains(0))
+                    {
+                        categoryId.Insert(0, 0);
+                    }
+                }
             }
 
             task.str_CategoryId = JsonSerializer.Serialize(categoryId, typeof(List<int>));
@@ -455,7 +463,9 @@ public partial class EditTaskPage : ContentPage
 
     private async void btnDeleteTask_Clicked(object sender, EventArgs e)
     {
-        bool confirm = await DisplayAlert(App.Setting.IsVietnamese ? "Xóa nhiệm vụ?" : "Remove this task?", App.Setting.IsVietnamese ? "Bạn có muốn xóa nhiệm vụ này không?" : "Do you want to remove this task?", "Yes", "No");
+        bool confirm = await DisplayAlert(App.Setting.IsVietnamese ? "Xóa nhiệm vụ?" : "Remove this task?",
+                                        App.Setting.IsVietnamese ? "Bạn có muốn xóa nhiệm vụ này không?" : "Do you want to remove this task?",
+                                        "Yes", "No");
         if (confirm)
         {
             App.Database.DeleteTask(App.Database.FindTask(taskId));

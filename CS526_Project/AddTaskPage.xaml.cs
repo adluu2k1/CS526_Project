@@ -34,15 +34,16 @@ public partial class AddTaskPage : ContentPage
             labelNewTask.Text = "NEW TASK";
             labelTaskName.Text = "TASK NAME";
             txtName.Placeholder = "Task Name";
+            labelImportant.Text = "Important task";
             labelDeadline.Text = "DEADLINE";
-            labelNoDeadLine.Text = "NO DEADLINE";
-            labelDay.Text = "DAY";
-            labelHour.Text = "HOUR";
+            labelNoDeadLine.Text = "No Deadline";
+            labelDay.Text = "DATE";
+            labelHour.Text = "TIME";
             labelRemind.Text = "REMIND";
-            labelLabel.Text = "LABEL";
+            labelLabel.Text = "TAG";
             labelDescription.Text = "DESCRIPTION";
             txtDescription.Placeholder = "Description";
-            btnAddTask.Text = "COMPLETED";
+            btnAddTask.Text = "FINISH";
         }
     }
 
@@ -56,7 +57,7 @@ public partial class AddTaskPage : ContentPage
         var labelDate = new Label()
         {
             Style = (Style)this.Resources["DateTimeLabelStyle"],
-            Text = App.Setting.IsVietnamese ? "NGÀY" : "DAY"
+            Text = App.Setting.IsVietnamese ? "NGÀY" : "DATE"
         };
         var dateNoti = new DatePicker()
         {
@@ -66,7 +67,7 @@ public partial class AddTaskPage : ContentPage
         var labelTime = new Label()
         {
             Style = (Style)this.Resources["DateTimeLabelStyle"],
-            Text = App.Setting.IsVietnamese ? "GIỜ" : "HOUR"
+            Text = App.Setting.IsVietnamese ? "GIỜ" : "TIME"
         };
         var timeNoti = new TimePicker()
         {
@@ -114,7 +115,7 @@ public partial class AddTaskPage : ContentPage
         var CategoryPicker = new Picker
         {
             ItemsSource = listCategoriesName,
-            Title = "Select a category",
+            Title = App.Setting.IsVietnamese ? "Chọn nhãn" : "Select a tag",
             Margin = new Thickness(0, 0, 30, 0)
         };
         CategoryPicker.SelectedIndexChanged += OnSelectedIndexChanged;
@@ -156,7 +157,7 @@ public partial class AddTaskPage : ContentPage
                 listCategoryEntryWrapper[i].Children[0] = new Picker()
                 {
                     ItemsSource = listCategoriesName,
-                    Title = "Select a category",
+                    Title = App.Setting.IsVietnamese ? "Chọn nhãn" : "Select a tag",
                     Margin = new Thickness(0, 0, 30, 0),
                     SelectedIndex = listCategoriesName.Count - 2,
                     TextColor = category_color
@@ -171,7 +172,7 @@ public partial class AddTaskPage : ContentPage
                 listCategoryEntryWrapper[i].Children[0] = new Picker()
                 {
                     ItemsSource = listCategoriesName,
-                    Title = "Select a category",
+                    Title = App.Setting.IsVietnamese ? "Chọn nhãn" : "Select a tag",
                     Margin = new Thickness(0, 0, 30, 0),
                     SelectedIndex = picker_selectedIndex,
                     TextColor = picker_txtcolor

@@ -17,9 +17,10 @@
 
         <VerticalStackLayout Margin="30,0,30,20" VerticalOptions="Start" HorizontalOptions="Fill">
 
-            <Label x:Name="labelToday"
+            <Label x:Name="labelTodayDate"
                    FontSize="Body" FontAttributes="Bold"/>
-            <Label BindingContext="{x:Reference labelToday}"
+            <Label x:Name="labelToday"
+                   BindingContext="{x:Reference labelToday}"
                    Text="HÔM NAY"
                    FontSize="{Binding Path=FontSize}" FontAttributes="Bold"
                    FontFamily="{Binding Path=FontFamily}"

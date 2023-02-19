@@ -1,4 +1,5 @@
 ﻿using CS526_Project.UserControls;
+using System.Globalization;
 
 namespace CS526_Project;
 
@@ -9,7 +10,7 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 
 		var today = DateTime.Now.Date;
-		labelToday.Text = App.Setting.IsVietnamese ? $"NGÀY {today.Day} THÁNG {today.Month} NĂM {today.Year}" : $"DAY {today.Day} MONTH {today.Month} YEAR {today.Year}";
+		labelTodayDate.Text = App.Setting.IsVietnamese ? today.ToLongDateString() : ShowLongDateInEnglish(today);
 
 		WeekViewWrapper.Content = new WeekView(today);
 
@@ -27,7 +28,7 @@ public partial class MainPage : ContentPage
 		foreach (var task in ListAllTask) 
 		{
 			if (task.DeadlineTime == DateTime.MaxValue && task.IsDone)
-				break;
+				continue;
 			if (DateTime.Compare(date, task.DeadlineTime) <= 0)
 			{
                 TaskViewWrapper.Add(new TaskView(task, TaskViewWrapper));
@@ -40,6 +41,14 @@ public partial class MainPage : ContentPage
 		TaskViewWrapper.Children.Clear();
 		ShowTask(App.mainPage_SelectedDate);
 	}
+
+	private string ShowLongDateInEnglish(DateTime date)
+	{
+        CultureInfo.CurrentCulture = new CultureInfo("en-us");
+        string result = date.ToLongDateString();
+        CultureInfo.CurrentCulture = new CultureInfo("vi-vn");
+		return result;
+    }
 
     private async void btnSearch_Clicked(object sender, EventArgs e)
     {

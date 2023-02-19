@@ -1,4 +1,4 @@
-using CS526_Project.Model;
+﻿using CS526_Project.Model;
 
 namespace CS526_Project.UserControls;
 
@@ -13,7 +13,7 @@ public partial class TaskView : ContentView
 		this.parent = parent;
 
 		labelName.Text = task.Name;
-		labelDeadline.Text = task.DeadlineTime.ToString();
+		labelDeadline.Text = task.DeadlineTime.ToShortDateString() + "  " + task.DeadlineTime.ToShortTimeString();
 		labelDescription.Text = task.Description;
 
 		if (task.IsDone)
@@ -34,6 +34,7 @@ public partial class TaskView : ContentView
 		if (task.DeadlineTime == DateTime.MaxValue)
 		{
 			labelDeadline.IsVisible = false;
+			labelName.WidthRequest = labelName.MaximumWidthRequest;
 		}
 
 		AddCategoriesToView();
@@ -64,7 +65,8 @@ public partial class TaskView : ContentView
 			var category = App.Database.FindCategory(categoryId);
 			if (category != null)
 			{
-				var labelCategory = new Label() { Text = category.Name, TextColor = Color.FromArgb(category.Color_Hex) };
+				var labelCategory = new Label() { Text = category.Id == 0 ? (App.Setting.IsVietnamese ? "Quan trọng" : "Important") : category.Name,
+												TextColor = Color.FromArgb(category.Color_Hex) };
 				var labelSeparator = new Label() { Text = "|", Margin = new Thickness(10, 0) };
 
 				CategoriesWrapper.Add(labelCategory);

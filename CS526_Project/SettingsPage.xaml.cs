@@ -46,13 +46,31 @@ public partial class SettingsPage : ContentPage
             pickerTheme.ItemsSource = listTheme_en;
             pickerLanguage.SelectedIndex = 1;
         }
-	}
+
+        if (App.Setting.IsDarkMode)
+        {
+            pickerTheme.SelectedIndex = 1;
+        }
+        else
+        {
+            pickerTheme.SelectedIndex = 0;
+        }
+    }
 
     private void pickerLanguage_SelectedIndexChanged(object sender, EventArgs e)
     {
+        if (App.Setting.IsVietnamese == (pickerLanguage.SelectedItem as string != "English"))
+            return;
+
 		App.Setting.IsVietnamese = (pickerLanguage.SelectedItem as string != "English");
         App.SaveSettings();
+        
 		ApplyLanguage();
+        var old_mainPage = App.mainPage;
+        App.mainPage_SelectedDate = DateTime.Now;
+        App.mainPage = new MainPage();
+        Navigation.InsertPageBefore(App.mainPage, this);
+        Navigation.RemovePage(old_mainPage);
     }
 
     private void pickerTheme_SelectedIndexChanged(object sender, EventArgs e)

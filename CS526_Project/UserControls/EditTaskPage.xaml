@@ -140,7 +140,7 @@
                 Text="XÓA"
                 FontSize="Body" FontAttributes="Bold"
                 TextColor="White" BackgroundColor="{DynamicResource Primary}"
-                WidthRequest="80" HeightRequest="40" CornerRadius="20"
+                WidthRequest="90" HeightRequest="40" CornerRadius="20"
                 Clicked="btnDeleteTask_Clicked"/>
 
             </HorizontalStackLayout>

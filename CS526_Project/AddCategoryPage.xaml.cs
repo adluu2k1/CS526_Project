@@ -16,11 +16,11 @@ public partial class AddCategoryPage : ContentPage
 		this.caller_IndexInWraper = caller_IndexInWraper;
         if (!App.Setting.IsVietnamese)
         {
-            labelNewLabel.Text = "NEW LABEL";
-            labelLabelName.Text = "LABEL NAME";
-            txtName.Placeholder = "Label Name";
-            labelLabelColor.Text = "LABEL COLOR";
-            btnAddCategory.Text = "COMPLETED";
+            labelNewLabel.Text = "NEW TAG";
+            labelLabelName.Text = "TAG NAME";
+            txtName.Placeholder = "Tag Name";
+            labelLabelColor.Text = "DISPLAY COLOR";
+            btnAddCategory.Text = "FINISH";
         }
 
     }
@@ -55,7 +55,7 @@ public partial class AddCategoryPage : ContentPage
 
         if (App.Database.IsCategoryNameTaken(txtName.Text))
         {
-            labelError.Text = App.Setting.IsVietnamese ? "* Tên nhãn đã tồn tại. Vui lòng đặt tên khác." : "* This label name already exists. Please try another name.";
+            labelError.Text = App.Setting.IsVietnamese ? "* Tên nhãn đã tồn tại. Vui lòng đặt tên khác." : "* This tag name already exists. Please try another name.";
             labelError.IsVisible = true;
             return;
         }
