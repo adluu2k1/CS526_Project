@@ -61,4 +61,32 @@ public partial class App : Application
         string json_txt = JsonSerializer.Serialize(Setting, typeof(Settings));
         File.WriteAllText(FileSystem.AppDataDirectory + "/settings.json", json_txt);
     }
+
+    public static async Task RegisterDailyReminder()
+    {
+        if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
+        {
+            await LocalNotificationCenter.Current.RequestNotificationPermission();
+        }
+        if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
+        {
+            Setting.IsReminderForNextDayEnabled = false;
+            return;
+        }
+
+        var notireq = new NotificationRequest()
+        {
+            NotificationId = 0,
+            Title = App.Setting.IsVietnamese ? "Đừng quên lập kế hoạch cho ngày mai nhé" : "Don't forget to plan for tomorrow",
+            Description = App.Setting.IsVietnamese ? "Việc lập kế hoạch trước khi ngày mới bắt đầu sẽ giúp bạn chuẩn bị được tinh thần thép để hoàn thành tốt mọi việc" :
+                                                    "Planning your next day before it begins will help you prepare a strong will to complete every tasks.",
+            Schedule =
+                {
+                    NotifyTime = new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.Now.Day, 21, 0, 0),
+                    RepeatType = NotificationRepeat.Daily
+                }
+        };
+        
+        await LocalNotificationCenter.Current.Show(notireq);
+    }
 }

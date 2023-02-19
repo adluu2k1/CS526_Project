@@ -10,6 +10,6 @@ namespace CS526_Project.Model
     {
         public bool IsVietnamese { get; set; } = true;
         public bool IsDarkMode { get; set; } = false;
-        public bool IsReminderForNextDayEnabled { get; set; } = true;
+        public bool IsReminderForNextDayEnabled { get; set; } = false;
     }
 }

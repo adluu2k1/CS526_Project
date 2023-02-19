@@ -1,4 +1,6 @@
-﻿namespace CS526_Project;
+﻿using Plugin.LocalNotification;
+
+namespace CS526_Project;
 
 public partial class SettingsPage : ContentPage
 {
@@ -21,6 +23,11 @@ public partial class SettingsPage : ContentPage
         else
         {
             pickerTheme.SelectedIndex = 0;
+        }
+
+        if (App.Setting.IsReminderForNextDayEnabled)
+        {
+            switchRemind.IsToggled = true;
         }
 	}
 
@@ -66,6 +73,13 @@ public partial class SettingsPage : ContentPage
         App.SaveSettings();
         
 		ApplyLanguage();
+
+        if (switchRemind.IsToggled == true)
+        {
+            LocalNotificationCenter.Current.Cancel(0);
+            _ = App.RegisterDailyReminder();
+        }
+
         var old_mainPage = App.mainPage;
         App.mainPage_SelectedDate = DateTime.Now;
         App.mainPage = new MainPage();
@@ -80,6 +94,15 @@ public partial class SettingsPage : ContentPage
 
     private void switchRemind_Toggled(object sender, ToggledEventArgs e)
     {
-
+        if (e.Value == true)
+        {
+            App.Setting.IsReminderForNextDayEnabled = true;
+            _ = App.RegisterDailyReminder();
+        }
+        else
+        {
+            LocalNotificationCenter.Current.Cancel(0);
+            App.Setting.IsReminderForNextDayEnabled = false;
+        }
     }
 }
