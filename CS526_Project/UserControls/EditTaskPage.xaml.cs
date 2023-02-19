@@ -405,9 +405,12 @@ public partial class EditTaskPage : ContentPage
             task.str_CategoryId = JsonSerializer.Serialize(categoryId, typeof(List<int>));
         }
 
+        UnregisterAllNotifications(App.Database.FindTask(taskId));
+
         App.Database.UpdateTask(task);
         App.Database.DeleteObsoleteCategory();
         App.Database.DeleteObsoleteNotification();
+
         await RegisterAllNotification(task);
 
         for (int i = 0; i < Navigation.NavigationStack.Count - 1; i++)
@@ -458,6 +461,16 @@ public partial class EditTaskPage : ContentPage
             }
 
             await LocalNotificationCenter.Current.Show(notireq);
+        }
+    }
+
+    private void UnregisterAllNotifications(ToDo_Task task)
+    {
+        if (task == null) return;
+
+        foreach (var notification in App.Database.GetAllNotifications(task))
+        {
+            LocalNotificationCenter.Current.Cancel(notification.Id);
         }
     }
 
