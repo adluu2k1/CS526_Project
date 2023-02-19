@@ -16,15 +16,6 @@ public partial class SettingsPage : ContentPage
 
         ApplyLanguage();
 
-        if (App.Setting.IsDarkMode)
-        {
-            pickerTheme.SelectedIndex = 1;
-        }
-        else
-        {
-            pickerTheme.SelectedIndex = 0;
-        }
-
         if (App.Setting.IsReminderForNextDayEnabled)
         {
             switchRemind.IsToggled = true;
@@ -64,6 +55,12 @@ public partial class SettingsPage : ContentPage
         }
     }
 
+    private async Task ReloadPage()
+    {
+        App.mainPage.Navigation.InsertPageBefore(new SettingsPage(), this);
+        await App.mainPage.Navigation.PopAsync();
+    }
+
     private void pickerLanguage_SelectedIndexChanged(object sender, EventArgs e)
     {
         if (App.Setting.IsVietnamese == (pickerLanguage.SelectedItem as string != "English"))
@@ -83,17 +80,35 @@ public partial class SettingsPage : ContentPage
         var old_mainPage = App.mainPage;
         App.mainPage_SelectedDate = DateTime.Now;
         App.mainPage = new MainPage();
-        Navigation.InsertPageBefore(App.mainPage, this);
-        Navigation.RemovePage(old_mainPage);
+        old_mainPage.Navigation.InsertPageBefore(App.mainPage, old_mainPage.Navigation.NavigationStack[1]);
+        old_mainPage.Navigation.RemovePage(old_mainPage);
+        
     }
 
     private void pickerTheme_SelectedIndexChanged(object sender, EventArgs e)
     {
+        if (App.Setting.IsDarkMode == (pickerTheme.SelectedIndex == 1))
+            return;
 
+        if (pickerTheme.SelectedIndex == 0)
+        {
+            App.Current.UserAppTheme = AppTheme.Light;
+            App.Setting.IsDarkMode = false;
+        }
+        else
+        {
+            App.Current.UserAppTheme = AppTheme.Dark;
+            App.Setting.IsDarkMode = true;
+        }
+        App.SaveSettings();
+        _ = ReloadPage();
     }
 
     private void switchRemind_Toggled(object sender, ToggledEventArgs e)
     {
+        if (App.Setting.IsReminderForNextDayEnabled == (switchRemind.IsToggled == true))
+            return;
+
         if (e.Value == true)
         {
             App.Setting.IsReminderForNextDayEnabled = true;
@@ -104,5 +119,6 @@ public partial class SettingsPage : ContentPage
             LocalNotificationCenter.Current.Cancel(0);
             App.Setting.IsReminderForNextDayEnabled = false;
         }
+        App.SaveSettings();
     }
 }

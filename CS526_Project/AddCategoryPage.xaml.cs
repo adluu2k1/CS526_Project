@@ -67,7 +67,7 @@ public partial class AddCategoryPage : ContentPage
         {
             parentPage_Edit.OnAddCategoryPageReturn(txtName.Text, selected_color, caller_IndexInWraper);
         }
-		await Navigation.PopAsync();
+		await App.mainPage.Navigation.PopAsync();
     }
 
     private bool IsNameValid()

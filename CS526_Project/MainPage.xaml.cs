@@ -52,17 +52,17 @@ public partial class MainPage : ContentPage
 
     private async void btnSearch_Clicked(object sender, EventArgs e)
     {
-		await Navigation.PushAsync(new SearchPage());
+		await App.mainPage.Navigation.PushAsync(new SearchPage());
     }
 
     private async void btnAdd_Clicked(object sender, EventArgs e)
     {
-		await Navigation.PushAsync(new AddTaskPage());
+		await App.mainPage.Navigation.PushAsync(new AddTaskPage());
     }
 
     private async void btnSettings_Clicked(object sender, EventArgs e)
     {
-		await Navigation.PushAsync(new SettingsPage());
+		await App.mainPage.Navigation.PushAsync(new SettingsPage());
     }
 
 }

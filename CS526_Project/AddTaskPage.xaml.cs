@@ -237,7 +237,7 @@ public partial class AddTaskPage : ContentPage
             }
 
             picker.SelectedIndex = -1;
-            await Navigation.PushAsync(new AddCategoryPage(this, picker_index));
+            await App.mainPage.Navigation.PushAsync(new AddCategoryPage(this, picker_index));
             return;
         }
         var picker_txtcolor = App.Database.GetAllCategories()[picker.SelectedIndex].Color_Hex;
@@ -345,7 +345,7 @@ public partial class AddTaskPage : ContentPage
 
         await RegisterAllNotification(task);
         App.mainPage.RefreshTaskViewWrapper();
-        await Navigation.PopAsync();
+        await App.mainPage.Navigation.PopAsync();
     }
 
     private bool IsNameValid()

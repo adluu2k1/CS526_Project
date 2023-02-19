@@ -85,6 +85,6 @@ public partial class TaskView : ContentView
 
     private async void btnTaskView_Clicked(object sender, EventArgs e)
     {
-		await Navigation.PushAsync(new EditTaskPage(task));
+		await App.mainPage.Navigation.PushAsync(new EditTaskPage(task));
     }
 }

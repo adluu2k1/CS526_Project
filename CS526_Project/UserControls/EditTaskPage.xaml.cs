@@ -287,7 +287,7 @@ public partial class EditTaskPage : ContentPage
             }
 
             picker.SelectedIndex = -1;
-            await Navigation.PushAsync(new AddCategoryPage(this, picker_index));
+            await App.mainPage.Navigation.PushAsync(new AddCategoryPage(this, picker_index));
             return;
         }
         var picker_txtcolor = App.Database.GetAllCategories()[picker.SelectedIndex].Color_Hex;
@@ -413,9 +413,9 @@ public partial class EditTaskPage : ContentPage
 
         await RegisterAllNotification(task);
 
-        for (int i = 0; i < Navigation.NavigationStack.Count - 1; i++)
+        for (int i = 0; i < App.mainPage.Navigation.NavigationStack.Count - 1; i++)
         {
-            var previous_page = Navigation.NavigationStack[i];
+            var previous_page = App.mainPage.Navigation.NavigationStack[i];
             if (previous_page.GetType() == typeof(MainPage))
             {
                 App.mainPage.RefreshTaskViewWrapper();
@@ -427,7 +427,7 @@ public partial class EditTaskPage : ContentPage
             }
         }
 
-        await Navigation.PopAsync();
+        await App.mainPage.Navigation.PopAsync();
     }
 
     private async Task RegisterAllNotification(ToDo_Task task)
@@ -483,9 +483,9 @@ public partial class EditTaskPage : ContentPage
         {
             App.Database.DeleteTask(App.Database.FindTask(taskId));
             App.Database.DeleteObsoleteCategory();
-            for (int i = 0; i < Navigation.NavigationStack.Count - 1; i++)
+            for (int i = 0; i < App.mainPage.Navigation.NavigationStack.Count - 1; i++)
             {
-                var previous_page = Navigation.NavigationStack[i];
+                var previous_page = App.mainPage.Navigation.NavigationStack[i];
                 if (previous_page.GetType() == typeof(MainPage))
                 {
                     App.mainPage.RefreshTaskViewWrapper();
@@ -496,7 +496,7 @@ public partial class EditTaskPage : ContentPage
                     page.txtSearch_TextChanged(null, null);
                 }
             }
-            await Navigation.PopAsync();
+            await App.mainPage.Navigation.PopAsync();
         }
     }
 }

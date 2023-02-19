@@ -17,9 +17,10 @@
                 Clicked="Button_Clicked"/>
 
         <Label x:Name="labelDayOfWeek" x:FieldModifier="public"
-               Grid.Row="0" HorizontalOptions="Center"/>
+               Grid.Row="0" HorizontalOptions="Center"
+               TextColor="Black"/>
         <Label x:Name="labelDate" x:FieldModifier="public"
-               Grid.Row="1" FontSize="20" FontAttributes="Bold"
+               Grid.Row="1" FontSize="20" FontAttributes="Bold" TextColor="Black"
                HorizontalOptions="Center" VerticalOptions="Center" HorizontalTextAlignment="Center"/>
 
     </Grid>

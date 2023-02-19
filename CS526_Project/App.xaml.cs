@@ -37,6 +37,11 @@ public partial class App : Application
         {
             ImportSettings();
         }
+
+        if (Setting.IsDarkMode)
+        {
+            App.Current.UserAppTheme = AppTheme.Dark;
+        }
         
         if (Database.FindCategory(0) == null)
         {
