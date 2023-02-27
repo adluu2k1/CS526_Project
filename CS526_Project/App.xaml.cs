@@ -28,15 +28,7 @@ public partial class App : Application
         CultureInfo.CurrentCulture = new CultureInfo("vi-vn");
         CultureInfo.DefaultThreadCurrentCulture = new CultureInfo("vi-vn");
 
-        if (!File.Exists(FileSystem.AppDataDirectory + "/settings.json"))
-        {
-            Setting = new Settings();
-            SaveSettings();
-        }
-        else
-        {
-            ImportSettings();
-        }
+        ImportSettings();
 
         if (Setting.IsDarkMode)
         {
@@ -57,6 +49,13 @@ public partial class App : Application
 
     public static void ImportSettings()
     {
+        if (!File.Exists(FileSystem.AppDataDirectory + "/settings.json"))
+        {
+            Setting = new Settings();
+            SaveSettings();
+            return;
+        }
+
         string json_txt = File.ReadAllText(FileSystem.AppDataDirectory + "/settings.json");
         Setting = JsonSerializer.Deserialize(json_txt, typeof(Settings)) as Settings;
     }

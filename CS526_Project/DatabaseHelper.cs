@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CS526_Project.Model;
 using SQLite;
 
-namespace CS526_Project.Model
+namespace CS526_Project
 {
     public class DatabaseHelper
     {
@@ -291,7 +292,7 @@ namespace CS526_Project.Model
         {
             if (db_connection == null)
                 Init();
-            
+
             db_connection.DeleteAll<ToDo_Task>();
         }
 

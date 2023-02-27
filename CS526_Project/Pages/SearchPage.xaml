@@ -32,7 +32,7 @@
 
             </Border>
 
-            <HorizontalStackLayout Margin="0,0,0,30" HorizontalOptions="Center">
+            <HorizontalStackLayout Margin="0,0,0,20" HorizontalOptions="Center">
 
                 <VerticalStackLayout Margin="10,0,30,0">
 
@@ -63,6 +63,17 @@
 
                 </VerticalStackLayout>
 
+            </HorizontalStackLayout>
+
+            <HorizontalStackLayout>
+                <CheckBox x:Name="checkDeadlineFilter" Margin="0,0,10,0" CheckedChanged="checkDeadlineFilter_CheckedChanged"/>
+                <Label x:Name="labelDeadlineFilter" Text="Lọc kết quả tìm kiếm theo hạn chót" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
+            <HorizontalStackLayout Margin="40,0,0,0">
+                <Label x:Name="labelDeadlineFrom" Text="Từ:" VerticalOptions="Center" Margin="0,0,10,0"/>
+                <DatePicker x:Name="dateDeadlineFrom" Margin="0,0,30,0"/>
+                <Label x:Name="labelDeadlineTo" Text="Đến:" VerticalOptions="Center" Margin="0,0,10,0"/>
+                <DatePicker x:Name="dateDeadlineTo"/>
             </HorizontalStackLayout>
 
             <ScrollView HeightRequest="500">

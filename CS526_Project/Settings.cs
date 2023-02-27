@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CS526_Project.Model
+namespace CS526_Project
 {
     public class Settings
     {

@@ -110,4 +110,9 @@ public partial class SearchPage : ContentPage
         Tag_IsNotImportant = e.Value;
         txtSearch_TextChanged(null, null);
     }
+
+    private void checkDeadlineFilter_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+
+    }
 }
