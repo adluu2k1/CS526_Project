@@ -1,6 +1,7 @@
 ﻿using CS526_Project.Model;
 using Plugin.LocalNotification;
 using System.Globalization;
+using System.IO.Compression;
 using System.Text.Json;
 
 namespace CS526_Project;
@@ -42,9 +43,13 @@ public partial class App : Application
 
             Database.AddCategory(cat_important);
         }
-        
+
+        // BackupData();
+        RestoreData(Android.App.Application.Context.GetExternalFilesDir("").AbsolutePath + "/ToDoData.zip");
+
         mainPage = new();
         MainPage = new NavigationPage(mainPage);
+        
     }
 
     public static void ImportSettings()
@@ -65,6 +70,43 @@ public partial class App : Application
         string json_txt = JsonSerializer.Serialize(Setting, typeof(Settings));
         File.WriteAllText(FileSystem.AppDataDirectory + "/settings.json", json_txt);
     }
+
+    public static void BackupData()
+    {
+        if (DeviceInfo.Current.Platform == DevicePlatform.Android)
+        {
+            string targetPath = Android.App.Application.Context.GetExternalFilesDir("").AbsolutePath; // Save to Android/data/com.cs526_project.todo/files
+            string settingsPath = FileSystem.AppDataDirectory + "/settings.json";
+            string dbPath = FileSystem.AppDataDirectory + "/database.db3";
+            if (File.Exists(settingsPath) && File.Exists(dbPath))
+            {
+                if (File.Exists(targetPath + "/ToDoData.zip"))
+                    File.Delete(targetPath + "/ToDoData.zip");
+
+                using (var archive = ZipFile.Open(targetPath + "/ToDoData.zip", ZipArchiveMode.Create))
+                {
+                    archive.CreateEntryFromFile(settingsPath, "settings.json");
+                    archive.CreateEntryFromFile(dbPath, "database.db3");
+                }
+            }
+        }
+    }
+
+    public static void RestoreData(string zipPath)
+    {
+        using (var archive = ZipFile.OpenRead(zipPath))
+        {
+            foreach (var entry in archive.Entries)
+            {
+                if (String.Equals(entry.FullName, "settings.json") || String.Equals(entry.FullName, "database.db3"))
+                {
+                    entry.ExtractToFile(FileSystem.AppDataDirectory, true);
+                }
+            }
+        }
+
+    }
+
 
     public static async Task RegisterDailyReminder()
     {
