@@ -1,5 +1,7 @@
-using CS526_Project.Model;
+﻿using CS526_Project.Model;
 using CS526_Project.UserControls;
+using Microsoft.Maui.Controls;
+using Microsoft.Maui.Controls.Shapes;
 
 namespace CS526_Project;
 
@@ -9,6 +11,8 @@ public partial class SearchPage : ContentPage
     private bool Tag_IsNotImportant = false;
     private bool Tag_IsDone = false;
     private bool Tag_IsNotDone = false;
+
+    private List<object> listBtnRemoveCategory = new List<object>();
 
     public SearchPage()
     {
@@ -60,16 +64,47 @@ public partial class SearchPage : ContentPage
                     result.RemoveAt(i); continue;
                 }
             }
-                
-            if ((Tag_IsDone && !task.IsDone) || (Tag_IsNotDone && task.IsDone))
-            {
-                result.RemoveAt(i); continue;
-            }
 
-            bool task_IsImportant = App.Database.IsTaskImportant(task);
-            if ((Tag_IsImportant && !task_IsImportant) || (Tag_IsNotImportant && task_IsImportant))
+            if (checkAdvance.IsChecked)
             {
-                result.RemoveAt(i); continue;
+                if ((Tag_IsDone && !task.IsDone) || (Tag_IsNotDone && task.IsDone))
+                {
+                    result.RemoveAt(i); continue;
+                }
+
+                bool task_IsImportant = App.Database.IsTaskImportant(task);
+                if ((Tag_IsImportant && !task_IsImportant) || (Tag_IsNotImportant && task_IsImportant))
+                {
+                    result.RemoveAt(i); continue;
+                }
+
+                if (checkDeadlineFilter.IsChecked &&
+                    (task.DeadlineTime < dateDeadlineFrom.Date || task.DeadlineTime > dateDeadlineTo.Date))
+                {
+                    result.RemoveAt(i); continue;
+                }
+
+                if (checkCategoryFilter.IsChecked)
+                {
+                    bool need_to_be_removed = false;
+                    for (int j = 0; j < CategoriesFilterWrapper.Count - 1; j++)
+                    {
+                        var border = CategoriesFilterWrapper[j] as Border;
+                        var view = border.Content as Layout;
+                        var picker = view.Children[0] as Picker;
+                        var category = App.Database.FindCategory(picker.SelectedItem as string);
+
+                        if (!task.CategoryId.Contains(category.Id))
+                        {
+                            need_to_be_removed = true;
+                            break;
+                        }
+                    }
+                    if (need_to_be_removed)
+                    {
+                        result.RemoveAt(i); continue;
+                    }
+                }
             }
 
             i++;
@@ -111,8 +146,100 @@ public partial class SearchPage : ContentPage
         txtSearch_TextChanged(null, null);
     }
 
+    private void btnAddCategory_Clicked(object sender, EventArgs e)
+    {
+        List<string> categoriesStr = new List<string>();
+        foreach (var category in App.Database.GetAllCategories())
+        {
+            if (category.Id == 0) continue;
+            categoriesStr.Add(category.Name);
+        }
+
+        Picker categoryPicker = new Picker()
+        {
+            ItemsSource = categoriesStr,
+            Title = "Chọn nhãn",
+            Margin = new Thickness(10,0,5,0),
+        };
+        ImageButton btnRemove = new ImageButton()
+        {
+            Style = (Style)this.Resources["RemoveButtonStyle"],
+            VerticalOptions = LayoutOptions.Center,
+            Margin = new Thickness(5,0,10,0)
+        };
+        categoryPicker.SelectedIndexChanged += categoryPicker_SelectedIndexChanged;
+        btnRemove.Clicked += btnRemoveCategory_Clicked;
+
+        HorizontalStackLayout view = new HorizontalStackLayout();
+        view.Children.Add(categoryPicker);
+        view.Children.Add(btnRemove);
+
+        Border border = new Border()
+        {
+            BackgroundColor = Colors.Transparent,
+            Stroke = Colors.Black,
+            StrokeShape = new RoundRectangle() { CornerRadius = new CornerRadius(10) },
+            StrokeThickness = 1,
+            Margin = new Thickness(0,0,10,0)
+        };
+        border.Content = view;
+
+        CategoriesFilterWrapper.Insert(CategoriesFilterWrapper.Count - 1, border);
+
+        listBtnRemoveCategory.Add(btnRemove);
+    }
+
+    private void btnRemoveCategory_Clicked(object sender, EventArgs e)
+    {
+        for (int i = 0; i < listBtnRemoveCategory.Count; i++)
+        {
+            if (listBtnRemoveCategory[i] == sender)
+            {
+                listBtnRemoveCategory.RemoveAt(i);
+                CategoriesFilterWrapper.Children.RemoveAt(i);
+            }
+        }
+
+        txtSearch_TextChanged(null, null);
+    }
+
+    private void categoryPicker_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        var picker = sender as Picker;
+
+        foreach (var category in App.Database.GetAllCategories())
+        {
+            if (picker.SelectedItem as string == category.Name)
+            {
+                picker.TextColor = Color.FromArgb(category.Color_Hex);
+                break;
+            }
+        }
+
+        txtSearch_TextChanged(null, null);
+    }
+
     private void checkDeadlineFilter_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
+        DeadlineFilterWrapper.IsVisible = e.Value;
+        txtSearch_TextChanged(null, null);
+    }
 
+    private void checkAdvance_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        AdvanceSearchOptionsWrapper.IsVisible = e.Value;
+        txtSearch_TextChanged(null, null);
+    }
+
+    private void checkCategoryFilter_CheckedChanged(object sender, CheckedChangedEventArgs e)
+    {
+        var view = CategoriesFilterWrapper.Parent as View;
+        view.IsVisible = e.Value;
+        txtSearch_TextChanged(null, null);
+    }
+
+    private void dateDeadline_DateSelected(object sender, DateChangedEventArgs e)
+    {
+        txtSearch_TextChanged(null, null);
     }
 }

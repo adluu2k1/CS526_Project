@@ -3,6 +3,27 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CS526_Project.SearchPage">
 
+    <ContentPage.Resources>
+
+        <Style x:Key="RemoveButtonStyle" TargetType="ImageButton">
+            <Setter Property="Source" Value="Resources/Images/subtract.svg"/>
+            <Setter Property="WidthRequest" Value="20"/>
+            <Setter Property="HeightRequest" Value="20"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        </Style>
+
+        <Style x:Key="AddButtonStyle" TargetType="ImageButton">
+            <Setter Property="Source" Value="Resources/Images/add.svg"/>
+            <Setter Property="WidthRequest" Value="20"/>
+            <Setter Property="HeightRequest" Value="20"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="HorizontalOptions" Value="Start"/>
+            <Setter Property="BackgroundColor" Value="{DynamicResource Primary}"/>
+        </Style>
+
+    </ContentPage.Resources>
+
     <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
 
         <Ellipse Fill="{DynamicResource Tertiary}"
@@ -32,49 +53,73 @@
 
             </Border>
 
-            <HorizontalStackLayout Margin="0,0,0,20" HorizontalOptions="Center">
+            <HorizontalStackLayout Margin="0,0,0,10">
+                <CheckBox x:Name="checkAdvance" Margin="0,0,10,0" CheckedChanged="checkAdvance_CheckedChanged"/>
+                <Label x:Name="labelAdvance" Text="Tìm kiếm nâng cao" VerticalOptions="Center"/>
+            </HorizontalStackLayout>
 
-                <VerticalStackLayout Margin="10,0,30,0">
+            <VerticalStackLayout x:Name="AdvanceSearchOptionsWrapper" Margin="20,0,0,20" IsVisible="False">
 
-                    <CheckBox x:Name="checkDone" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
+                <HorizontalStackLayout Margin="0,0,0,20" HorizontalOptions="Center">
+
+                    <VerticalStackLayout Margin="10,0,30,0">
+
+                        <CheckBox x:Name="checkDone" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
                           CheckedChanged="checkDone_CheckedChanged">
-                    </CheckBox>
-                    <Label x:Name="labelCompleted" Text="Đã hoàn thành" HorizontalOptions="Center"/>
+                        </CheckBox>
+                        <Label x:Name="labelCompleted" Text="Đã hoàn thành" HorizontalOptions="Center"/>
 
-                    <CheckBox x:Name="checkNotDone" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
+                        <CheckBox x:Name="checkNotDone" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
                           CheckedChanged="checkNotDone_CheckedChanged">
-                    </CheckBox>
-                    <Label x:Name="labelNotCompleted" Text="Chưa hoàn thành" HorizontalOptions="Center"/>
+                        </CheckBox>
+                        <Label x:Name="labelNotCompleted" Text="Chưa hoàn thành" HorizontalOptions="Center"/>
 
-                </VerticalStackLayout>
+                    </VerticalStackLayout>
 
-                <VerticalStackLayout Margin="10,0,0,0">
+                    <VerticalStackLayout Margin="10,0,0,0">
 
-                    <CheckBox x:Name="checkImportant" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
+                        <CheckBox x:Name="checkImportant" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
                           CheckedChanged="checkImportant_CheckedChanged">
-                    </CheckBox>
-                    <Label x:Name="labelImportant" 
-                   Text="Quan trọng" HorizontalOptions="Center"/>
+                        </CheckBox>
+                        <Label x:Name="labelImportant" 
+                                Text="Quan trọng" HorizontalOptions="Center"/>
 
-                    <CheckBox x:Name="checkNotImportant" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
+                        <CheckBox x:Name="checkNotImportant" WidthRequest="30" HeightRequest="30" HorizontalOptions="Center"
                           CheckedChanged="checkNotImportant_CheckedChanged">
-                    </CheckBox>
-                    <Label x:Name="labelNotImportant" Text="Không quan trọng" HorizontalOptions="Center"/>
+                        </CheckBox>
+                        <Label x:Name="labelNotImportant" Text="Không quan trọng" HorizontalOptions="Center"/>
 
-                </VerticalStackLayout>
+                    </VerticalStackLayout>
 
-            </HorizontalStackLayout>
+                </HorizontalStackLayout>
 
-            <HorizontalStackLayout>
-                <CheckBox x:Name="checkDeadlineFilter" Margin="0,0,10,0" CheckedChanged="checkDeadlineFilter_CheckedChanged"/>
-                <Label x:Name="labelDeadlineFilter" Text="Lọc kết quả tìm kiếm theo hạn chót" VerticalOptions="Center"/>
-            </HorizontalStackLayout>
-            <HorizontalStackLayout Margin="40,0,0,0">
-                <Label x:Name="labelDeadlineFrom" Text="Từ:" VerticalOptions="Center" Margin="0,0,10,0"/>
-                <DatePicker x:Name="dateDeadlineFrom" Margin="0,0,30,0"/>
-                <Label x:Name="labelDeadlineTo" Text="Đến:" VerticalOptions="Center" Margin="0,0,10,0"/>
-                <DatePicker x:Name="dateDeadlineTo"/>
-            </HorizontalStackLayout>
+                <HorizontalStackLayout>
+                    <CheckBox x:Name="checkDeadlineFilter" Margin="0,0,10,0" CheckedChanged="checkDeadlineFilter_CheckedChanged"/>
+                    <Label x:Name="labelDeadlineFilter" Text="Lọc kết quả tìm kiếm theo hạn chót" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <HorizontalStackLayout x:Name="DeadlineFilterWrapper" Margin="40,0,0,0" IsVisible="False">
+                    <Label x:Name="labelDeadlineFrom" Text="Từ:" VerticalOptions="Center" Margin="0,0,10,0"/>
+                    <DatePicker x:Name="dateDeadlineFrom" Margin="0,0,30,0" DateSelected="dateDeadline_DateSelected"/>
+                    <Label x:Name="labelDeadlineTo" Text="Đến:" VerticalOptions="Center" Margin="0,0,10,0"/>
+                    <DatePicker x:Name="dateDeadlineTo" DateSelected="dateDeadline_DateSelected"/>
+                </HorizontalStackLayout>
+
+                <HorizontalStackLayout>
+                    <CheckBox x:Name="checkCategoryFilter" Margin="0,0,10,0" CheckedChanged="checkCategoryFilter_CheckedChanged"/>
+                    <Label x:Name="labelCategories" Text="Lọc theo nhãn" VerticalOptions="Center"/>
+                </HorizontalStackLayout>
+                <ScrollView Orientation="Horizontal" Margin="20,0,0,0" IsVisible="False">
+                    <HorizontalStackLayout x:Name="CategoriesFilterWrapper">
+                        <HorizontalStackLayout VerticalOptions="Center" HeightRequest="40">
+                            <ImageButton x:Name="btnAddCategory"
+                                     Style="{StaticResource AddButtonStyle}"
+                                     Clicked="btnAddCategory_Clicked"/>
+                            <Label x:Name="labelAddCategory" Text="Thêm nhãn" Margin="5,0,0,0" VerticalOptions="Center"/>
+                        </HorizontalStackLayout>
+                    </HorizontalStackLayout>
+                </ScrollView>
+
+            </VerticalStackLayout>
 
             <ScrollView HeightRequest="500">
                 <VerticalStackLayout x:Name="TaskViewWrapper"/>
