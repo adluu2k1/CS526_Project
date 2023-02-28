@@ -106,7 +106,7 @@
 
                 <HorizontalStackLayout>
                     <CheckBox x:Name="checkCategoryFilter" Margin="0,0,10,0" CheckedChanged="checkCategoryFilter_CheckedChanged"/>
-                    <Label x:Name="labelCategories" Text="Lọc theo nhãn" VerticalOptions="Center"/>
+                    <Label x:Name="labelCategories" Text="Lọc kết quả tìm kiếm theo nhãn" VerticalOptions="Center"/>
                 </HorizontalStackLayout>
                 <ScrollView Orientation="Horizontal" Margin="20,0,0,0" IsVisible="False">
                     <HorizontalStackLayout x:Name="CategoriesFilterWrapper">

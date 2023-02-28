@@ -22,10 +22,16 @@ public partial class SearchPage : ContentPage
         if (!App.Setting.IsVietnamese)
         {
             txtSearch.Placeholder = "Search";
+            labelAdvance.Text = "Advanced Search";
             labelCompleted.Text = "Completed";
             labelImportant.Text = "Important";
             labelNotCompleted.Text = "Pending";
             labelNotImportant.Text = "Not Important";
+            labelDeadlineFilter.Text = "Filter results by deadlines";
+            labelDeadlineFrom.Text = "From:";
+            labelDeadlineTo.Text = "To:";
+            labelCategories.Text = "Filter results by tags";
+            labelAddCategory.Text = "Add Tag";
         }
     }
 
@@ -100,10 +106,7 @@ public partial class SearchPage : ContentPage
                             break;
                         }
                     }
-                    if (need_to_be_removed)
-                    {
-                        result.RemoveAt(i); continue;
-                    }
+                    if (need_to_be_removed) { result.RemoveAt(i); continue; }
                 }
             }
 
@@ -158,7 +161,7 @@ public partial class SearchPage : ContentPage
         Picker categoryPicker = new Picker()
         {
             ItemsSource = categoriesStr,
-            Title = "Chọn nhãn",
+            Title = App.Setting.IsVietnamese ? "Chọn nhãn" : "Select a tag",
             Margin = new Thickness(10,0,5,0),
         };
         ImageButton btnRemove = new ImageButton()
