@@ -98,13 +98,11 @@ public partial class App : Application
         {
             foreach (var entry in archive.Entries)
             {
-                if (String.Equals(entry.FullName, "settings.json") || String.Equals(entry.FullName, "database.db3"))
-                {
-                    entry.ExtractToFile(FileSystem.AppDataDirectory, true);
-                }
+                if (!(entry.FullName.EndsWith(".db3") || entry.FullName.EndsWith(".json")))
+                    return;
             }
         }
-
+                ZipFile.ExtractToDirectory(zipPath, FileSystem.AppDataDirectory, true);
     }
 
 
