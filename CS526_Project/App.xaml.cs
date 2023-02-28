@@ -102,7 +102,8 @@ public partial class App : Application
                     return;
             }
         }
-                ZipFile.ExtractToDirectory(zipPath, FileSystem.AppDataDirectory, true);
+        
+        ZipFile.ExtractToDirectory(zipPath, FileSystem.AppDataDirectory, true);
     }
 
 
