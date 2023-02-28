@@ -45,7 +45,7 @@ public partial class App : Application
         }
 
         // BackupData();
-        RestoreData(Android.App.Application.Context.GetExternalFilesDir("").AbsolutePath + "/ToDoData.zip");
+        // RestoreData(Android.App.Application.Context.GetExternalFilesDir("").AbsolutePath + "/ToDoData.zip");
 
         mainPage = new();
         MainPage = new NavigationPage(mainPage);
