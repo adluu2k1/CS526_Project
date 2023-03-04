@@ -1,4 +1,5 @@
-﻿using Plugin.LocalNotification;
+﻿using CommunityToolkit.Maui;
+using Plugin.LocalNotification;
 
 namespace CS526_Project;
 
@@ -9,7 +10,8 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
-			.UseLocalNotification()
+            .UseMauiApp<App>().UseMauiCommunityToolkit()
+            .UseLocalNotification()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
