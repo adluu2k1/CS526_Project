@@ -100,6 +100,8 @@ public partial class SearchPage : ContentPage
                         var picker = view.Children[0] as Picker;
                         var category = App.Database.FindCategory(picker.SelectedItem as string);
 
+                        if (category == null) continue;
+
                         if (!task.CategoryId.Contains(category.Id))
                         {
                             need_to_be_removed = true;
@@ -180,7 +182,7 @@ public partial class SearchPage : ContentPage
         Border border = new Border()
         {
             BackgroundColor = Colors.Transparent,
-            Stroke = Colors.Black,
+            Stroke = App.Setting.IsDarkMode ? Colors.White : Colors.Black,
             StrokeShape = new RoundRectangle() { CornerRadius = new CornerRadius(10) },
             StrokeThickness = 1,
             Margin = new Thickness(0,0,10,0)

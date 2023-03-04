@@ -67,6 +67,107 @@
                     Toggled="switchRemind_Toggled"/>
             </Grid>
 
+            <Grid Margin="0,0,0,20">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <Label x:Name="labelBackupNow" Grid.Row="0"
+                        Text="Sao lưu và khôi phục dữ liệu"
+                        FontSize="Body"
+                        HorizontalOptions="Start" VerticalOptions="Center"/>
+                <HorizontalStackLayout Grid.Row="1" Spacing="10" Margin="0,10,0,0" HorizontalOptions="Center">
+                    <Button x:Name="btnBackupNow"
+                        Text="Sao lưu ngay" FontAttributes="Bold" LineBreakMode="WordWrap"
+                        TextColor="White"
+                        VerticalOptions="Center"
+                        Clicked="btnBackupNow_Clicked"/>
+                    <Button x:Name="btnRestoreNow"
+                        Text="Khôi phục ngay" FontAttributes="Bold" LineBreakMode="WordWrap"
+                        TextColor="White"
+                        VerticalOptions="Center"
+                        Clicked="btnRestoreNow_Clicked"/>
+                </HorizontalStackLayout>
+            </Grid>
+
+            <Grid Margin="0,0,0,20">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Margin="0,0,10,0" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Label x:Name="labelBackupFolderPath" Grid.Row="0"
+                           Text="Đường dẫn đến thư mục sao lưu:"
+                           FontSize="Body"
+                           HorizontalOptions="Start"/>
+                    <Label x:Name="txtBackupFolderPath" Grid.Row="1" IsVisible="False"
+                           FontSize="Caption" FontAttributes="Italic"
+                           HorizontalOptions="Start"/>
+                    <Label x:Name="labelFolderNotSetted" Grid.Row="1"
+                           Text="Chưa thiết lập" TextColor="Red"
+                           FontSize="Caption" FontAttributes="Italic"
+                           HorizontalOptions="Start"/>
+
+                </Grid>
+
+                <Button x:Name="btnChangeFolderPath" Grid.Column="1"
+                        Text="Thay đổi"
+                        TextColor="White"
+                        HorizontalOptions="End" VerticalOptions="Center"
+                        Clicked="btnChangeFolderPath_Clicked"/>
+            </Grid>
+
+            <Grid Margin="0,0,0,30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Margin="0,0,10,0" Grid.Column="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    
+                    <Label x:Name="labelBackupFileName" Grid.Row="0"
+                        Text="Tên file sao lưu:"
+                        FontSize="Body"
+                        HorizontalOptions="Start"/>
+                    <Label x:Name="txtBackupFileName" Grid.Row="1"
+                       Text="ToDo_Backup.zip"
+                       FontSize="Caption" FontAttributes="Italic"
+                       HorizontalOptions="Start"/>
+                </Grid>
+
+                <Button x:Name="btnChangeFileName" Grid.Column="1"
+                        Text="Thay đổi"
+                        TextColor="White"
+                        HorizontalOptions="End" VerticalOptions="Center"
+                        Clicked="btnChangeFileName_Clicked"/>
+            </Grid>
+
+            <Grid Margin="0,0,0,30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="3*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Label x:Name="labelAutoBackup" Grid.Column="0"
+                        Text="Tự động sao lưu dữ liệu"
+                        FontSize="Body"
+                        HorizontalOptions="Start" VerticalOptions="Center"/>
+                <Switch x:Name="switchAutoBackup" Grid.Column="1"
+                        HorizontalOptions="End" VerticalOptions="Center"
+                        Toggled="switchAutoBackup_Toggled"/>
+            </Grid>
+
         </VerticalStackLayout>
 
     </Grid>

@@ -56,6 +56,12 @@ public partial class TaskView : ContentView
 
             TaskDetailView.Opacity = 1;
 		}
+
+        if (App.Setting.IsAutoBackupEnabled)
+        {
+            try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+            catch (Exception) { }
+        }
     }
 
 	private void AddCategoriesToView()
@@ -67,7 +73,7 @@ public partial class TaskView : ContentView
 			{
 				var labelCategory = new Label() { Text = category.Id == 0 ? (App.Setting.IsVietnamese ? "Quan trọng" : "Important") : category.Name,
 												TextColor = Color.FromArgb(category.Color_Hex) };
-				var labelSeparator = new Label() { Text = "|", Margin = new Thickness(10, 0) };
+				var labelSeparator = new Label() { Text = "|", Margin = new Thickness(10, 0), TextColor = Colors.Black };
 
 				CategoriesWrapper.Add(labelCategory);
 				CategoriesWrapper.Add(labelSeparator);

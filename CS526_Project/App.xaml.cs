@@ -1,5 +1,6 @@
 ﻿using CS526_Project.Model;
 using Plugin.LocalNotification;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO.Compression;
 using System.Text.Json;
@@ -44,12 +45,8 @@ public partial class App : Application
             Database.AddCategory(cat_important);
         }
 
-        // BackupData();
-        RestoreData(Android.App.Application.Context.GetExternalFilesDir("").AbsolutePath + "/ToDoData.zip");
-
         mainPage = new();
         MainPage = new NavigationPage(mainPage);
-        
     }
 
     public static void ImportSettings()
@@ -69,44 +66,65 @@ public partial class App : Application
     {
         string json_txt = JsonSerializer.Serialize(Setting, typeof(Settings));
         File.WriteAllText(FileSystem.AppDataDirectory + "/settings.json", json_txt);
+
+        if (Setting.IsAutoBackupEnabled)
+        {
+            try { BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+            catch (Exception) { }
+        }
     }
 
-    public static void BackupData()
+    public static void BackupData(string targetPath)
     {
-        if (DeviceInfo.Current.Platform == DevicePlatform.Android)
+        string settingsPath = FileSystem.AppDataDirectory + "/settings.json";
+        string dbPath = FileSystem.AppDataDirectory + "/database.db3";
+        if (File.Exists(settingsPath) && File.Exists(dbPath))
         {
-            string targetPath = Android.App.Application.Context.GetExternalFilesDir("").AbsolutePath; // Save to Android/data/com.cs526_project.todo/files
-            string settingsPath = FileSystem.AppDataDirectory + "/settings.json";
-            string dbPath = FileSystem.AppDataDirectory + "/database.db3";
-            if (File.Exists(settingsPath) && File.Exists(dbPath))
-            {
-                if (File.Exists(targetPath + "/ToDoData.zip"))
-                    File.Delete(targetPath + "/ToDoData.zip");
+            if (File.Exists(targetPath))
+                File.Delete(targetPath);
 
-                using (var archive = ZipFile.Open(targetPath + "/ToDoData.zip", ZipArchiveMode.Create))
-                {
-                    archive.CreateEntryFromFile(settingsPath, "settings.json");
-                    archive.CreateEntryFromFile(dbPath, "database.db3");
-                }
+            using (var archive = ZipFile.Open(targetPath, ZipArchiveMode.Create))
+            {
+                archive.CreateEntryFromFile(settingsPath, "settings.json");
+                archive.CreateEntryFromFile(dbPath, "database.db3");
             }
         }
     }
 
     public static void RestoreData(string zipPath)
     {
+        bool IsZipFileValid = true;
         using (var archive = ZipFile.OpenRead(zipPath))
         {
             foreach (var entry in archive.Entries)
             {
-                if (String.Equals(entry.FullName, "settings.json") || String.Equals(entry.FullName, "database.db3"))
+                if (!String.Equals(entry.FullName, "settings.json") && !String.Equals(entry.FullName, "database.db3"))
                 {
-                    entry.ExtractToFile(FileSystem.AppDataDirectory, true);
+                    IsZipFileValid = false;
+                    break;
                 }
             }
+            if (!IsZipFileValid)
+                throw new Exception("zipPath zip is invalid");
+
+            archive.ExtractToDirectory(FileSystem.AppDataDirectory, true);
+            ImportSettings();
         }
 
-    }
+        // Apply theme setting
+        if (Setting.IsDarkMode) App.Current.UserAppTheme = AppTheme.Dark;
+        else App.Current.UserAppTheme = AppTheme.Light;
 
+        // Apply daily reminder setting
+        if (Setting.IsReminderForNextDayEnabled)
+        {
+            _ = RegisterDailyReminder();
+        }
+        else
+        {
+            LocalNotificationCenter.Current.Cancel(0);
+        }
+    }
 
     public static async Task RegisterDailyReminder()
     {

@@ -342,6 +342,11 @@ public partial class AddTaskPage : ContentPage
         App.Database.AddTask(task);
         App.Database.DeleteObsoleteCategory();
         App.Database.DeleteObsoleteNotification();
+        if (App.Setting.IsAutoBackupEnabled)
+        {
+            try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+            catch (Exception) { }
+        }
 
         await RegisterAllNotification(task);
         App.mainPage.RefreshTaskViewWrapper();

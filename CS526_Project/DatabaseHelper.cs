@@ -251,6 +251,8 @@ namespace CS526_Project
 
             foreach (var category in GetAllCategories())
             {
+                if (category.Id == 0) continue;
+
                 bool IsCategoryInAnyTask = false;
                 foreach (var task in GetAllTask())
                 {

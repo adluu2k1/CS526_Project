@@ -11,5 +11,8 @@ namespace CS526_Project
         public bool IsVietnamese { get; set; } = true;
         public bool IsDarkMode { get; set; } = false;
         public bool IsReminderForNextDayEnabled { get; set; } = false;
+        public string BackupFolderPath { get; set; } = String.Empty;
+        public string BackupFileName { get; set; } = "ToDo_Backup.zip";
+        public bool IsAutoBackupEnabled { get; set; } = false;
     }
 }

@@ -67,14 +67,19 @@ public partial class EditTaskPage : ContentPage
             timeDeadline.Time = new TimeSpan(task.DeadlineTime.Hour, task.DeadlineTime.Minute, task.DeadlineTime.Second);
         }
 
-        for (int i = 0; i < task.CategoryId.Count; i++)
+        int wrapper_index = 0;
+        foreach (var categoryId in task.CategoryId)
         {
+            if (categoryId == 0) continue;
+
             create_Category_entry();
 
-            var picker = listCategoryEntryWrapper[i].Children[0] as Picker;
-            Category category = App.Database.FindCategory(task.CategoryId[i]);
+            var picker = listCategoryEntryWrapper[wrapper_index].Children[0] as Picker;
+            Category category = App.Database.FindCategory(categoryId);
             picker.SelectedItem = category.Name;
             picker.TextColor = Color.FromArgb(category.Color_Hex);
+
+            wrapper_index++;
         }
 
         for (int i = 0; i < task.NotificationId.Count; i++)
@@ -392,13 +397,9 @@ public partial class EditTaskPage : ContentPage
             }
             if (checkImportant.IsChecked)
             {
-                var old_task = App.Database.FindTask(taskId);
-                if (old_task != null)
+                if (!categoryId.Contains(0))
                 {
-                    if (!old_task.CategoryId.Contains(0))
-                    {
-                        categoryId.Insert(0, 0);
-                    }
+                    categoryId.Insert(0, 0);
                 }
             }
 
@@ -410,6 +411,11 @@ public partial class EditTaskPage : ContentPage
         App.Database.UpdateTask(task);
         App.Database.DeleteObsoleteCategory();
         App.Database.DeleteObsoleteNotification();
+        if (App.Setting.IsAutoBackupEnabled)
+        {
+            try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+            catch (Exception) { }
+        }
 
         await RegisterAllNotification(task);
 
@@ -483,6 +489,13 @@ public partial class EditTaskPage : ContentPage
         {
             App.Database.DeleteTask(App.Database.FindTask(taskId));
             App.Database.DeleteObsoleteCategory();
+            App.Database.DeleteObsoleteNotification();
+            if (App.Setting.IsAutoBackupEnabled)
+            {
+                try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+                catch (Exception) { }
+            }
+
             for (int i = 0; i < App.mainPage.Navigation.NavigationStack.Count - 1; i++)
             {
                 var previous_page = App.mainPage.Navigation.NavigationStack[i];
