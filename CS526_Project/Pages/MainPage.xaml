@@ -8,7 +8,7 @@
         <Ellipse Fill="{DynamicResource Tertiary}"
                  WidthRequest="200" HeightRequest="200"
                  VerticalOptions="Start" HorizontalOptions="End"
-                 Margin="0,0,-120,0"/>
+                 Margin="0,0,-100,0"/>
 
         <Ellipse Stroke="{DynamicResource Tertiary}" StrokeThickness="3" Opacity="0.5"
                  WidthRequest="300" HeightRequest="300"
@@ -17,15 +17,28 @@
 
         <VerticalStackLayout Margin="30,0,30,20" VerticalOptions="Start" HorizontalOptions="Fill">
 
-            <Label x:Name="labelTodayDate"
-                   FontSize="Body" FontAttributes="Bold"/>
-            <Label x:Name="labelToday"
-                   BindingContext="{x:Reference labelToday}"
-                   Text="HÔM NAY"
-                   FontSize="{Binding Path=FontSize}" FontAttributes="Bold"
-                   FontFamily="{Binding Path=FontFamily}"
-                   TextColor="{DynamicResource Primary}"
-                   Margin="0,0,0,30"/>
+            <Grid>
+                
+                <VerticalStackLayout HorizontalOptions="Start">
+                    <Label x:Name="labelTodayDate"
+                            FontSize="Body" FontAttributes="Bold"/>
+                    <Label x:Name="labelToday"
+                           BindingContext="{x:Reference labelToday}"
+                           Text="HÔM NAY"
+                           FontSize="{Binding Path=FontSize}" FontAttributes="Bold"
+                           FontFamily="{Binding Path=FontFamily}"
+                           TextColor="{DynamicResource Primary}"
+                           Margin="0,0,0,30"/>
+                </VerticalStackLayout>
+
+                <ImageButton x:Name="btnMonthView"
+                             Source="Resources/Images/calendar.svg"
+                             WidthRequest="25" HeightRequest="25"
+                             BackgroundColor="{DynamicResource Tertiary}"
+                             VerticalOptions="Center" HorizontalOptions="End"
+                             Clicked="btnMonthView_Clicked"/>
+
+            </Grid>
 
             <ContentView x:Name="WeekViewWrapper"
                          HorizontalOptions="CenterAndExpand"

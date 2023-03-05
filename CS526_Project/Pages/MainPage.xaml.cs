@@ -1,4 +1,5 @@
-﻿using CS526_Project.UserControls;
+﻿using CS526_Project.Pages;
+using CS526_Project.UserControls;
 using System.Globalization;
 
 namespace CS526_Project;
@@ -65,4 +66,8 @@ public partial class MainPage : ContentPage
 		await App.mainPage.Navigation.PushAsync(new SettingsPage());
     }
 
+    private async void btnMonthView_Clicked(object sender, EventArgs e)
+    {
+        await App.mainPage.Navigation.PushAsync(new MonthViewPage());
+    }
 }

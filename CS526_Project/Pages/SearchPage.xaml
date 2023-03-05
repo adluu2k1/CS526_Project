@@ -45,6 +45,7 @@
 
                 <Entry x:Name="txtSearch"
                    Placeholder="Tìm kiếm" PlaceholderColor="LightGray"
+                       BackgroundColor="Transparent"
                    TextColor="White"
                    FontSize="Caption"
                    VerticalOptions="Center"
