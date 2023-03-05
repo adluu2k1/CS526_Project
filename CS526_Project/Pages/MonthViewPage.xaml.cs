@@ -1,4 +1,11 @@
-﻿namespace CS526_Project.Pages;
+﻿using System.Diagnostics;
+
+namespace CS526_Project.Pages;
+
+public class DateButton : Button
+{
+    public DateTime Date { get; set; }
+}
 
 public partial class MonthViewPage : ContentPage
 {
@@ -6,9 +13,29 @@ public partial class MonthViewPage : ContentPage
 
     public MonthViewPage()
     {
-		InitializeComponent();
-        lbTodayDate.Text = DateTime.Now.ToLongDateString();
-        AddGridDate();
+        try
+        {
+            InitializeComponent();
+            lbTodayDate.Text = DateTime.Now.ToLongDateString();
+            AddGridDate();
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while loading this page. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     public void AddGridDate()
@@ -31,12 +58,14 @@ public partial class MonthViewPage : ContentPage
                     Text = date.Day.ToString(),
                     IsEnabled = false
                 };
-                Button btnDT = new Button()
+                DateButton btnDT = new DateButton()
                 {
+                    Date = date,
                     Margin = new Thickness(5),
                     CornerRadius = 5,
                     IsVisible = false
                 };
+                btnDT.Clicked += btnDT_Clicked;
                 Grid wrapper = new Grid();
                 wrapper.Children.Add(btnDT);
                 wrapper.Children.Add(DT);
@@ -100,5 +129,14 @@ public partial class MonthViewPage : ContentPage
         FirstDay = FirstDay.AddMonths(1);
         gridDate.Children.Clear();
         AddGridDate();
+    }
+
+    private async void btnDT_Clicked(object sender, EventArgs e)
+    {
+        var btnDT = sender as DateButton;
+        App.mainPage_SelectedDate = btnDT.Date;
+        App.mainPage.MonthView_OnSelectDate(App.mainPage_SelectedDate);
+
+        await Navigation.PopAsync();
     }
 }

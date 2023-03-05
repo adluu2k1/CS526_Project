@@ -175,14 +175,24 @@ public partial class SettingsPage : ContentPage
             message += Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName);
             await DisplayAlert(App.Setting.IsVietnamese ? "Sao lưu thành công" : "Backup successful", message, "OK");
         }
+#if DEBUG
         catch (Exception ex)
         {
-            Debug.Print(ex.ToString());
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
             string message = App.Setting.IsVietnamese ?
                 "Đã có lỗi xảy ra trong quá trình sao lưu dữ liệu. Vui lòng thử lại sau." :
                 "An error has occurred while doing data backup. Please try again later.";
             await DisplayAlert(App.Setting.IsVietnamese ? "Không thể sao lưu dữ liệu" : "Cannot backup data", message, "OK");
         }
+#endif
     }
 
     private async void btnRestoreNow_Clicked(object sender, EventArgs e)
@@ -201,14 +211,24 @@ public partial class SettingsPage : ContentPage
             await DisplayAlert(App.Setting.IsVietnamese ? "Khôi phục thành công" : "Restoration successful", String.Empty, "OK");
             await ReloadPage();
         }
+#if DEBUG
         catch (Exception ex)
         {
-            Debug.Print(ex.ToString());
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
             string message = App.Setting.IsVietnamese ? 
                 "File sao lưu mà bạn đã thiết lập đường dẫn có thể không tồn tại hoặc đã bị hỏng." : 
                 "The file of which path you setted may be corrupted or not existed.";
             await DisplayAlert(App.Setting.IsVietnamese ? "Không thể khôi phục dữ liệu" : "Cannot restore data", message, "OK");
         }
+#endif
     }
 
     private async void btnChangeFolderPath_Clicked(object sender, EventArgs e)
@@ -246,12 +266,23 @@ public partial class SettingsPage : ContentPage
             File.Create(temp_path);
             if (File.Exists(temp_path)) File.Delete(temp_path);
         }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
         catch (Exception)
         {
             if (App.Setting.IsVietnamese) await DisplayAlert("Lỗi", "Tên file sao lưu không hợp lệ", "OK");
             else await DisplayAlert("Error", "Backup file name is invalid", "OK");
             return;
         }
+#endif
 
         App.Setting.BackupFileName = result;
         App.SaveSettings();

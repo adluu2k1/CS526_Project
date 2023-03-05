@@ -11,11 +11,13 @@ public partial class MainPage : ContentPage
 		InitializeComponent();
 
 		var today = DateTime.Now.Date;
+		var selected_date = App.mainPage_SelectedDate;
 		labelTodayDate.Text = App.Setting.IsVietnamese ? today.ToLongDateString() : ShowLongDateInEnglish(today);
 
-		WeekViewWrapper.Content = new WeekView(today);
+		WeekViewWrapper.Content = new WeekView(selected_date);
 
-		ShowTask(today);
+		ShowTask(selected_date);
+
         if (!App.Setting.IsVietnamese)
 		{
 			labelToday.Text = "TODAY";
@@ -23,7 +25,15 @@ public partial class MainPage : ContentPage
 		
     }
 
-	public void ShowTask(DateTime date)
+    public void MonthView_OnSelectDate(DateTime date)
+    {
+        TaskViewWrapper.Children.Clear();
+
+        WeekViewWrapper.Content = new WeekView(date);
+        ShowTask(date);
+    }
+
+    public void ShowTask(DateTime date)
 	{
 		var ListAllTask = App.Database.GetAllTask().OrderBy(p => p.DeadlineTime).ToList();
 		foreach (var task in ListAllTask) 
