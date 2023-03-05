@@ -1,5 +1,5 @@
-﻿using Plugin.LocalNotification;
-using CommunityToolkit.Maui.Storage;
+﻿using CommunityToolkit.Maui.Storage;
+using Plugin.LocalNotification;
 using System.Diagnostics;
 
 namespace CS526_Project;

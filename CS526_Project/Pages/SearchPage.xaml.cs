@@ -1,6 +1,5 @@
 ﻿using CS526_Project.Model;
 using CS526_Project.UserControls;
-using Microsoft.Maui.Controls;
 using Microsoft.Maui.Controls.Shapes;
 
 namespace CS526_Project;

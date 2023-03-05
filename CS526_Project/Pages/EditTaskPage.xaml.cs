@@ -1,7 +1,6 @@
 ﻿using CS526_Project.Model;
 using Plugin.LocalNotification;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace CS526_Project.UserControls;
 

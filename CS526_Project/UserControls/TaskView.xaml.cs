@@ -4,13 +4,11 @@ namespace CS526_Project.UserControls;
 
 public partial class TaskView : ContentView
 {
-	private Layout parent;
 	private ToDo_Task task;
 	public TaskView(ToDo_Task task, Layout parent)
 	{
 		InitializeComponent();
 		this.task = task;
-		this.parent = parent;
 
 		labelName.Text = task.Name;
 		labelDeadline.Text = task.DeadlineTime.ToShortDateString() + "  " + task.DeadlineTime.ToShortTimeString();

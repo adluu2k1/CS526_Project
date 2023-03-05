@@ -1,7 +1,5 @@
 ﻿using CS526_Project.Model;
-using Microsoft.Maui.Graphics.Text;
 using Plugin.LocalNotification;
-using System.Collections.Generic;
 using System.Text.Json;
 
 namespace CS526_Project;

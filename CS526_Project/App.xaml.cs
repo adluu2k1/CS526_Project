@@ -1,6 +1,5 @@
 ﻿using CS526_Project.Model;
 using Plugin.LocalNotification;
-using System.Diagnostics;
 using System.Globalization;
 using System.IO.Compression;
 using System.Text.Json;
