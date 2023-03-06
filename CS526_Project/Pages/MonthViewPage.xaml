@@ -29,9 +29,8 @@
             <Label x:Name="lbTodayDate"
                             FontSize="Body" FontAttributes="Bold"/>
             <Label x:Name="lbToday"
-                           BindingContext="{x:Reference lbTodayDate}"
                            Text="HÔM NAY"
-                           FontSize="{Binding Path=FontSize}" FontAttributes="Bold"
+                           FontSize="Body" FontAttributes="Bold"
                            TextColor="{DynamicResource Primary}"/>
         </VerticalStackLayout>
 

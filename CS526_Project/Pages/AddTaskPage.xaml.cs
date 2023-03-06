@@ -17,33 +17,53 @@ public partial class AddTaskPage : ContentPage
 
     public AddTaskPage()
     {
-        foreach (var category in App.Database.GetAllCategories())
+        try
         {
-            if (category.Id != 0)
-                listCategoriesName.Add(category.Name);
+            foreach (var category in App.Database.GetAllCategories())
+            {
+                if (category.Id != 0)
+                    listCategoriesName.Add(category.Name);
+            }
+            listCategoriesName.Add(App.Setting.IsVietnamese ? "Thêm nhãn" : "Add tag");
+
+            InitializeComponent();
+
+            create_btnAddNotiEntry();
+            create_btnAddCategory();
+            if (!App.Setting.IsVietnamese)
+            {
+                labelNewTask.Text = "NEW TASK";
+                labelTaskName.Text = "TASK NAME";
+                txtName.Placeholder = "Task Name";
+                labelImportant.Text = "Important task";
+                labelDeadline.Text = "DEADLINE";
+                labelNoDeadLine.Text = "No Deadline";
+                labelDay.Text = "DATE";
+                labelHour.Text = "TIME";
+                labelRemind.Text = "REMIND";
+                labelLabel.Text = "TAG";
+                labelDescription.Text = "DESCRIPTION";
+                txtDescription.Placeholder = "Description";
+                btnAddTask.Text = "FINISH";
+            }
         }
-        listCategoriesName.Add(App.Setting.IsVietnamese ? "Thêm nhãn" : "Add tag");
-
-        InitializeComponent();
-
-        create_btnAddNotiEntry();
-        create_btnAddCategory();
-        if (!App.Setting.IsVietnamese)
+#if DEBUG
+        catch (Exception ex)
         {
-            labelNewTask.Text = "NEW TASK";
-            labelTaskName.Text = "TASK NAME";
-            txtName.Placeholder = "Task Name";
-            labelImportant.Text = "Important task";
-            labelDeadline.Text = "DEADLINE";
-            labelNoDeadLine.Text = "No Deadline";
-            labelDay.Text = "DATE";
-            labelHour.Text = "TIME";
-            labelRemind.Text = "REMIND";
-            labelLabel.Text = "TAG";
-            labelDescription.Text = "DESCRIPTION";
-            txtDescription.Placeholder = "Description";
-            btnAddTask.Text = "FINISH";
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
         }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while loading this page. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void create_NotiControls()

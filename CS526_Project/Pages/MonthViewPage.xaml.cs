@@ -17,7 +17,12 @@ public partial class MonthViewPage : ContentPage
         try
         {
             InitializeComponent();
-            lbTodayDate.Text = DateTime.Now.ToLongDateString();
+            lbTodayDate.Text = App.Setting.IsVietnamese ? DateTime.Now.ToLongDateString() : ShowLongDateInEnglish(DateTime.Now);
+            if (!App.Setting.IsVietnamese)
+            {
+                lbToday.Text = "TODAY";
+            }
+
             AddGridDate();
         }
 #if DEBUG
@@ -39,13 +44,21 @@ public partial class MonthViewPage : ContentPage
 #endif
     }
 
+    private string ShowLongDateInEnglish(DateTime date)
+    {
+        CultureInfo.CurrentCulture = new CultureInfo("en-us");
+        string result = date.ToLongDateString();
+        CultureInfo.CurrentCulture = new CultureInfo("vi-vn");
+        return result;
+    }
+
     public void AddGridDate()
     {   
         var FirstMonday = FirstDay.AddDays(-(int)FirstDay.DayOfWeek + (int)DayOfWeek.Monday);
         if (!App.Setting.IsVietnamese)
         {
             CultureInfo.CurrentCulture = new CultureInfo("en-us");
-            lbMonth.Text = $"{FirstDay.Month.ToString("MMMM")} {FirstDay.Year}";
+            lbMonth.Text = $"{FirstDay.ToString("MMMM")} {FirstDay.Year}";
             CultureInfo.CurrentCulture = new CultureInfo("vi-vn");
         }
         else
@@ -172,7 +185,7 @@ public partial class MonthViewPage : ContentPage
 #else
         catch (Exception)
         {
-            string message = "An unknown error has occurred while loading this page. Please try again later.";
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
             message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
             _ = DisplayAlert("Oops!", message, "OK");
         }

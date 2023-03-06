@@ -9,21 +9,41 @@ public partial class MainPage : ContentPage
 {
 	public MainPage()
 	{
-		InitializeComponent();
+        try
+        {
+            InitializeComponent();
 
-		var today = DateTime.Now.Date;
-		var selected_date = App.mainPage_SelectedDate;
-		labelTodayDate.Text = App.Setting.IsVietnamese ? today.ToLongDateString() : ShowLongDateInEnglish(today);
+            var today = DateTime.Now.Date;
+            var selected_date = App.mainPage_SelectedDate;
+            labelTodayDate.Text = App.Setting.IsVietnamese ? today.ToLongDateString() : ShowLongDateInEnglish(today);
 
-		WeekViewWrapper.Content = new WeekView(selected_date);
+            WeekViewWrapper.Content = new WeekView(selected_date);
 
-		ShowTask(selected_date);
+            ShowTask(selected_date);
 
-        if (!App.Setting.IsVietnamese)
-		{
-			labelToday.Text = "TODAY";
-		}
-		
+            if (!App.Setting.IsVietnamese)
+            {
+                labelToday.Text = "TODAY";
+            }
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while loading this page. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
+
     }
 
     public void MonthView_OnSelectDate(DateTime date)

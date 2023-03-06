@@ -12,27 +12,48 @@ public partial class SettingsPage : ContentPage
 
     public SettingsPage()
 	{
-		InitializeComponent();
-
-		pickerLanguage.ItemsSource = list_lang;
-
-        ApplyLanguage();
-
-        if (App.Setting.IsReminderForNextDayEnabled)
+        try
         {
-            switchRemind.IsToggled = true;
-        }
+            InitializeComponent();
 
-        if (App.Setting.BackupFolderPath != String.Empty)
+            pickerLanguage.ItemsSource = list_lang;
+
+            ApplyLanguage();
+
+            if (App.Setting.IsReminderForNextDayEnabled)
+            {
+                switchRemind.IsToggled = true;
+            }
+
+            if (App.Setting.BackupFolderPath != String.Empty)
+            {
+                txtBackupFolderPath.Text = App.Setting.BackupFolderPath;
+                txtBackupFolderPath.IsVisible = true;
+                labelFolderNotSetted.IsVisible = false;
+            }
+
+            txtBackupFileName.Text = App.Setting.BackupFileName;
+        }
+#if DEBUG
+        catch (Exception ex)
         {
-            txtBackupFolderPath.Text = App.Setting.BackupFolderPath;
-            txtBackupFolderPath.IsVisible = true;
-            labelFolderNotSetted.IsVisible = false;
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
         }
-        txtBackupFileName.Text = App.Setting.BackupFileName;
-	}
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while loading this page. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
+    }
 
-	private void ApplyLanguage()
+    private void ApplyLanguage()
 	{
 		if (App.Setting.IsVietnamese)
 		{

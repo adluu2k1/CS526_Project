@@ -16,23 +16,43 @@ public partial class SearchPage : ContentPage
 
     public SearchPage()
     {
-        InitializeComponent();
-        
-        ShowTask("");
-        if (!App.Setting.IsVietnamese)
+        try
         {
-            txtSearch.Placeholder = "Search";
-            labelAdvance.Text = "Advanced Search";
-            labelCompleted.Text = "Completed";
-            labelImportant.Text = "Important";
-            labelNotCompleted.Text = "Pending";
-            labelNotImportant.Text = "Not Important";
-            labelDeadlineFilter.Text = "Filter results by deadlines";
-            labelDeadlineFrom.Text = "From:";
-            labelDeadlineTo.Text = "To:";
-            labelCategories.Text = "Filter results by tags";
-            labelAddCategory.Text = "Add Tag";
+            InitializeComponent();
+
+            ShowTask("");
+            if (!App.Setting.IsVietnamese)
+            {
+                txtSearch.Placeholder = "Search";
+                labelAdvance.Text = "Advanced Search";
+                labelCompleted.Text = "Completed";
+                labelImportant.Text = "Important";
+                labelNotCompleted.Text = "Pending";
+                labelNotImportant.Text = "Not Important";
+                labelDeadlineFilter.Text = "Filter results by deadlines";
+                labelDeadlineFrom.Text = "From:";
+                labelDeadlineTo.Text = "To:";
+                labelCategories.Text = "Filter results by tags";
+                labelAddCategory.Text = "Add Tag";
+            }
         }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while loading this page. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     public void ShowTask(string keyword)

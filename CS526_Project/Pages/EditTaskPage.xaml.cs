@@ -19,37 +19,57 @@ public partial class EditTaskPage : ContentPage
 
     public EditTaskPage(ToDo_Task task)
 	{
-		InitializeComponent();
-        taskId = task.id;
-
-        foreach (var category in App.Database.GetAllCategories())
+        try
         {
-            if (category.Id != 0)
-                listCategoriesName.Add(category.Name);
+            InitializeComponent();
+            taskId = task.id;
+
+            foreach (var category in App.Database.GetAllCategories())
+            {
+                if (category.Id != 0)
+                    listCategoriesName.Add(category.Name);
+            }
+            listCategoriesName.Add(App.Setting.IsVietnamese ? "Thêm nhãn" : "Add tag");
+
+            ImportTaskData(task);
+            create_btnAddNotiEntry();
+            create_btnAddCategory();
+
+            if (!App.Setting.IsVietnamese)
+            {
+                labelTaskDetail.Text = "TASK DETAIL";
+                labelTaskName.Text = "TASK NAME";
+                txtName.Placeholder = "Task Name";
+                labelImportant.Text = "Important task";
+                labelDeadline.Text = "DEADLINE";
+                labelNoDeadline.Text = "No Deadline";
+                labelDay.Text = "DATE";
+                labelHour.Text = "TIME";
+                labelRemind.Text = "REMIND";
+                labelLabel.Text = "TAG";
+                labelDescription.Text = "DESCRIPTON";
+                txtDescription.Placeholder = "Description";
+                btnSaveTask.Text = "SAVE CHANGES";
+                btnDeleteTask.Text = "DELETE";
+            }
         }
-        listCategoriesName.Add(App.Setting.IsVietnamese ? "Thêm nhãn" : "Add tag");
-
-        ImportTaskData(task);
-        create_btnAddNotiEntry();
-        create_btnAddCategory();
-
-        if (!App.Setting.IsVietnamese)
+#if DEBUG
+        catch (Exception ex)
         {
-            labelTaskDetail.Text = "TASK DETAIL";
-            labelTaskName.Text = "TASK NAME";
-            txtName.Placeholder = "Task Name";
-            labelImportant.Text = "Important task";
-            labelDeadline.Text = "DEADLINE";
-            labelNoDeadline.Text = "No Deadline";
-            labelDay.Text = "DATE";
-            labelHour.Text = "TIME";
-            labelRemind.Text = "REMIND";
-            labelLabel.Text = "TAG";
-            labelDescription.Text = "DESCRIPTON";
-            txtDescription.Placeholder = "Description";
-            btnSaveTask.Text = "SAVE CHANGES";
-            btnDeleteTask.Text = "DELETE";
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
         }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while loading this page. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void ImportTaskData(ToDo_Task task)

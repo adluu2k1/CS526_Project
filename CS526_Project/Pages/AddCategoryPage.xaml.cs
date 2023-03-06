@@ -11,24 +11,72 @@ public partial class AddCategoryPage : ContentPage
 	private int caller_IndexInWraper;
 	public AddCategoryPage(AddTaskPage parentPage, int caller_IndexInWraper)
 	{
-		InitializeComponent();
-		this.parentPage_Add = parentPage;
-		this.caller_IndexInWraper = caller_IndexInWraper;
-        if (!App.Setting.IsVietnamese)
+        try
         {
-            labelNewLabel.Text = "NEW TAG";
-            labelLabelName.Text = "TAG NAME";
-            txtName.Placeholder = "Tag Name";
-            labelLabelColor.Text = "DISPLAY COLOR";
-            btnAddCategory.Text = "FINISH";
+            InitializeComponent();
+            this.parentPage_Add = parentPage;
+            this.caller_IndexInWraper = caller_IndexInWraper;
+            if (!App.Setting.IsVietnamese)
+            {
+                labelNewLabel.Text = "NEW TAG";
+                labelLabelName.Text = "TAG NAME";
+                txtName.Placeholder = "Tag Name";
+                labelLabelColor.Text = "DISPLAY COLOR";
+                btnAddCategory.Text = "FINISH";
+            }
         }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while loading this page. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
 
     }
     public AddCategoryPage(EditTaskPage parentPage, int caller_IndexInWraper)
     {
-        InitializeComponent();
-        this.parentPage_Edit = parentPage;
-        this.caller_IndexInWraper = caller_IndexInWraper;
+        try
+        {
+            InitializeComponent();
+            this.parentPage_Edit = parentPage;
+            this.caller_IndexInWraper = caller_IndexInWraper;
+            if (!App.Setting.IsVietnamese)
+            {
+                labelNewLabel.Text = "NEW TAG";
+                labelLabelName.Text = "TAG NAME";
+                txtName.Placeholder = "Tag Name";
+                labelLabelColor.Text = "DISPLAY COLOR";
+                btnAddCategory.Text = "FINISH";
+            }
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while loading this page. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void btnColor_Clicked(object sender, EventArgs e)
