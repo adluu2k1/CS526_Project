@@ -82,84 +82,144 @@ public partial class SettingsPage : ContentPage
 
     private void pickerLanguage_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (App.Setting.IsVietnamese == (pickerLanguage.SelectedItem as string != "English"))
-            return;
-
-		App.Setting.IsVietnamese = (pickerLanguage.SelectedItem as string != "English");
-        App.SaveSettings();
-        
-		ApplyLanguage();
-
-        if (switchRemind.IsToggled == true)
+        try
         {
-            LocalNotificationCenter.Current.Cancel(0);
-            _ = App.RegisterDailyReminder();
-        }
+            if (App.Setting.IsVietnamese == (pickerLanguage.SelectedItem as string != "English"))
+                return;
 
-        if (App.Setting.IsAutoBackupEnabled)
+            App.Setting.IsVietnamese = (pickerLanguage.SelectedItem as string != "English");
+            App.SaveSettings();
+
+            ApplyLanguage();
+
+            if (switchRemind.IsToggled == true)
+            {
+                LocalNotificationCenter.Current.Cancel(0);
+                _ = App.RegisterDailyReminder();
+            }
+
+            if (App.Setting.IsAutoBackupEnabled)
+            {
+                try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+                catch (Exception) { }
+            }
+
+            var old_mainPage = App.mainPage;
+            App.mainPage_SelectedDate = DateTime.Now;
+            App.mainPage = new MainPage();
+            old_mainPage.Navigation.InsertPageBefore(App.mainPage, old_mainPage.Navigation.NavigationStack[1]);
+            old_mainPage.Navigation.RemovePage(old_mainPage);
+        }
+#if DEBUG
+        catch (Exception ex)
         {
-            try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
-            catch (Exception) { }
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
         }
-
-        var old_mainPage = App.mainPage;
-        App.mainPage_SelectedDate = DateTime.Now;
-        App.mainPage = new MainPage();
-        old_mainPage.Navigation.InsertPageBefore(App.mainPage, old_mainPage.Navigation.NavigationStack[1]);
-        old_mainPage.Navigation.RemovePage(old_mainPage);
-        
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void pickerTheme_SelectedIndexChanged(object sender, EventArgs e)
     {
-        if (App.Setting.IsDarkMode == (pickerTheme.SelectedIndex == 1))
-            return;
+        try
+        {
+            if (App.Setting.IsDarkMode == (pickerTheme.SelectedIndex == 1))
+                return;
 
-        if (pickerTheme.SelectedIndex == 0)
-        {
-            App.Current.UserAppTheme = AppTheme.Light;
-            App.Setting.IsDarkMode = false;
-        }
-        else
-        {
-            App.Current.UserAppTheme = AppTheme.Dark;
-            App.Setting.IsDarkMode = true;
-        }
-        App.SaveSettings();
-        if (App.Setting.IsAutoBackupEnabled)
-        {
-            try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
-            catch (Exception) { }
-        }
+            if (pickerTheme.SelectedIndex == 0)
+            {
+                App.Current.UserAppTheme = AppTheme.Light;
+                App.Setting.IsDarkMode = false;
+            }
+            else
+            {
+                App.Current.UserAppTheme = AppTheme.Dark;
+                App.Setting.IsDarkMode = true;
+            }
+            App.SaveSettings();
+            if (App.Setting.IsAutoBackupEnabled)
+            {
+                try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+                catch (Exception) { }
+            }
 
-        _ = ReloadPage();
+            _ = ReloadPage();
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void switchRemind_Toggled(object sender, ToggledEventArgs e)
     {
-        if (App.Setting.IsReminderForNextDayEnabled == (switchRemind.IsToggled == true))
-            return;
+        try
+        {
+            if (App.Setting.IsReminderForNextDayEnabled == (switchRemind.IsToggled == true))
+                return;
 
-        if (e.Value == true)
-        {
-            App.Setting.IsReminderForNextDayEnabled = true;
-            _ = App.RegisterDailyReminder();
+            if (e.Value == true)
+            {
+                App.Setting.IsReminderForNextDayEnabled = true;
+                _ = App.RegisterDailyReminder();
+            }
+            else
+            {
+                LocalNotificationCenter.Current.Cancel(0);
+                App.Setting.IsReminderForNextDayEnabled = false;
+            }
+            App.SaveSettings();
+            if (App.Setting.IsAutoBackupEnabled)
+            {
+                try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+                catch (Exception) { }
+            }
         }
-        else
+#if DEBUG
+        catch (Exception ex)
         {
-            LocalNotificationCenter.Current.Cancel(0);
-            App.Setting.IsReminderForNextDayEnabled = false;
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
         }
-        App.SaveSettings();
-        if (App.Setting.IsAutoBackupEnabled)
+#else
+        catch (Exception)
         {
-            try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
-            catch (Exception) { }
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
         }
+#endif
     }
 
     private async void btnBackupNow_Clicked(object sender, EventArgs e)
     {
+
         if (App.Setting.BackupFolderPath == String.Empty)
         {
             string message = App.Setting.IsVietnamese ? "Vui lòng chọn đường dẫn đến thư mục sao lưu trước khi thực hiện sao lưu" :
@@ -233,20 +293,40 @@ public partial class SettingsPage : ContentPage
 
     private async void btnChangeFolderPath_Clicked(object sender, EventArgs e)
     {
-        var result = await FolderPicker.Default.PickAsync(new CancellationToken());
-        if (result.IsSuccessful)
+        try
         {
-            txtBackupFolderPath.Text = result.Folder.Path;
-            txtBackupFolderPath.IsVisible = true;
-            labelFolderNotSetted.IsVisible = false;
-            App.Setting.BackupFolderPath = result.Folder.Path;
-            App.SaveSettings();
-            if (App.Setting.IsAutoBackupEnabled)
+            var result = await FolderPicker.Default.PickAsync(new CancellationToken());
+            if (result.IsSuccessful)
             {
-                try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
-                catch (Exception) { }
+                txtBackupFolderPath.Text = result.Folder.Path;
+                txtBackupFolderPath.IsVisible = true;
+                labelFolderNotSetted.IsVisible = false;
+                App.Setting.BackupFolderPath = result.Folder.Path;
+                App.SaveSettings();
+                if (App.Setting.IsAutoBackupEnabled)
+                {
+                    try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+                    catch (Exception) { }
+                }
             }
         }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private async void btnChangeFileName_Clicked(object sender, EventArgs e)
@@ -297,9 +377,29 @@ public partial class SettingsPage : ContentPage
 
     private void switchAutoBackup_Toggled(object sender, ToggledEventArgs e)
     {
-        if (App.Setting.IsAutoBackupEnabled == (switchAutoBackup.IsToggled == true))
-            return;
+        try
+        {
+            if (App.Setting.IsAutoBackupEnabled == (switchAutoBackup.IsToggled == true))
+                return;
 
-        App.Setting.IsAutoBackupEnabled = e.Value;
+            App.Setting.IsAutoBackupEnabled = e.Value;
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 }

@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace CS526_Project.UserControls;
 
 public partial class DayOfWeekButtonView : ContentView
@@ -70,14 +72,35 @@ public partial class DayOfWeekButtonView : ContentView
 
     private void Button_Clicked(object sender, EventArgs e)
     {
-        UnselectAllButton();
-        App.mainPage.TaskViewWrapper.Children.Clear();
+        try
+        {
+            UnselectAllButton();
+            App.mainPage.TaskViewWrapper.Children.Clear();
 
-		btn.BackgroundColor = App.PrimaryColor;
-		labelDate.TextColor = Colors.White;
-		labelDayOfWeek.TextColor = Colors.White;
+            btn.BackgroundColor = App.PrimaryColor;
+            labelDate.TextColor = Colors.White;
+            labelDayOfWeek.TextColor = Colors.White;
 
-        App.mainPage_SelectedDate = this.Date;
-        App.mainPage.ShowTask(Date);
+            App.mainPage_SelectedDate = this.Date;
+            App.mainPage.ShowTask(Date);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = Navigation.NavigationStack[Navigation.NavigationStack.Count - 1].DisplayAlert("Error", ex.Message, "OK");
+            
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = Navigation.NavigationStack[Navigation.NavigationStack.Count-1].DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 }

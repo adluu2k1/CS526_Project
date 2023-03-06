@@ -1,5 +1,6 @@
 ﻿using CS526_Project.Pages;
 using CS526_Project.UserControls;
+using System.Diagnostics;
 using System.Globalization;
 
 namespace CS526_Project;
@@ -63,21 +64,100 @@ public partial class MainPage : ContentPage
 
     private async void btnSearch_Clicked(object sender, EventArgs e)
     {
-		await App.mainPage.Navigation.PushAsync(new SearchPage());
+		try
+		{
+			await App.mainPage.Navigation.PushAsync(new SearchPage());
+		}
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private async void btnAdd_Clicked(object sender, EventArgs e)
     {
-		await App.mainPage.Navigation.PushAsync(new AddTaskPage());
+        try
+        {
+            await App.mainPage.Navigation.PushAsync(new AddTaskPage());
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private async void btnSettings_Clicked(object sender, EventArgs e)
     {
-		await App.mainPage.Navigation.PushAsync(new SettingsPage());
+        try
+        {
+            await App.mainPage.Navigation.PushAsync(new SettingsPage());
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
-
     private async void btnMonthView_Clicked(object sender, EventArgs e)
     {
-        await App.mainPage.Navigation.PushAsync(new MonthViewPage());
+        try
+        {
+            await App.mainPage.Navigation.PushAsync(new MonthViewPage());
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 }

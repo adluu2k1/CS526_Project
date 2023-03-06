@@ -1,4 +1,5 @@
 ﻿using CS526_Project.Model;
+using System.Diagnostics;
 
 namespace CS526_Project.UserControls;
 
@@ -40,29 +41,49 @@ public partial class TaskView : ContentView
 
     private void checkTaskDone_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-		if (e.Value == true)
+		try
 		{
-			task.IsDone = true;
-			App.Database.UpdateTask(task);
+			if (e.Value == true)
+			{
+				task.IsDone = true;
+				App.Database.UpdateTask(task);
 
-			TaskDetailView.Opacity = 0.3;
+				TaskDetailView.Opacity = 0.3;
+			}
+			else
+			{
+				task.IsDone = false;
+				App.Database.UpdateTask(task);
+
+				TaskDetailView.Opacity = 1;
+			}
+
+			if (App.Setting.IsAutoBackupEnabled)
+			{
+				try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+				catch (Exception) { }
+			}
 		}
-		else
-		{
-			task.IsDone = false;
-            App.Database.UpdateTask(task);
-
-            TaskDetailView.Opacity = 1;
-		}
-
-        if (App.Setting.IsAutoBackupEnabled)
+#if DEBUG
+        catch (Exception ex)
         {
-            try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
-            catch (Exception) { }
+            _ = Navigation.NavigationStack[Navigation.NavigationStack.Count-1].DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
         }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = Navigation.NavigationStack[Navigation.NavigationStack.Count-1].DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
-	private void AddCategoriesToView()
+    private void AddCategoriesToView()
 	{
 		foreach (var categoryId in task.CategoryId)
 		{
@@ -89,6 +110,26 @@ public partial class TaskView : ContentView
 
     private async void btnTaskView_Clicked(object sender, EventArgs e)
     {
-		await App.mainPage.Navigation.PushAsync(new EditTaskPage(task));
+		try
+		{
+			await App.mainPage.Navigation.PushAsync(new EditTaskPage(task));
+		}
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = Navigation.NavigationStack[Navigation.NavigationStack.Count-1].DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = Navigation.NavigationStack[Navigation.NavigationStack.Count - 1].DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 }

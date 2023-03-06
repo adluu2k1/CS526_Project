@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 
 namespace CS526_Project.Pages;
 
@@ -41,7 +42,16 @@ public partial class MonthViewPage : ContentPage
     public void AddGridDate()
     {   
         var FirstMonday = FirstDay.AddDays(-(int)FirstDay.DayOfWeek + (int)DayOfWeek.Monday);
-        lbMonth.Text = $"Tháng {FirstDay.Month} Năm {FirstDay.Year}";
+        if (!App.Setting.IsVietnamese)
+        {
+            CultureInfo.CurrentCulture = new CultureInfo("en-us");
+            lbMonth.Text = $"{FirstDay.Month.ToString("MMMM")} {FirstDay.Year}";
+            CultureInfo.CurrentCulture = new CultureInfo("vi-vn");
+        }
+        else
+        {
+            lbMonth.Text = $"Tháng {FirstDay.Month} Năm {FirstDay.Year}";
+        }
 
         for (int i = 0; i < 6; i++)
         {
@@ -94,7 +104,6 @@ public partial class MonthViewPage : ContentPage
                         btnDT.BackgroundColor = Colors.Transparent;
                     }
                 }
-
                 gridDate.Children.Add(wrapper);
                 Grid.SetRow(wrapper, i);
                 Grid.SetColumn(wrapper, j);
@@ -113,30 +122,88 @@ public partial class MonthViewPage : ContentPage
                 result.Add(task.DeadlineTime.Date);
             }
         }
-
         return result;
     }
 
     private void btnPrevious_Clicked(object sender, EventArgs e)
     {
-        FirstDay = FirstDay.AddMonths(-1);
-        gridDate.Children.Clear();
-        AddGridDate();
+        try
+        {
+            FirstDay = FirstDay.AddMonths(-1);
+            gridDate.Children.Clear();
+            AddGridDate();
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void btnNext_Clicked(object sender, EventArgs e)
     {
-        FirstDay = FirstDay.AddMonths(1);
-        gridDate.Children.Clear();
-        AddGridDate();
+        try
+        {
+            FirstDay = FirstDay.AddMonths(1);
+            gridDate.Children.Clear();
+            AddGridDate();
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while loading this page. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private async void btnDT_Clicked(object sender, EventArgs e)
     {
-        var btnDT = sender as DateButton;
-        App.mainPage_SelectedDate = btnDT.Date;
-        App.mainPage.MonthView_OnSelectDate(App.mainPage_SelectedDate);
-
-        await Navigation.PopAsync();
+        try
+        {
+            var btnDT = sender as DateButton;
+            App.mainPage_SelectedDate = btnDT.Date;
+            App.mainPage.MonthView_OnSelectDate(App.mainPage_SelectedDate);
+            await Navigation.PopAsync();
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 }

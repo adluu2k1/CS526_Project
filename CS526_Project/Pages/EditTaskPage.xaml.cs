@@ -1,5 +1,6 @@
 ﻿using CS526_Project.Model;
 using Plugin.LocalNotification;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace CS526_Project.UserControls;
@@ -237,83 +238,203 @@ public partial class EditTaskPage : ContentPage
 
     private void btnAddNotiTime_Clicked(object sender, EventArgs e)
     {
-        NotiTimeWrapper.Children.RemoveAt(NotiTimeWrapper.Children.Count - 1);
+        try
+        {
+            NotiTimeWrapper.Children.RemoveAt(NotiTimeWrapper.Children.Count - 1);
 
-        create_NotiControls();
+            create_NotiControls();
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void btnRemoveNotiTime_Clicked(object sender, EventArgs e)
     {
-        for (int i = 0; i < listBtnRemoveNoti.Count; i++)
+        try
         {
-            if (listBtnRemoveNoti[i] == sender)
+            for (int i = 0; i < listBtnRemoveNoti.Count; i++)
             {
-                remove_NotiTimeEntry(i);
-                return;
+                if (listBtnRemoveNoti[i] == sender)
+                {
+                    remove_NotiTimeEntry(i);
+                    return;
+                }
             }
         }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void btnAddCategory_Clicked(object sender, EventArgs e)
     {
-        CategoriesWrapper.Children.RemoveAt(CategoriesWrapper.Children.Count - 1);
+        try
+        {
+            CategoriesWrapper.Children.RemoveAt(CategoriesWrapper.Children.Count - 1);
 
-        create_CategoryControls();
+            create_CategoryControls();
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void btnRemoveCategory_Clicked(object sender, EventArgs e)
     {
-        for (int i = 0; i < listBtnRemoveCategory.Count; i++)
+        try
         {
-            if (listBtnRemoveCategory[i] == sender)
+            for (int i = 0; i < listBtnRemoveCategory.Count; i++)
             {
-                remove_CategoryEntry(i);
-                return;
+                if (listBtnRemoveCategory[i] == sender)
+                {
+                    remove_CategoryEntry(i);
+                    return;
+                }
             }
         }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private async void OnSelectedIndexChanged(object sender, EventArgs e)
     {
-        var picker = sender as Picker;
-
-        if (picker.SelectedIndex == -1) return;
-        if (picker.SelectedIndex == listCategoriesName.Count - 1)
+        try
         {
-            var picker_index = -1;
-            for (int i = 0; i < listCategoryEntryWrapper.Count; i++)
-            {
-                if (listCategoryEntryWrapper[i].Children[0] == picker)
-                {
-                    picker_index = i;
-                    break;
-                }
-            }
+            var picker = sender as Picker;
 
-            picker.SelectedIndex = -1;
-            await App.mainPage.Navigation.PushAsync(new AddCategoryPage(this, picker_index));
-            return;
+            if (picker.SelectedIndex == -1) return;
+            if (picker.SelectedIndex == listCategoriesName.Count - 1)
+            {
+                var picker_index = -1;
+                for (int i = 0; i < listCategoryEntryWrapper.Count; i++)
+                {
+                    if (listCategoryEntryWrapper[i].Children[0] == picker)
+                    {
+                        picker_index = i;
+                        break;
+                    }
+                }
+
+                picker.SelectedIndex = -1;
+                await App.mainPage.Navigation.PushAsync(new AddCategoryPage(this, picker_index));
+                return;
+            }
+            var picker_txtcolor = App.Database.GetAllCategories()[picker.SelectedIndex].Color_Hex;
+            picker.TextColor = Color.FromArgb(picker_txtcolor);
         }
-        var picker_txtcolor = App.Database.GetAllCategories()[picker.SelectedIndex].Color_Hex;
-        picker.TextColor = Color.FromArgb(picker_txtcolor);
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void checkNoDeadline_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        if (e.Value == true)
+        try
         {
-            foreach (VisualElement element in DeadlineSettingWrapper.Children)
+            if (e.Value == true)
             {
-                element.IsEnabled = false;
+                foreach (VisualElement element in DeadlineSettingWrapper.Children)
+                {
+                    element.IsEnabled = false;
+                }
+            }
+            else
+            {
+                foreach (VisualElement element in DeadlineSettingWrapper.Children)
+                {
+                    element.IsEnabled = true;
+                }
             }
         }
-        else
+#if DEBUG
+        catch (Exception ex)
         {
-            foreach (VisualElement element in DeadlineSettingWrapper.Children)
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
             {
-                element.IsEnabled = true;
+                Debug.Print(ex.ToString());
             }
         }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private bool IsNameValid()
@@ -328,111 +449,131 @@ public partial class EditTaskPage : ContentPage
 
     private async void btnSaveTask_Clicked(object sender, EventArgs e)
     {
-        // Check if task name is invalid
-        if (!IsNameValid())
+        try
         {
-            txtName.Text = string.Empty;
-            txtName.Placeholder = App.Setting.IsVietnamese ? "* Ô này không thể để trống" : "* This box can't be blank";
-            txtName.PlaceholderColor = Colors.Red;
-            return;
-        }
-
-        var task = new ToDo_Task()
-        {
-            id = taskId,
-            Name = txtName.Text,
-            Description = txtDescription.Text,
-            AddTime = DateTime.Now
-        };
-
-        if (!checkNoDeadline.IsChecked)
-        {
-            var date = dateDeadline.Date;
-            var time = timeDeadline.Time;
-            task.DeadlineTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
-        }
-
-        if (listNotiDatePickers.Count != 0)
-        {
-            List<int> notificationId = new List<int>();
-            for (int i = 0; i < listNotiDatePickers.Count; i++)
+            // Check if task name is invalid
+            if (!IsNameValid())
             {
-                var date = listNotiDatePickers[i].Date;
-                var time = listNotiTimePickers[i].Time;
-                var notification = new Notification()
-                {
-                    Id = App.Database.GenerateRandomNotificationId(),
-                    time = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds)
-                };
-                App.Database.AddNotification(notification);
-                notificationId.Add(notification.Id);
+                txtName.Text = string.Empty;
+                txtName.Placeholder = App.Setting.IsVietnamese ? "* Ô này không thể để trống" : "* This box can't be blank";
+                txtName.PlaceholderColor = Colors.Red;
+                return;
             }
-            if (notificationId.Count != 0)
-            {
-                task.str_NotificationId = JsonSerializer.Serialize(notificationId, typeof(List<int>));
-            }
-        }
 
-        if (listCategoryEntryWrapper.Count != 0 || checkImportant.IsChecked)
-        {
-            List<int> categoryId = new List<int>();
-            foreach (var wrapper in listCategoryEntryWrapper)
+            var task = new ToDo_Task()
             {
-                var picker = wrapper.Children[0] as Picker;
-                if (!App.Database.IsCategoryNameTaken(picker.SelectedItem as string))
+                id = taskId,
+                Name = txtName.Text,
+                Description = txtDescription.Text,
+                AddTime = DateTime.Now
+            };
+
+            if (!checkNoDeadline.IsChecked)
+            {
+                var date = dateDeadline.Date;
+                var time = timeDeadline.Time;
+                task.DeadlineTime = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds);
+            }
+
+            if (listNotiDatePickers.Count != 0)
+            {
+                List<int> notificationId = new List<int>();
+                for (int i = 0; i < listNotiDatePickers.Count; i++)
                 {
-                    App.Database.AddCategory(new Category()
+                    var date = listNotiDatePickers[i].Date;
+                    var time = listNotiTimePickers[i].Time;
+                    var notification = new Notification()
                     {
-                        Id = App.Database.GenerateRandomCategoryId(),
-                        Name = picker.SelectedItem as string,
-                        Color_Hex = picker.TextColor.ToHex()
-                    });
+                        Id = App.Database.GenerateRandomNotificationId(),
+                        time = new DateTime(date.Year, date.Month, date.Day, time.Hours, time.Minutes, time.Seconds)
+                    };
+                    App.Database.AddNotification(notification);
+                    notificationId.Add(notification.Id);
                 }
-                var category = App.Database.FindCategory(picker.SelectedItem as string);
-                if (category != null)
+                if (notificationId.Count != 0)
                 {
-                    categoryId.Add(category.Id);
+                    task.str_NotificationId = JsonSerializer.Serialize(notificationId, typeof(List<int>));
                 }
             }
-            if (checkImportant.IsChecked)
+
+            if (listCategoryEntryWrapper.Count != 0 || checkImportant.IsChecked)
             {
-                if (!categoryId.Contains(0))
+                List<int> categoryId = new List<int>();
+                foreach (var wrapper in listCategoryEntryWrapper)
                 {
-                    categoryId.Insert(0, 0);
+                    var picker = wrapper.Children[0] as Picker;
+                    if (!App.Database.IsCategoryNameTaken(picker.SelectedItem as string))
+                    {
+                        App.Database.AddCategory(new Category()
+                        {
+                            Id = App.Database.GenerateRandomCategoryId(),
+                            Name = picker.SelectedItem as string,
+                            Color_Hex = picker.TextColor.ToHex()
+                        });
+                    }
+                    var category = App.Database.FindCategory(picker.SelectedItem as string);
+                    if (category != null)
+                    {
+                        categoryId.Add(category.Id);
+                    }
+                }
+                if (checkImportant.IsChecked)
+                {
+                    if (!categoryId.Contains(0))
+                    {
+                        categoryId.Insert(0, 0);
+                    }
+                }
+
+                task.str_CategoryId = JsonSerializer.Serialize(categoryId, typeof(List<int>));
+            }
+
+            UnregisterAllNotifications(App.Database.FindTask(taskId));
+
+            App.Database.UpdateTask(task);
+            App.Database.DeleteObsoleteCategory();
+            App.Database.DeleteObsoleteNotification();
+            if (App.Setting.IsAutoBackupEnabled)
+            {
+                try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+                catch (Exception) { }
+            }
+
+            await RegisterAllNotification(task);
+
+            for (int i = 0; i < App.mainPage.Navigation.NavigationStack.Count - 1; i++)
+            {
+                var previous_page = App.mainPage.Navigation.NavigationStack[i];
+                if (previous_page.GetType() == typeof(MainPage))
+                {
+                    App.mainPage.RefreshTaskViewWrapper();
+                }
+                else
+                {
+                    SearchPage page = previous_page as SearchPage;
+                    page.txtSearch_TextChanged(null, null);
                 }
             }
 
-            task.str_CategoryId = JsonSerializer.Serialize(categoryId, typeof(List<int>));
+            await App.mainPage.Navigation.PopAsync();
         }
-
-        UnregisterAllNotifications(App.Database.FindTask(taskId));
-
-        App.Database.UpdateTask(task);
-        App.Database.DeleteObsoleteCategory();
-        App.Database.DeleteObsoleteNotification();
-        if (App.Setting.IsAutoBackupEnabled)
+#if DEBUG
+        catch (Exception ex)
         {
-            try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
-            catch (Exception) { }
-        }
-
-        await RegisterAllNotification(task);
-
-        for (int i = 0; i < App.mainPage.Navigation.NavigationStack.Count - 1; i++)
-        {
-            var previous_page = App.mainPage.Navigation.NavigationStack[i];
-            if (previous_page.GetType() == typeof(MainPage))
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
             {
-                App.mainPage.RefreshTaskViewWrapper();
-            }
-            else
-            {
-                SearchPage page = previous_page as SearchPage;
-                page.txtSearch_TextChanged(null, null);
+                Debug.Print(ex.ToString());
             }
         }
-
-        await App.mainPage.Navigation.PopAsync();
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private async Task RegisterAllNotification(ToDo_Task task)
@@ -481,34 +622,54 @@ public partial class EditTaskPage : ContentPage
 
     private async void btnDeleteTask_Clicked(object sender, EventArgs e)
     {
-        bool confirm = await DisplayAlert(App.Setting.IsVietnamese ? "Xóa nhiệm vụ?" : "Remove this task?",
-                                        App.Setting.IsVietnamese ? "Bạn có muốn xóa nhiệm vụ này không?" : "Do you want to remove this task?",
-                                        "Yes", "No");
-        if (confirm)
+        try
         {
-            App.Database.DeleteTask(App.Database.FindTask(taskId));
-            App.Database.DeleteObsoleteCategory();
-            App.Database.DeleteObsoleteNotification();
-            if (App.Setting.IsAutoBackupEnabled)
+            bool confirm = await DisplayAlert(App.Setting.IsVietnamese ? "Xóa nhiệm vụ?" : "Remove this task?",
+                                            App.Setting.IsVietnamese ? "Bạn có muốn xóa nhiệm vụ này không?" : "Do you want to remove this task?",
+                                            "Yes", "No");
+            if (confirm)
             {
-                try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
-                catch (Exception) { }
-            }
+                App.Database.DeleteTask(App.Database.FindTask(taskId));
+                App.Database.DeleteObsoleteCategory();
+                App.Database.DeleteObsoleteNotification();
+                if (App.Setting.IsAutoBackupEnabled)
+                {
+                    try { App.BackupData(Path.Combine(App.Setting.BackupFolderPath, App.Setting.BackupFileName)); }
+                    catch (Exception) { }
+                }
 
-            for (int i = 0; i < App.mainPage.Navigation.NavigationStack.Count - 1; i++)
-            {
-                var previous_page = App.mainPage.Navigation.NavigationStack[i];
-                if (previous_page.GetType() == typeof(MainPage))
+                for (int i = 0; i < App.mainPage.Navigation.NavigationStack.Count - 1; i++)
                 {
-                    App.mainPage.RefreshTaskViewWrapper();
+                    var previous_page = App.mainPage.Navigation.NavigationStack[i];
+                    if (previous_page.GetType() == typeof(MainPage))
+                    {
+                        App.mainPage.RefreshTaskViewWrapper();
+                    }
+                    else
+                    {
+                        SearchPage page = previous_page as SearchPage;
+                        page.txtSearch_TextChanged(null, null);
+                    }
                 }
-                else
-                {
-                    SearchPage page = previous_page as SearchPage;
-                    page.txtSearch_TextChanged(null, null);
-                }
+                await App.mainPage.Navigation.PopAsync();
             }
-            await App.mainPage.Navigation.PopAsync();
         }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 }

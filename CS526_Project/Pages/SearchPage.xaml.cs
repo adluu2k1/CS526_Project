@@ -1,6 +1,7 @@
 ﻿using CS526_Project.Model;
 using CS526_Project.UserControls;
 using Microsoft.Maui.Controls.Shapes;
+using System.Diagnostics;
 
 namespace CS526_Project;
 
@@ -120,130 +121,370 @@ public partial class SearchPage : ContentPage
 
     public void txtSearch_TextChanged(object sender, TextChangedEventArgs e)
     {
-        var keyword = "";
-        if (txtSearch.Text != null)
-            keyword= txtSearch.Text.Trim();
-        ShowTask(keyword);
+        try
+        {
+            var keyword = "";
+            if (txtSearch.Text != null)
+                keyword = txtSearch.Text.Trim();
+            ShowTask(keyword);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void checkDone_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        Tag_IsDone = e.Value;
-        txtSearch_TextChanged(null, null);
+        try
+        {
+            Tag_IsDone = e.Value;
+            txtSearch_TextChanged(null, null);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void checkImportant_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        Tag_IsImportant = e.Value;
-        txtSearch_TextChanged(null, null);
+        try
+        {
+            Tag_IsImportant = e.Value;
+            txtSearch_TextChanged(null, null);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void checkNotDone_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        Tag_IsNotDone = e.Value;
-        txtSearch_TextChanged(null, null);
+        try
+        {
+            Tag_IsNotDone = e.Value;
+            txtSearch_TextChanged(null, null);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void checkNotImportant_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        Tag_IsNotImportant = e.Value;
-        txtSearch_TextChanged(null, null);
+        try
+        {
+            Tag_IsNotImportant = e.Value;
+            txtSearch_TextChanged(null, null);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void btnAddCategory_Clicked(object sender, EventArgs e)
     {
-        List<string> categoriesStr = new List<string>();
-        foreach (var category in App.Database.GetAllCategories())
+        try
         {
-            if (category.Id == 0) continue;
-            categoriesStr.Add(category.Name);
+            List<string> categoriesStr = new List<string>();
+            foreach (var category in App.Database.GetAllCategories())
+            {
+                if (category.Id == 0) continue;
+                categoriesStr.Add(category.Name);
+            }
+
+            Picker categoryPicker = new Picker()
+            {
+                ItemsSource = categoriesStr,
+                Title = App.Setting.IsVietnamese ? "Chọn nhãn" : "Select a tag",
+                Margin = new Thickness(10, 0, 5, 0),
+            };
+            ImageButton btnRemove = new ImageButton()
+            {
+                Style = (Style)this.Resources["RemoveButtonStyle"],
+                VerticalOptions = LayoutOptions.Center,
+                Margin = new Thickness(5, 0, 10, 0)
+            };
+            categoryPicker.SelectedIndexChanged += categoryPicker_SelectedIndexChanged;
+            btnRemove.Clicked += btnRemoveCategory_Clicked;
+
+            HorizontalStackLayout view = new HorizontalStackLayout();
+            view.Children.Add(categoryPicker);
+            view.Children.Add(btnRemove);
+
+            Border border = new Border()
+            {
+                BackgroundColor = Colors.Transparent,
+                Stroke = App.Setting.IsDarkMode ? Colors.White : Colors.Black,
+                StrokeShape = new RoundRectangle() { CornerRadius = new CornerRadius(10) },
+                StrokeThickness = 1,
+                Margin = new Thickness(0, 0, 10, 0)
+            };
+            border.Content = view;
+
+            CategoriesFilterWrapper.Insert(CategoriesFilterWrapper.Count - 1, border);
+
+            listBtnRemoveCategory.Add(btnRemove);
         }
-
-        Picker categoryPicker = new Picker()
+#if DEBUG
+        catch (Exception ex)
         {
-            ItemsSource = categoriesStr,
-            Title = App.Setting.IsVietnamese ? "Chọn nhãn" : "Select a tag",
-            Margin = new Thickness(10,0,5,0),
-        };
-        ImageButton btnRemove = new ImageButton()
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
         {
-            Style = (Style)this.Resources["RemoveButtonStyle"],
-            VerticalOptions = LayoutOptions.Center,
-            Margin = new Thickness(5,0,10,0)
-        };
-        categoryPicker.SelectedIndexChanged += categoryPicker_SelectedIndexChanged;
-        btnRemove.Clicked += btnRemoveCategory_Clicked;
-
-        HorizontalStackLayout view = new HorizontalStackLayout();
-        view.Children.Add(categoryPicker);
-        view.Children.Add(btnRemove);
-
-        Border border = new Border()
-        {
-            BackgroundColor = Colors.Transparent,
-            Stroke = App.Setting.IsDarkMode ? Colors.White : Colors.Black,
-            StrokeShape = new RoundRectangle() { CornerRadius = new CornerRadius(10) },
-            StrokeThickness = 1,
-            Margin = new Thickness(0,0,10,0)
-        };
-        border.Content = view;
-
-        CategoriesFilterWrapper.Insert(CategoriesFilterWrapper.Count - 1, border);
-
-        listBtnRemoveCategory.Add(btnRemove);
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void btnRemoveCategory_Clicked(object sender, EventArgs e)
     {
-        for (int i = 0; i < listBtnRemoveCategory.Count; i++)
+        try
         {
-            if (listBtnRemoveCategory[i] == sender)
+            for (int i = 0; i < listBtnRemoveCategory.Count; i++)
             {
-                listBtnRemoveCategory.RemoveAt(i);
-                CategoriesFilterWrapper.Children.RemoveAt(i);
+                if (listBtnRemoveCategory[i] == sender)
+                {
+                    listBtnRemoveCategory.RemoveAt(i);
+                    CategoriesFilterWrapper.Children.RemoveAt(i);
+                }
+            }
+
+            txtSearch_TextChanged(null, null);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
             }
         }
-
-        txtSearch_TextChanged(null, null);
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void categoryPicker_SelectedIndexChanged(object sender, EventArgs e)
     {
-        var picker = sender as Picker;
-
-        foreach (var category in App.Database.GetAllCategories())
+        try
         {
-            if (picker.SelectedItem as string == category.Name)
+            var picker = sender as Picker;
+
+            foreach (var category in App.Database.GetAllCategories())
             {
-                picker.TextColor = Color.FromArgb(category.Color_Hex);
-                break;
+                if (picker.SelectedItem as string == category.Name)
+                {
+                    picker.TextColor = Color.FromArgb(category.Color_Hex);
+                    break;
+                }
+            }
+
+            txtSearch_TextChanged(null, null);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
             }
         }
-
-        txtSearch_TextChanged(null, null);
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void checkDeadlineFilter_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        DeadlineFilterWrapper.IsVisible = e.Value;
-        txtSearch_TextChanged(null, null);
+        try
+        {
+            DeadlineFilterWrapper.IsVisible = e.Value;
+            txtSearch_TextChanged(null, null);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void checkAdvance_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        AdvanceSearchOptionsWrapper.IsVisible = e.Value;
-        txtSearch_TextChanged(null, null);
+        try
+        {
+            AdvanceSearchOptionsWrapper.IsVisible = e.Value;
+            txtSearch_TextChanged(null, null);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void checkCategoryFilter_CheckedChanged(object sender, CheckedChangedEventArgs e)
     {
-        var view = CategoriesFilterWrapper.Parent as View;
-        view.IsVisible = e.Value;
-        txtSearch_TextChanged(null, null);
+        try
+        {
+            var view = CategoriesFilterWrapper.Parent as View;
+            view.IsVisible = e.Value;
+            txtSearch_TextChanged(null, null);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 
     private void dateDeadline_DateSelected(object sender, DateChangedEventArgs e)
     {
-        txtSearch_TextChanged(null, null);
+        try
+        {
+            txtSearch_TextChanged(null, null);
+        }
+#if DEBUG
+        catch (Exception ex)
+        {
+            _ = DisplayAlert("Error", ex.Message, "OK");
+            if (Debugger.IsAttached)
+            {
+                Debug.Print(ex.ToString());
+            }
+        }
+#else
+        catch (Exception)
+        {
+            string message = "An unknown error has occurred while processing your request. Please try again later.";
+            message += "\n\nIf the problem still persists, please report the issue at the folowing email:\n19521392@gm.uit.edu.vn";
+            _ = DisplayAlert("Oops!", message, "OK");
+        }
+#endif
     }
 }
